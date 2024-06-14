@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "318349090561",
+    "project_id": "testapp-74fb4",
+    "storage_bucket": "testapp-74fb4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318349090561:android:d97a2e413fb1154900c500",
+        "android_client_info": {
+          "package_name": "com.pdp.test_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWbP9DcTUhhVuyCa_3Hq77budwyRjBbRs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
