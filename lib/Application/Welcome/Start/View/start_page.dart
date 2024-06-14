@@ -23,7 +23,7 @@ class StartPage extends StatelessWidget {
       child: BlocBuilder<StartBloc, StartState>(
         builder: (context, state) {
           StartBloc bloc = context.read<StartBloc>();
-
+          bloc.controller.addListener(() => bloc.listenPageScroll());
           return Container(
             decoration: BoxDecoration(
               gradient: RadialGradient(
@@ -57,7 +57,6 @@ class StartPage extends StatelessWidget {
               ),
 
               body: DefaultTabController(
-                animationDuration: const Duration(milliseconds: 500),
                 length: 3,
                 child: SizedBox(
                   child: Stack(
@@ -106,11 +105,19 @@ class StartPage extends StatelessWidget {
                         top: bloc.top2,
                         child: const MyCircleGlassContainer(mini: true),
                       ),
-
+                      const TabBarView(
+                        children: [
+                          SizedBox.shrink(),
+                          SizedBox.shrink(),
+                          SizedBox.shrink(),
+                        ],
+                      ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height - 270,
-                        child: const TabBarView(
-                          children: [
+                        child: PageView(
+                          physics: const BouncingScrollPhysics(),
+                          controller: bloc.controller,
+                          children: const [
                             StartView(img: 1),
                             StartView(img: 2),
                             StartView(img: 3),
@@ -171,8 +178,8 @@ class StartPage extends StatelessWidget {
                                 // #next
                                 BlocBuilder<StartBloc, StartState>(
                                   builder: (context, state) {
-                                    TabController controller = DefaultTabController.of(context);
-                                    controller.addListener(() => bloc.listenPageScroll(controller: controller));
+                                    TabController c = DefaultTabController.of(context);
+                                    c.animateTo(bloc.controller.page?.round() ?? 0, duration: const Duration(milliseconds: 350));
                                     return AnimatedPadding(
                                       duration: const Duration(milliseconds: 300),
                                       padding: bloc.loginHeight != 75 ? EdgeInsets.zero : const EdgeInsets.only(right: 2.5),

@@ -13,31 +13,33 @@ class SignInErrorState extends SignInState {
 }
 
 class SignInEnterState extends SignInState {
-  final bool email;
-  final bool password;
+  final bool focusEmail;
+  final bool focusPassword;
   final bool obscure;
   final bool rememberMe;
   final bool emailSuffix;
   final bool passwordSuffix;
+  final bool passwordObscure;
 
-  SignInEnterState(
-      {
-      required this.passwordSuffix,
-      required this.emailSuffix,
-      required this.email,
-      required this.password,
-      required this.obscure,
-      required this.rememberMe,
-      });
+  SignInEnterState({
+    required this.passwordSuffix,
+    required this.emailSuffix,
+    required this.focusEmail,
+    required this.focusPassword,
+    required this.obscure,
+    required this.rememberMe,
+    required this.passwordObscure,
+  });
 
   @override
   List<Object?> get props => [
         passwordSuffix,
         emailSuffix,
-        email,
-        password,
+        focusEmail,
+        focusPassword,
         obscure,
-        rememberMe
+        rememberMe,
+        passwordObscure,
       ];
 }
 
@@ -47,11 +49,7 @@ class SignInLoadingState extends SignInState {
   final bool obscure;
   final bool rememberMe;
 
-  SignInLoadingState(
-      {required this.email,
-      required this.password,
-      required this.obscure,
-      required this.rememberMe});
+  SignInLoadingState({required this.email, required this.password, required this.obscure, required this.rememberMe});
 
   @override
   List<Object?> get props => [email, password, obscure, rememberMe];

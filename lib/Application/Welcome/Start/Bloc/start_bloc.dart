@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -15,6 +16,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     Language.ru,
     Language.en,
   ];
+  PageController controller = PageController();
   bool first = false;
   double left = 41;
   double top = 10;
@@ -25,8 +27,8 @@ class StartBloc extends Bloc<StartEvent, StartState> {
   bool login = false;
   bool next = false;
   double loginHeight = 75;
-  int oldScreen = 1;
-  int screen = 1;
+  double oldScreen = 0;
+  double screen = 0;
   bool pressNext = false;
 
   StartBloc() : super(StartInitialState(first: false, left: 40, top: 10, loginHeight: 75)) {
@@ -39,10 +41,9 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     on<UpdateAnimateEvent>(updateAnimate);
   }
 
-  void listenPageScroll({required TabController controller}) async {
-    screen = controller.index + 1;
+  void listenPageScroll() async {
+    screen = controller.page!.roundToDouble();
     if (oldScreen != screen && !pressNext) {
-      print('scroll $oldScreen $screen');
       oldScreen = screen;
       add(UpdateAnimateEvent());
     }
@@ -56,19 +57,14 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     left2 = first ? 250 : 70;
     top2 = first ? 15 : 300;
     first = !first;
-    if (screen == 3) {
+    if (screen == 2) {
       next = true;
     } else {
       next = false;
       login = false;
     }
     emit(StartInitialState(left: left, top: top, first: first, loginHeight: loginHeight));
-    print('update');
     pressNext = false;
-  }
-
-  void pressFlagButton(FlagEvent event, Emitter<StartState> emit) {
-    emit(StartFlagState());
   }
 
   void pressNextAnimateEnd(LoginAnimateEvent event, Emitter<StartState> emit) {
@@ -84,13 +80,11 @@ class StartBloc extends Bloc<StartEvent, StartState> {
   }
 
   void pressNextButton(NextEvent event, Emitter<StartState> emit) {
-    final TabController controller = DefaultTabController.of(event.context);
-    screen = controller.index + 1;
-    if (screen != 3) {
+    screen = controller.page!;
+    if (screen.truncate() != 2) {
       pressNext = true;
-      oldScreen = screen + 1;
-      print('Next $oldScreen');
-      controller.animateTo(screen);
+      oldScreen = ++screen;
+      controller.animateToPage(screen.toInt(), duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
       add(UpdateAnimateEvent());
      } else {
       Navigator.pushReplacementNamed(event.context, SignInPage.id);
@@ -99,6 +93,10 @@ class StartBloc extends Bloc<StartEvent, StartState> {
 
   void pressSkipButton(SkipEvent event, Emitter<StartState> emit) {
     Navigator.pushReplacementNamed(event.context, SignInPage.id);
+  }
+
+  void pressFlagButton(FlagEvent event, Emitter<StartState> emit) {
+    emit(StartFlagState());
   }
 
   Future<void> pressTermsButton(TermsEvent event, Emitter<StartState> emit) async {

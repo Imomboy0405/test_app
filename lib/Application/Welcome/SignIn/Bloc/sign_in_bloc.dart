@@ -32,10 +32,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       : super(SignInEnterState(
           obscure: false,
           rememberMe: true,
-          email: false,
-          password: false,
+          focusEmail: false,
+          focusPassword: false,
           passwordSuffix: false,
           emailSuffix: false,
+          passwordObscure: false,
         )) {
     on<FlagEvent>(pressFlagButton);
     on<SelectLanguageEvent>(pressLanguageButton);
@@ -55,10 +56,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(SignInEnterState(
       passwordSuffix: passwordSuffix,
       emailSuffix: emailSuffix,
-      email: emailController.text.trim().isNotEmpty,
-      password: passwordController.text.trim().isNotEmpty,
+      focusEmail: focusEmail.hasFocus,
+      focusPassword: focusPassword.hasFocus,
       obscure: obscure,
       rememberMe: rememberMe,
+      passwordObscure: passwordController.text.isNotEmpty,
     ));
   }
 
@@ -75,6 +77,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     await LangService.language(event.lang);
     selectedLang = event.lang;
     emit(SignInFlagState());
+    if (event.context.mounted) {
+      Navigator.pop(event.context);
+    }
     enterStateEmit(emit);
   }
 
@@ -168,6 +173,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   void change(SignInChangeEvent event, Emitter<SignInState> emit) {
+    passwordController.text = passwordController.text.trim();
+    emailController.text = emailController.text.trim();
     passwordSuffix = LogicService.checkPassword(passwordController.text);
     emailSuffix = LogicService.checkEmail(emailController.text);
     enterStateEmit(emit);

@@ -13,11 +13,12 @@ class FlagEvent extends SignInEvent {
 
 class SelectLanguageEvent extends SignInEvent {
   final Language lang;
+  final BuildContext context;
 
-  SelectLanguageEvent({required this.lang});
+  SelectLanguageEvent({required this.lang, required this.context});
 
   @override
-  List<Object?> get props => [lang];
+  List<Object?> get props => [lang, context];
 }
 
 class SignInChangeEvent extends SignInEvent {

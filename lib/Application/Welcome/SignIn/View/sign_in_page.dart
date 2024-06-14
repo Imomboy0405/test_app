@@ -24,6 +24,7 @@ class SignInPage extends StatelessWidget {
               decoration: myGradient(),
               child: Scaffold(
                 backgroundColor: AppColors.transparent,
+
                 appBar: AppBar(
                   elevation: 0,
                   toolbarHeight: 91,
@@ -34,7 +35,7 @@ class SignInPage extends StatelessWidget {
                   actions: [
                     MyFlagButton(
                       currentLang: bloc.selectedLang,
-                      onChanged: ({required BuildContext context, required Language lang}) => bloc.add(SelectLanguageEvent(lang: lang)),
+                      onChanged: ({required BuildContext context, required Language lang}) => bloc.add(SelectLanguageEvent(lang: lang, context: context)),
                     ),
                   ],
 
@@ -42,6 +43,7 @@ class SignInPage extends StatelessWidget {
                   title: Text('IBilling', style: AppTextStyles.style0_1(context)),
                   leadingWidth: 60,
                 ),
+
                 body: SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(),
                   child: SizedBox(
@@ -58,41 +60,29 @@ class SignInPage extends StatelessWidget {
                             textAlign: TextAlign.center,
                             style: AppTextStyles.style11(context),
                           ),
-                          Column(
-                            children: [
-                              // #text_fields
-                              SizedBox(
-                                height: 60,
-                                child: SingleChildScrollView(
-                                  controller: bloc.scrollController,
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  child: Row(children: [
-                                    // #email
-                                    MyTextField(
-                                      controller: bloc.emailController,
-                                      errorState: state is SignInErrorState,
-                                      suffixIc: bloc.emailSuffix,
-                                      keyboard: TextInputType.emailAddress,
-                                      focus: bloc.focusEmail,
-                                      errorTxt: 'invalid_email'.tr(),
-                                      context1: context,
-                                      icon: Icons.mail,
-                                      hintTxt: 'aaabbbccc@dddd.eee',
-                                      labelTxt: 'email_address'.tr(),
-                                      snackBarTxt: 'snackBar'.tr(),
-                                      onSubmitted: () => bloc.add(OnSubmittedEvent()),
-                                      onTap: () => bloc.add(SignInChangeEvent()),
-                                      onChanged: () => bloc.add(SignInChangeEvent()),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                            ],
+
+                          // #email
+                          MyTextField(
+                            key: const Key('email'),
+                            controller: bloc.emailController,
+                            errorState: state is SignInErrorState,
+                            suffixIc: bloc.emailSuffix,
+                            keyboard: TextInputType.emailAddress,
+                            focus: bloc.focusEmail,
+                            errorTxt: 'invalid_email'.tr(),
+                            context1: context,
+                            icon: Icons.mail,
+                            hintTxt: 'aaabbbccc@dddd.eee',
+                            labelTxt: 'email_address'.tr(),
+                            snackBarTxt: 'snackBar'.tr(),
+                            onSubmitted: () => bloc.add(OnSubmittedEvent()),
+                            onTap: () => bloc.add(SignInChangeEvent()),
+                            onChanged: () => bloc.add(SignInChangeEvent()),
                           ),
 
                           // #password
                           MyTextField(
+                            key: const Key('password'),
                             actionDone: true,
                             controller: bloc.passwordController,
                             errorState: state is SignInErrorState,
@@ -109,7 +99,7 @@ class SignInPage extends StatelessWidget {
                             onChanged: () => bloc.add(SignInChangeEvent()),
                             onSubmitted: () => bloc.add(OnSubmittedEvent(password: true)),
                             onTapEye: () => bloc.add(EyeEvent()),
-                            onTap: () => () => bloc.add(SignInChangeEvent()),
+                            onTap: () => bloc.add(SignInChangeEvent()),
                           ),
 
                           // #buttons

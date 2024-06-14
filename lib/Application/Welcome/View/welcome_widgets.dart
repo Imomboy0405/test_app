@@ -73,20 +73,7 @@ class MyFlagButton extends StatelessWidget {
                                   selected: lang[index - 1] == currentLang,
                                   value: lang[index - 1],
                                   groupValue: currentLang,
-                                  onChanged: (value) {
-                                    onChanged(lang: value as Language, context: cont);
-                                    // switch (pageName) {
-                                    //   case '/start_page':
-                                    //     pageContext.read<start.StartBloc>().add(start.SelectLanguageEvent(lang: value as Language));
-                                    //     break;
-                                    //   case '/sign_in_page':
-                                    //     pageContext.read<sign_in.SignInBloc>().add(sign_in.SelectLanguageEvent(lang: value as Language));
-                                    //     break;
-                                    //   case '/sign_up_page':
-                                    //     pageContext.read<sign_up.SignUpBloc>().add(sign_up.SelectLanguageEvent(lang: value as Language));
-                                    // }
-                                    // Navigator.pop(cont);
-                                  });
+                                  onChanged: (value) => onChanged(lang: value as Language, context: cont));
                         },
                       ),
                     );
@@ -136,20 +123,20 @@ class MyCircleGlassContainer extends StatelessWidget {
               alignment: bloc.left == 41
                   ? Alignment.bottomLeft
                   : bloc.left == 40
-                  ? Alignment.bottomRight
-                  : Alignment.topLeft,
+                      ? Alignment.bottomRight
+                      : Alignment.topLeft,
               padding: const EdgeInsets.all(30),
               child: child
                   ? Image(
-                image: AssetImage('assets/images/img_${bloc.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
-                height: 100,
-                width: 100,
-                color: bloc.left == 41
-                    ? AppColors.blue
-                    : bloc.left == 40
-                    ? AppColors.red
-                    : AppColors.green,
-              )
+                      image: AssetImage('assets/images/img_${bloc.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
+                      height: 100,
+                      width: 100,
+                      color: bloc.left == 41
+                          ? AppColors.blue
+                          : bloc.left == 40
+                              ? AppColors.red
+                              : AppColors.green,
+                    )
                   : null,
             ),
           ),
@@ -252,7 +239,7 @@ class MyTextField extends StatelessWidget {
       child: TextField(
         enabled: !disabled,
         obscureText: icon == Icons.lock ? obscure! : false,
-        cursorColor: AppColors.black,
+        cursorColor: AppColors.purple,
         controller: controller,
         style: errorState ? AppTextStyles.style7_1(context) : AppTextStyles.style7(context),
         onChanged: (v) => onChanged(),
@@ -278,9 +265,7 @@ class MyTextField extends StatelessWidget {
                             ? AppColors.green
                             : focus.hasFocus
                                 ? AppColors.black
-                                : controller.text.isNotEmpty
-                                    ? AppColors.purple
-                                    : AppColors.darkGrey,
+                                : AppColors.purple,
                   ),
                 ),
               ],
@@ -300,20 +285,19 @@ class MyTextField extends StatelessWidget {
                 // #eye_button
                 icon == Icons.lock && controller.text.isNotEmpty
                     ? IconButton(
-                        padding: EdgeInsets.zero,
-                        alignment: Alignment.centerRight,
-                        onPressed: () => onTapEye!(),
-                        icon: Icon(
-                          obscure! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
-                          color: errorState
-                              ? AppColors.red
-                              : suffixIc
-                                  ? AppColors.green
-                                  : focus.hasFocus
-                                      ? AppColors.black
-                                      : AppColors.purple,
-                        ),
-                      )
+                      padding: EdgeInsets.zero,
+                      onPressed: () => onTapEye!(),
+                      icon: Icon(
+                        obscure! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+                        color: errorState
+                            ? AppColors.red
+                            : suffixIc
+                                ? AppColors.green
+                                : focus.hasFocus
+                                    ? AppColors.black
+                                    : AppColors.purple,
+                      ),
+                    )
                     : const SizedBox.shrink(),
 
                 // #error_button_and_done
@@ -333,18 +317,16 @@ class MyTextField extends StatelessWidget {
           hintStyle: AppTextStyles.style6(context),
           labelStyle: errorState
               ? AppTextStyles.style3_1(context)
-              : controller.text.isNotEmpty || focus.hasFocus
-                  ? AppTextStyles.style3(context)
-                  : AppTextStyles.style6(context),
+              : AppTextStyles.style3(context),
           border: myInputBorder(color1: AppColors.black),
           enabledBorder: suffixIc
               ? myInputBorder(color1: AppColors.green)
               : myInputBorder(
-                  color1: AppColors.purple,
-                  color2: AppColors.transparentPurple,
-                  itsColor1: controller.text.isNotEmpty || focus.hasFocus,
+                  color1: AppColors.black,
+                  color2: AppColors.purple,
+                  itsColor1: focus.hasFocus,
                 ),
-          disabledBorder: myInputBorder(color1: AppColors.blue),
+          disabledBorder: myInputBorder(color1: AppColors.transparentPurple),
           errorBorder: myInputBorder(color1: AppColors.red),
           focusedBorder: myInputBorder(
             color1: AppColors.green,
