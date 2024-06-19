@@ -34,9 +34,8 @@ class SignUpPage extends StatelessWidget {
                   actions: [
                     MyFlagButton(
                       currentLang: bloc.selectedLang,
-                      onChanged: ({required BuildContext context, required Language lang}) {
-                        //todo
-                      },
+                      onChanged: ({required BuildContext context, required Language lang}) =>
+                          bloc.add(SelectLanguageEvent(lang: lang, context: context)),
                     )
                   ],
 
@@ -52,6 +51,7 @@ class SignUpPage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 30.0),
                       child: Stack(
                         children: [
+                          if (state is! SignUpVerifyState)
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -59,39 +59,23 @@ class SignUpPage extends StatelessWidget {
                               // #sign_up_for_free
                               Text('sign_up_for_free'.tr(), textAlign: TextAlign.center, style: AppTextStyles.style11(context)),
 
-                              Column(
-                                children: [
-                                  // #text_fields
-                                  SizedBox(
-                                    height: 60,
-                                    child: SingleChildScrollView(
-                                      controller: bloc.scrollController,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      child: Row(children: [
-                                        // #email
-                                        MyTextField(
-                                          disabled: bloc.googleOrFacebook,
-                                          controller: bloc.emailController,
-                                          errorState: state is SignUpErrorState,
-                                          suffixIc: bloc.emailSuffix,
-                                          keyboard: TextInputType.emailAddress,
-                                          focus: bloc.focusEmail,
-                                          errorTxt: 'invalid_email'.tr(),
-                                          context1: context,
-                                          icon: Icons.mail,
-                                          hintTxt: 'aaabbbccc@dddd.eee',
-                                          labelTxt: 'email_address'.tr(),
-                                          snackBarTxt: 'fill_email'.tr(),
-                                          onChanged: () {  },
-                                          onTap: () {  },
-                                          onSubmitted: () {  //todo
-                                            },
-                                        ),
-                                      ]),
-                                    ),
-                                  ),
-                                ],
+                              // #email
+                              MyTextField(
+                                disabled: bloc.googleOrFacebook,
+                                controller: bloc.emailController,
+                                errorState: state is SignUpErrorState,
+                                suffixIc: bloc.emailSuffix,
+                                keyboard: TextInputType.emailAddress,
+                                focus: bloc.focusEmail,
+                                errorTxt: 'invalid_email'.tr(),
+                                context1: context,
+                                icon: Icons.mail,
+                                hintTxt: 'aaabbbccc@dddd.eee',
+                                labelTxt: 'email_address'.tr(),
+                                snackBarTxt: 'fill_email'.tr(),
+                                onChanged: () => bloc.add(SignUpChangeEvent()),
+                                onTap: () => bloc.add(SignUpChangeEvent()),
+                                onSubmitted: () => bloc.add(OnSubmittedEvent()),
                               ),
 
                               // #full_name
@@ -107,10 +91,9 @@ class SignUpPage extends StatelessWidget {
                                 hintTxt: 'example_full_name'.tr(),
                                 labelTxt: 'full_name'.tr(),
                                 snackBarTxt: 'fill_full_name'.tr(),
-                                onChanged: () {  },
-                                onTap: () {  },
-                                onSubmitted: () {  //todo
-                                },
+                                onChanged: () => bloc.add(SignUpChangeEvent()),
+                                onTap: () => bloc.add(SignUpChangeEvent()),
+                                onSubmitted: () => bloc.add(OnSubmittedEvent(fullName: true)),
                               ),
 
                               // #password
@@ -127,10 +110,10 @@ class SignUpPage extends StatelessWidget {
                                 labelTxt: 'password'.tr(),
                                 snackBarTxt: 'fill_password'.tr(),
                                 obscure: bloc.obscurePassword,
-                                onChanged: () {  },
-                                onTap: () {  },
-                                onSubmitted: () {  //todo
-                                },
+                                onChanged: () => bloc.add(SignUpChangeEvent()),
+                                onTap: () => bloc.add(SignUpChangeEvent()),
+                                onSubmitted: () => bloc.add(OnSubmittedEvent(password: true)),
+                                onTapEye: () => bloc.add(PasswordEyeEvent()),
                               ),
 
                               // #repeat_password
@@ -148,10 +131,10 @@ class SignUpPage extends StatelessWidget {
                                 snackBarTxt: 'fill_re_password'.tr(),
                                 obscure: bloc.obscureRePassword,
                                 actionDone: true,
-                                onChanged: () {  },
-                                onTap: () {  },
-                                onSubmitted: () {  //todo
-                                },
+                                onChanged: () => bloc.add(SignUpChangeEvent()),
+                                onTap: () => bloc.add(SignUpChangeEvent()),
+                                onSubmitted: () => bloc.add(OnSubmittedEvent(rePassword: true)),
+                                onTapEye: () => bloc.add(RePasswordEyeEvent()),
                               ),
 
                               // #sign_up
@@ -202,33 +185,34 @@ class SignUpPage extends StatelessWidget {
 
                               // #sing_in
                               RichText(
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                    text: 'already_account'.tr(),
-                                    style: AppTextStyles.style2(context),
-                                  ),
-                                  TextSpan(
-                                    text: 'log_in'.tr(),
-                                    style: AppTextStyles.style9(context),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => context.read<SignUpBloc>().add(SignInEvent(context: context)),
-                                  ),
-                                ]),
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'already_account'.tr(),
+                                      style: AppTextStyles.style2(context),
+                                    ),
+                                    TextSpan(
+                                      text: 'log_in'.tr(),
+                                      style: AppTextStyles.style9(context),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () => context.read<SignUpBloc>().add(SignInEvent(context: context)),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
 
-                          // #verify_phone
-                          if (state is SignUpVerifyPhoneState || bloc.email)
+                          // #verify_state
+                          if (state is SignUpVerifyState)
                             Container(
                               alignment: Alignment.center,
-                              color: AppColors.black,
+                              color: AppColors.transparent,
                               child: Column(
                                 children: [
                                   const SizedBox(height: 100),
-                                  // #sign_up_for_free
-                                  Text('verify_email'.tr(),
-                                      textAlign: TextAlign.center, style: AppTextStyles.style1(context)),
+                                  // #verify_email
+                                  Text('verify_email'.tr(), textAlign: TextAlign.center, style: AppTextStyles.style1(context)),
                                   const SizedBox(height: 50),
 
                                   // #confirm

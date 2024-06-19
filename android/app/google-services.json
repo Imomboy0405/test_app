@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "318349090561",
-    "project_id": "testapp-74fb4",
-    "storage_bucket": "testapp-74fb4.appspot.com"
+    "project_number": "476535803397",
+    "project_id": "test-app-women-s",
+    "storage_bucket": "test-app-women-s.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:318349090561:android:d97a2e413fb1154900c500",
+        "mobilesdk_app_id": "1:476535803397:android:8d95f1613284271101d66c",
         "android_client_info": {
           "package_name": "com.pdp.test_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "476535803397-9leb1icg1s9fa0t4nhnq4gnvb84lscet.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pdp.test_app",
+            "certificate_hash": "8a7b020c8f4e01c2c3bbd64d94db095d6ee8304e"
+          }
+        },
+        {
+          "client_id": "476535803397-vli0v1tk33du35ujq754982jhid77st8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCWbP9DcTUhhVuyCa_3Hq77budwyRjBbRs"
+          "current_key": "AIzaSyD2O3e7pF8nOJGliVik-eL-2DiLAgICWh4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "476535803397-vli0v1tk33du35ujq754982jhid77st8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

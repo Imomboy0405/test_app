@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
-import 'package:test_app/Application/Menus/Home/View/chat_page.dart';
+import 'package:test_app/Application/Menus/Home/View/home_page.dart';
 import 'package:test_app/Application/Menus/Profile/View/profile_page.dart';
-import 'package:test_app/Application/Menus/Test/View/chat_page.dart';
+import 'package:test_app/Application/Menus/Test/View/test_page.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Application/Welcome/SignUp/View/sign_up_page.dart';
 import 'package:test_app/Application/Welcome/Start/View/start_page.dart';

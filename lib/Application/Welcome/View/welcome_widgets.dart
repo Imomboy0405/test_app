@@ -153,7 +153,7 @@ Container myIsLoading(BuildContext context) {
     color: AppColors.transparentBlack,
     alignment: Alignment.center,
     child: CircularProgressIndicator(
-      color: AppColors.blue,
+      color: AppColors.purple,
       backgroundColor: AppColors.transparentPurple,
     ),
   );
@@ -285,19 +285,19 @@ class MyTextField extends StatelessWidget {
                 // #eye_button
                 icon == Icons.lock && controller.text.isNotEmpty
                     ? IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () => onTapEye!(),
-                      icon: Icon(
-                        obscure! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
-                        color: errorState
-                            ? AppColors.red
-                            : suffixIc
-                                ? AppColors.green
-                                : focus.hasFocus
-                                    ? AppColors.black
-                                    : AppColors.purple,
-                      ),
-                    )
+                        padding: EdgeInsets.zero,
+                        onPressed: () => onTapEye!(),
+                        icon: Icon(
+                          obscure! ? CupertinoIcons.eye : CupertinoIcons.eye_slash,
+                          color: errorState
+                              ? AppColors.red
+                              : suffixIc
+                                  ? AppColors.green
+                                  : focus.hasFocus
+                                      ? AppColors.black
+                                      : AppColors.purple,
+                        ),
+                      )
                     : const SizedBox.shrink(),
 
                 // #error_button_and_done
@@ -315,9 +315,7 @@ class MyTextField extends StatelessWidget {
           labelText: labelTxt,
           hintText: hintTxt,
           hintStyle: AppTextStyles.style6(context),
-          labelStyle: errorState
-              ? AppTextStyles.style3_1(context)
-              : AppTextStyles.style3(context),
+          labelStyle: errorState ? AppTextStyles.style3_1(context) : AppTextStyles.style3(context),
           border: myInputBorder(color1: AppColors.black),
           enabledBorder: suffixIc
               ? myInputBorder(color1: AppColors.green)

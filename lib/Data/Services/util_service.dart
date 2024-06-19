@@ -14,7 +14,9 @@ class Utils {
         elevation: 0,
         content: Container(
           width: MediaQuery.of(context).size.width - 100,
-          height: 44,
+          constraints: const BoxConstraints(
+            minHeight: 44,
+          ),
           margin: const EdgeInsets.only(bottom: 80),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: errorState ? AppColors.red : AppColors.purple, borderRadius: BorderRadius.circular(6)),

@@ -60,7 +60,7 @@ class AuthService {
     // await _auth.sendSignInLinkToEmail(
     //     email: email,
     //     actionCodeSettings: ActionCodeSettings(
-    //       url: 'https://ibilling-d45ee.firebaseapp.com',
+    //       url: 'https://testapp-womens.firebaseapp.com',
     //       androidInstallApp: true,
     //       handleCodeInApp: true,
     // ));

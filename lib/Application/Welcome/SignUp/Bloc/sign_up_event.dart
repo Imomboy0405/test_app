@@ -4,11 +4,12 @@ abstract class SignUpEvent extends Equatable {}
 
 class SelectLanguageEvent extends SignUpEvent {
   final Language lang;
+  final BuildContext context;
 
-  SelectLanguageEvent({required this.lang});
+  SelectLanguageEvent({required this.lang, required this.context});
 
   @override
-  List<Object?> get props => [lang];
+  List<Object?> get props => [lang, context];
 }
 
 class SignUpChangeEvent extends SignUpEvent {
@@ -34,15 +35,6 @@ class SignUpButtonEvent extends SignUpEvent {
 
   @override
   List<Object?> get props => [context];
-}
-
-class EmailButtonEvent extends SignUpEvent {
-  final double width;
-
-  EmailButtonEvent({required this.width});
-
-  @override
-  List<Object?> get props => [width];
 }
 
 class FaceBookEvent extends SignUpEvent {
@@ -72,11 +64,6 @@ class SignInEvent extends SignUpEvent {
 
   @override
   List<Object?> get props => [context];
-}
-
-class RememberMeEvent extends SignUpEvent {
-  @override
-  List<Object?> get props => [];
 }
 
 class PasswordEyeEvent extends SignUpEvent {

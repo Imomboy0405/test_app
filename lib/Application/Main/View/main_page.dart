@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
-import 'package:test_app/Application/Menus/Home/View/chat_page.dart';
+import 'package:test_app/Application/Menus/Home/View/home_page.dart';
 import 'package:test_app/Application/Menus/Profile/View/profile_page.dart';
-import 'package:test_app/Application/Menus/Test/View/chat_page.dart';
+import 'package:test_app/Application/Menus/Test/View/test_page.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import '../Bloc/main_bloc.dart';

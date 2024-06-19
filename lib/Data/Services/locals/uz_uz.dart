@@ -33,6 +33,7 @@ const Map<String, String> uzUZ = {
   'welcome_user': 'Hush kelibsiz ',
   'email_not': 'Ushbu elektron pochta ro\'yxatdan o\'tmagan',
   'invalid-credential': 'Noto\'g\'ri parol, qaytadan urinib ko\'ring',
+  'account-exists-with-different-credential': 'Ushbu email allaqachon mavjud. Avval emailga bog\'langan provayder bilan tizimga kiring',
 
   /// SignUpPage
   'sign_up_for_free': 'Bepul ro\'yxatdan o\'ting',

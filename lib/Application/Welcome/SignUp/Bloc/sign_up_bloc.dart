@@ -16,15 +16,12 @@ part 'sign_up_state.dart';
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Language selectedLang = LangService.getLanguage;
   bool googleOrFacebook = false;
-  bool rememberMe = false;
   bool obscurePassword = true;
   bool obscureRePassword = true;
   bool emailSuffix = false;
   bool passwordSuffix = false;
   bool rePasswordSuffix = false;
   bool fullNameSuffix = false;
-  bool country = false;
-  bool email = false;
   FocusNode focusEmail = FocusNode();
   FocusNode focusPassword = FocusNode();
   FocusNode focusRePassword = FocusNode();
@@ -34,80 +31,84 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
-  ScrollController scrollController = ScrollController();
 
   SignUpBloc()
       : super(SignUpEnterState(
-            obscurePassword: true,
-            obscureRePassword: true,
-            email: false,
-            password: false,
-            rePassword: false,
-            fullName: false,
-  )) {
+          obscurePassword: true,
+          obscureRePassword: true,
+          focusEmail: false,
+          focusPassword: false,
+          focusRePassword: false,
+          focusFullName: false,
+          suffixEmail: false,
+          suffixFullName: false,
+          suffixPassword: false,
+          suffixRePassword: false,
+        )) {
     on<SignUpChangeEvent>(change);
     on<OnSubmittedEvent>(onSubmitted);
     on<PasswordEyeEvent>(pressPasswordEye);
     on<RePasswordEyeEvent>(pressRePasswordEye);
     on<SignUpButtonEvent>(pressSignUp);
-    on<RememberMeEvent>(pressRememberMe);
     on<FaceBookEvent>(pressFacebook);
     on<GoogleEvent>(pressGoogle);
     on<SignInEvent>(pressSignIn);
-    on<EmailButtonEvent>(pressEmail);
     on<SelectLanguageEvent>(pressLanguageButton);
     on<SignUpConfirmEvent>(pressConfirm);
     on<SignUpCancelEvent>(pressCancel);
   }
 
+  void enterStateEmit(Emitter emit) {
+    emit(SignUpEnterState(
+      focusEmail: focusEmail.hasFocus,
+      focusPassword: focusPassword.hasFocus,
+      focusRePassword: focusRePassword.hasFocus,
+      focusFullName: focusFullName.hasFocus,
+      suffixEmail: emailSuffix,
+      suffixFullName: fullNameSuffix,
+      suffixPassword: passwordSuffix,
+      suffixRePassword: rePasswordSuffix,
+      obscurePassword: obscurePassword,
+      obscureRePassword: obscureRePassword,
+    ));
+  }
+
   Future<void> pressCancel(SignUpCancelEvent event, Emitter<SignUpState> emit) async {
     emit(SignUpLoadingState());
 
-      await FirebaseAuth.instance.currentUser!.delete();
-      email = false;
+    await FirebaseAuth.instance.currentUser!.delete();
 
-
-    emit(SignUpEnterState(
-        email: true,
-        password: true,
-        rePassword: true,
-        obscurePassword: obscurePassword,
-        obscureRePassword: obscureRePassword,
-        fullName: true,
-    ));
+    enterStateEmit(emit);
   }
 
   Future<void> pressConfirm(SignUpConfirmEvent event, Emitter<SignUpState> emit) async {
     bool verifyDone = false;
     emit(SignUpLoadingState());
 
-     {
-      verifyDone = await AuthService.verifyEmailLink();
-      if (verifyDone) {
-        UserModel userModel = UserModel(
-          fullName: fullNameController.text.trim(),
-          password: passwordController.text.trim(),
-          email: emailController.text.trim(),
-          uId: FirebaseAuth.instance.currentUser!.uid,
-          createdTime: DateTime.now().toString().substring(0,10),
-          loginType: '',
-        );
-        try {
-          await RTDBService.storeUser(userModel);
-          if (event.context.mounted) {
-            Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
-            Navigator.pushReplacementNamed(event.context, SignInPage.id);
-          }
-        } catch (e) {
-          if (event.context.mounted) {
-            Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
-          }
-        }
-      } else {
+    verifyDone = await AuthService.verifyEmailLink();
+    if (verifyDone) {
+      UserModel userModel = UserModel(
+        fullName: fullNameController.text.trim(),
+        password: passwordController.text.trim(),
+        email: emailController.text.trim(),
+        uId: FirebaseAuth.instance.currentUser!.uid,
+        createdTime: DateTime.now().toString().substring(0, 10),
+        loginType: 'email',
+      );
+      try {
+        await RTDBService.storeUser(userModel);
         if (event.context.mounted) {
-          Utils.mySnackBar(txt: 'email_not_verified'.tr(), context: event.context, errorState: true);
+          Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
+          Navigator.pushReplacementNamed(event.context, SignInPage.id);
         }
-        emit(SignUpVerifyPhoneState());
+      } catch (e) {
+        if (event.context.mounted) {
+          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+        }
+      }
+    } else {
+      if (event.context.mounted) {
+        Utils.mySnackBar(txt: 'email_not_verified'.tr(), context: event.context, errorState: true);
       }
     }
   }
@@ -115,18 +116,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   Future<void> pressLanguageButton(SelectLanguageEvent event, Emitter<SignUpState> emit) async {
     await LangService.language(event.lang);
     selectedLang = event.lang;
+    if (event.context.mounted) {
+      Navigator.pop(event.context);
+    }
     emit(SignUpFlagState());
-    emit(SignUpEnterState(
-        email: emailController.text.trim().isNotEmpty,
-        password: passwordController.text.trim().isNotEmpty,
-        rePassword: passwordController.text == rePasswordController.text,
-        obscurePassword: obscurePassword,
-        obscureRePassword: obscureRePassword,
-        fullName: fullNameController.text.trim().isNotEmpty));
+    enterStateEmit(emit);
   }
 
   Future<void> onSubmitted(OnSubmittedEvent event, Emitter<SignUpState> emit) async {
-    if(fullNameController.text.isNotEmpty) {
+    if (fullNameController.text.isNotEmpty) {
       fullNameController.text = fullNameController.text.replaceAll(RegExp(r'\s+'), ' ');
     }
     if (event.password) {
@@ -139,44 +137,20 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         await Future.delayed(const Duration(milliseconds: 30));
         focusPassword.requestFocus();
       } else {
-        if(event.rePassword) {
+        if (event.rePassword) {
           focusRePassword.unfocus();
-          } else {
+        } else {
           focusEmail.unfocus();
-          country = false;
           await Future.delayed(const Duration(milliseconds: 30));
           focusFullName.requestFocus();
         }
       }
     }
-    emit(SignUpEnterState(
-        email: emailController.text.trim().isNotEmpty,
-        password: passwordController.text.trim().isNotEmpty,
-        rePassword: passwordController.text == rePasswordController.text,
-        obscurePassword: obscurePassword,
-        obscureRePassword: obscureRePassword,
-        fullName: fullNameController.text.trim().isNotEmpty));
-  }
-
-  Future<void> pressEmail(EmailButtonEvent event, Emitter<SignUpState> emit) async {
-    focusFullName.unfocus();
-    focusPassword.unfocus();
-    await Future.delayed(const Duration(milliseconds: 30));
-    await scrollController.animateTo(event.width - 60,
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOutCubic);
-    focusEmail.requestFocus();
-    emit(SignUpEnterState(
-        email: emailController.text.trim().isNotEmpty,
-        password: passwordController.text.trim().isNotEmpty,
-        rePassword: passwordController.text == rePasswordController.text,
-        obscurePassword: obscurePassword,
-        obscureRePassword: obscureRePassword,
-        fullName: fullNameController.text.trim().isNotEmpty));
+    enterStateEmit(emit);
   }
 
   Future<void> pressSignUp(SignUpButtonEvent event, Emitter<SignUpState> emit) async {
-    emit(SignUpLoadingState( ));
+    emit(SignUpLoadingState());
 
     if (googleOrFacebook) {
       UserModel userModel = UserModel(
@@ -184,7 +158,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         password: passwordController.text.trim(),
         email: emailController.text.trim(),
         uId: FirebaseAuth.instance.currentUser!.uid,
-        createdTime: DateTime.now().toString().substring(0,10),
+        createdTime: DateTime.now().toString().substring(0, 10),
         loginType: '',
       );
 
@@ -200,30 +174,25 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         }
         emit(SignUpErrorState(obscurePassword: obscurePassword, obscureRePassword: obscureRePassword));
       }
-
     } else {
       await FirebaseAuth.instance.setLanguageCode(selectedLang.name);
 
-
-        try {
-          await AuthService.createUser(emailController.text.trim(), passwordController.text.trim());
-          await AuthService.verifyEmail(emailController.text.trim());
-          emit(SignUpVerifyPhoneState());
-          email = true;
-        } catch (e) {
-          if (LogicService.parseError(e.toString()) == 'email-already-in-use') {
-            if (event.context.mounted) {
-              Utils.mySnackBar(txt: 'email_already_in_use'.tr(), context: event.context, errorState: true);
-            }
-          } else {
-            if (event.context.mounted) {
-              Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
-            }
+      try {
+        await AuthService.createUser(emailController.text.trim(), passwordController.text.trim());
+        await AuthService.verifyEmail(emailController.text.trim());
+        emit(SignUpVerifyState());
+      } catch (e) {
+        if (LogicService.parseError(e.toString()) == 'email-already-in-use') {
+          if (event.context.mounted) {
+            Utils.mySnackBar(txt: 'email_already_in_use'.tr(), context: event.context, errorState: true);
           }
-          emit(SignUpErrorState(obscurePassword: obscurePassword, obscureRePassword: obscureRePassword));
+        } else {
+          if (event.context.mounted) {
+            Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+          }
         }
-
-
+        emit(SignUpErrorState(obscurePassword: obscurePassword, obscureRePassword: obscureRePassword));
+      }
     }
   }
 
@@ -244,13 +213,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         }
       }
 
-      emit(SignUpEnterState(
-          email: true,
-          password: passwordSuffix,
-          rePassword: rePasswordSuffix,
-          obscurePassword: obscurePassword,
-          obscureRePassword: obscureRePassword,
-          fullName: fullNameSuffix));
+      enterStateEmit(emit);
     }
   }
 
@@ -267,73 +230,33 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         }
       } catch (e) {
         if (event.context.mounted) {
-          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+          Utils.mySnackBar(txt: LogicService.parseError(e.toString()).tr(), context: event.context, errorState: true);
         }
       }
-      emit(SignUpEnterState(
-          email: true,
-          password: passwordSuffix,
-          rePassword: rePasswordSuffix,
-          obscurePassword: obscurePassword,
-          obscureRePassword: obscureRePassword,
-          fullName: fullNameSuffix));
+      enterStateEmit(emit);
     }
   }
 
   void change(SignUpChangeEvent event, Emitter<SignUpState> emit) {
-    if (focusPassword.hasFocus) country = false;
-
     fullNameSuffix = LogicService.checkFullName(fullNameController.text);
     emailSuffix = LogicService.checkEmail(emailController.text);
     passwordSuffix = LogicService.checkPassword(passwordController.text);
-    rePasswordSuffix = passwordController.text == rePasswordController.text;
+    rePasswordSuffix = rePasswordController.text.isNotEmpty && passwordController.text == rePasswordController.text;
 
     if (emailController.text.isNotEmpty) {
       emailController.text = emailController.text.replaceAll(' ', '');
     }
-    emit(SignUpEnterState(
-        email: emailController.text.trim().isNotEmpty,
-        password: passwordController.text.trim().isNotEmpty,
-        rePassword: passwordController.text == rePasswordController.text,
-        obscurePassword: obscurePassword,
-        obscureRePassword: obscureRePassword,
-        fullName: fullNameController.text.trim().isNotEmpty));
+    enterStateEmit(emit);
   }
 
   void pressPasswordEye(PasswordEyeEvent event, Emitter<SignUpState> emit) {
     obscurePassword = !obscurePassword;
-    emit(SignUpEnterState(
-      fullName: fullNameController.text.trim().isNotEmpty,
-      email: emailController.text.trim().isNotEmpty,
-      password: passwordController.text.trim().isNotEmpty,
-      rePassword: passwordController.text == rePasswordController.text,
-      obscurePassword: obscurePassword,
-      obscureRePassword: obscureRePassword,
-    ));
+    enterStateEmit(emit);
   }
 
   void pressRePasswordEye(RePasswordEyeEvent event, Emitter<SignUpState> emit) {
     obscureRePassword = !obscureRePassword;
-    emit(SignUpEnterState(
-      fullName: fullNameController.text.trim().isNotEmpty,
-      email: emailController.text.trim().isNotEmpty,
-      password: passwordController.text.trim().isNotEmpty,
-      rePassword: passwordController.text == rePasswordController.text,
-      obscurePassword: obscurePassword,
-      obscureRePassword: obscureRePassword,
-    ));
-  }
-
-  void pressRememberMe(RememberMeEvent event, Emitter<SignUpState> emit) {
-    rememberMe = !rememberMe;
-    emit(SignUpEnterState(
-      fullName: fullNameController.text.trim().isNotEmpty,
-      email: emailController.text.trim().isNotEmpty,
-      password: passwordController.text.trim().isNotEmpty,
-      rePassword: passwordController.text == rePasswordController.text,
-      obscurePassword: obscurePassword,
-      obscureRePassword: obscureRePassword,
-    ));
+    enterStateEmit(emit);
   }
 
   void pressSignIn(SignInEvent event, Emitter<SignUpState> emit) async {
@@ -347,16 +270,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (uId != null) {
       googleOrFacebook = true;
-      if(email != null) {
+      if (email != null) {
         emailController.text = email;
       } else {
         emailController.text = '';
       }
       emailSuffix = true;
       await Future.delayed(const Duration(milliseconds: 30));
-      await scrollController.animateTo(width - 60,
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOutCubic);
       if (fullName != null) {
         fullNameController.text = fullName;
         fullNameSuffix = true;
@@ -373,7 +293,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         }
         focusFullName.requestFocus();
       }
-
     } else {
       if (context.mounted) {
         Utils.mySnackBar(txt: 'error_cloud_data'.tr(), context: context, errorState: true);

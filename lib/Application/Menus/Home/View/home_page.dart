@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/Configuration/app_colors.dart';
 
 class HomePage extends StatelessWidget {
   static const id = '/home_page';
@@ -8,7 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple,
+      backgroundColor: AppColors.pink,
       appBar: AppBar(
         title: const Text('Home Page'),
       ),

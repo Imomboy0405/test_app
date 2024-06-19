@@ -13,25 +13,43 @@ class SignUpErrorState extends SignUpState {
 }
 
 class SignUpEnterState extends SignUpState {
-  final bool email;
-  final bool password;
-  final bool rePassword;
-  final bool fullName;
+  final bool focusEmail;
+  final bool focusPassword;
+  final bool focusRePassword;
+  final bool focusFullName;
   final bool obscurePassword;
   final bool obscureRePassword;
+  final bool suffixEmail;
+  final bool suffixFullName;
+  final bool suffixPassword;
+  final bool suffixRePassword;
 
-  SignUpEnterState(
-      {
-      required this.email,
-      required this.password,
-      required this.rePassword,
-      required this.obscurePassword,
-      required this.obscureRePassword,
-      required this.fullName});
+  SignUpEnterState({
+    required this.focusEmail,
+    required this.focusPassword,
+    required this.focusRePassword,
+    required this.obscurePassword,
+    required this.obscureRePassword,
+    required this.focusFullName,
+    required this.suffixEmail,
+    required this.suffixFullName,
+    required this.suffixPassword,
+    required this.suffixRePassword,
+  });
 
   @override
-  List<Object?> get props =>
-      [email, password, rePassword, obscurePassword, obscureRePassword, fullName];
+  List<Object?> get props => [
+        focusEmail,
+        focusPassword,
+        focusRePassword,
+        obscurePassword,
+        obscureRePassword,
+        focusFullName,
+        suffixEmail,
+        suffixFullName,
+        suffixPassword,
+        suffixRePassword,
+      ];
 }
 
 class SignUpLoadingState extends SignUpState {
@@ -44,8 +62,7 @@ class SignUpFlagState extends SignUpState {
   List<Object?> get props => [];
 }
 
-class SignUpVerifyPhoneState extends SignUpState {
+class SignUpVerifyState extends SignUpState {
   @override
   List<Object?> get props => [];
 }
-

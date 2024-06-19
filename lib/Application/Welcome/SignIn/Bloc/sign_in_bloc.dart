@@ -162,7 +162,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       }
     } catch (e) {
       if (event.context.mounted) {
-        Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+        Utils.mySnackBar(txt: LogicService.parseError(e.toString()).tr(), context: event.context, errorState: true);
       }
     }
     emit(SignInErrorState(obscure: obscure, rememberMe: rememberMe));
