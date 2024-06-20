@@ -26,6 +26,9 @@ abstract class AppTextStyles {
   /// Example text style: color - black, size - 18, weight - w500, font - Poppins
   static TextStyle style4(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.w500, 'Poppins');
 
+  /// Example text style: color - black, size - 18, weight - bold, font - Poppins
+  static TextStyle style4_1(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.bold, 'Poppins');
+
   /// Example text style: color - transparentBlue, size - 18, weight - w500, font - Poppins
   static TextStyle style5(BuildContext context) => _baseStyle(context, AppColors.transparentPurple, 18, FontWeight.w500, 'Poppins');
 
@@ -68,8 +71,8 @@ abstract class AppTextStyles {
   /// Example text style: color - blue, size - 11, font - Poppins
   static TextStyle style17(BuildContext context) => _baseStyle(context, AppColors.purple, 11, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - white, size - 18, weight - w500, font - Ubuntu
-  static TextStyle style18(BuildContext context) => _baseStyle(context, AppColors.white, 18, FontWeight.w500, 'Ubuntu');
+  /// Example text style: color - black, size - 18, weight - w500, font - Ubuntu
+  static TextStyle style18(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.w500, 'Ubuntu');
 
   /// Example text style: color - white, size - 20, weight - w500, font - Ubuntu
   static TextStyle style18_0(BuildContext context) => _baseStyle(context, AppColors.white, 20, FontWeight.w500, 'Ubuntu');
@@ -107,8 +110,8 @@ abstract class AppTextStyles {
   /// Example text style: color - white, size - 14, weight - w700, font - Ubuntu
   static TextStyle style23_1(BuildContext context) => _baseStyle(context, AppColors.white, 14, FontWeight.w700, 'Ubuntu');
 
-  /// Example text style: color - lightGrey, size - 14, weight - w700, font - Ubuntu
-  static TextStyle style23_3(BuildContext context) => _baseStyle(context, AppColors.lightGrey, 14, FontWeight.w700, 'Ubuntu');
+  /// Example text style: color - green, size - 14, weight - w700, font - Ubuntu
+  static TextStyle style23_3(BuildContext context) => _baseStyle(context, AppColors.green, 14, FontWeight.w700, 'Ubuntu');
 
   /// Example text style: color - red, size - 14, weight - w700, font - Ubuntu
   static TextStyle style23_2(BuildContext context) => _baseStyle(context, AppColors.red, 14, FontWeight.w700, 'Ubuntu');
@@ -128,8 +131,8 @@ abstract class AppTextStyles {
   /// Example text style: color - white, size - 14, weight - w400, font - Ubuntu
   static TextStyle style26(BuildContext context) => _baseStyle(context, AppColors.white, 14, FontWeight.w400, 'Ubuntu');
 
-  /// Example text style: color - blue, size - 12, weight - w500, font - Ubuntu
-  static TextStyle style27(BuildContext context) => _baseStyle(context, AppColors.purple, 12, FontWeight.w500, 'Ubuntu');
+  /// Example text style: color - black, size - 12, weight - w500, font - Ubuntu
+  static TextStyle style27(BuildContext context) => _baseStyle(context, AppColors.black, 11, FontWeight.w500, 'Ubuntu');
 
   /// Base text style function to avoid code duplication.
   static TextStyle _baseStyle(BuildContext context, Color color, double fontSize, FontWeight fontWeight, String fontFamily, {double letterSpacing = 0.0}) {

@@ -21,7 +21,7 @@ class MyBottomNavigationBar extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       height: 83,
       decoration: BoxDecoration(
-        color: AppColors.darker,
+        color: AppColors.purpleLight,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -51,6 +51,7 @@ class MyBottomNavigationBar extends StatelessWidget {
                   height: 50,
                   width: 50,
                 ),
+                // #shadow
                 if (index + 1 == bloc.currentScreen && bloc.currentScreen != 1)
                   Container(
                     width: 65,
@@ -82,9 +83,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 2,
-      backgroundColor: AppColors.darker,
-      surfaceTintColor: AppColors.black,
+      elevation: 0,
+      backgroundColor: AppColors.purpleLight,
+      surfaceTintColor: AppColors.pink,
       shadowColor: AppColors.gray,
       titleSpacing: 10,
       title: Row(
@@ -92,10 +93,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           // #color_image
           const SizedBox(width: 10),
           const Image(
-            image: AssetImage('assets/icons/ic_color.png'),
+            image: AssetImage('assets/images/img_heart.png'),
             width: 24,
             height: 24,
-            fit: BoxFit.fill,
           ),
           const SizedBox(width: 12),
 

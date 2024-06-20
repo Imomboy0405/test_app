@@ -38,6 +38,8 @@ dependencies:
   # ui component
   url_launcher: any
   avatar_glow: ^3.0.1
+  carousel_slider: any
+  flutter_svg: any
 
 
 dev_dependencies:
