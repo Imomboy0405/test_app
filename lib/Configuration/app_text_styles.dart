@@ -17,8 +17,11 @@ abstract class AppTextStyles {
   /// Example text style: color - black, size - 14, font - Poppins
   static TextStyle style2(BuildContext context) => _baseStyle(context, AppColors.black, 14, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - blue, size - 18, weight - bold, font - Poppins
+  /// Example text style: color - purple, size - 18, weight - bold, font - Poppins
   static TextStyle style3(BuildContext context) => _baseStyle(context, AppColors.purple, 18, FontWeight.bold, 'Poppins');
+
+  /// Example text style: color - green, size - 30, weight - bold, font - Poppins
+  static TextStyle style3_0(BuildContext context) => _baseStyle(context, AppColors.green, 30, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - red, size - 18, weight - bold, font - Poppins
   static TextStyle style3_1(BuildContext context) => _baseStyle(context, AppColors.red, 18, FontWeight.bold, 'Poppins');
@@ -35,8 +38,11 @@ abstract class AppTextStyles {
   /// Example text style: color - darkGrey, size - 18, font - Poppins
   static TextStyle style6(BuildContext context) => _baseStyle(context, AppColors.darkGrey, 18, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - blue, size - 18, font - Poppins
+  /// Example text style: color - purple, size - 18, font - Poppins
   static TextStyle style7(BuildContext context) => _baseStyle(context, AppColors.purple, 18, FontWeight.normal, 'Poppins');
+
+  /// Example text style: color - purpleAccent, size - 18, font - Poppins
+  static TextStyle style7_0(BuildContext context) => _baseStyle(context, AppColors.purpleAccent, 18, FontWeight.normal, 'Poppins');
 
   /// Example text style: color - red, size - 18, font - Poppins
   static TextStyle style7_1(BuildContext context) => _baseStyle(context, AppColors.red, 18, FontWeight.normal, 'Poppins');
@@ -44,7 +50,7 @@ abstract class AppTextStyles {
   /// Example text style: color - black, size - 14, font - Poppins
   static TextStyle style8(BuildContext context) => _baseStyle(context, AppColors.black, 14, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - blue, size - 14, weight - bold, font - Poppins
+  /// Example text style: color - purple, size - 14, weight - bold, font - Poppins
   static TextStyle style9(BuildContext context) => _baseStyle(context, AppColors.purple, 14, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - darkGrey, size - 14, weight - bold, font - Poppins
@@ -53,8 +59,8 @@ abstract class AppTextStyles {
   /// Example text style: color - black, size - 24, weight - bold, font - Poppins
   static TextStyle style11(BuildContext context) => _baseStyle(context, AppColors.black, 24, FontWeight.bold, 'Poppins');
 
-  /// Example text style: color - darkGrey, size - 14, weight - bold, font - Poppins
-  static TextStyle style12(BuildContext context) => _baseStyle(context, AppColors.darkGrey, 14, FontWeight.bold, 'Poppins');
+  /// Example text style: color - black, size - 30, weight - bold, font - Poppins
+  static TextStyle style12(BuildContext context) => _baseStyle(context, AppColors.black, 30, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - white, size - 14, weight - w400, font - Poppins
   static TextStyle style13(BuildContext context) => _baseStyle(context, AppColors.white, 14, FontWeight.w400, 'Poppins');
@@ -65,7 +71,7 @@ abstract class AppTextStyles {
   /// Example text style: color - white, size - 14, font - Poppins
   static TextStyle style15(BuildContext context) => _baseStyle(context, AppColors.white, 14, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - blue, size - 24, weight - bold, font - Poppins
+  /// Example text style: color - purple, size - 24, weight - bold, font - Poppins
   static TextStyle style16(BuildContext context) => _baseStyle(context, AppColors.purple, 24, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - blue, size - 11, font - Poppins
@@ -74,8 +80,8 @@ abstract class AppTextStyles {
   /// Example text style: color - black, size - 18, weight - w500, font - Ubuntu
   static TextStyle style18(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.w500, 'Ubuntu');
 
-  /// Example text style: color - white, size - 20, weight - w500, font - Ubuntu
-  static TextStyle style18_0(BuildContext context) => _baseStyle(context, AppColors.white, 20, FontWeight.w500, 'Ubuntu');
+  /// Example text style: color - purple, size - 18, weight - w500, font - Ubuntu
+  static TextStyle style18_0(BuildContext context) => _baseStyle(context, AppColors.purple, 18, FontWeight.w500, 'Ubuntu');
 
   /// Example text style: color - white, size - 18, weight - w700, font - Ubuntu
   static TextStyle style18_1(BuildContext context) => _baseStyle(context, AppColors.white, 18, FontWeight.w700, 'Ubuntu');

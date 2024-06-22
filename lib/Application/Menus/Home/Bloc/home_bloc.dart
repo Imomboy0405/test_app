@@ -11,10 +11,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   int currentPage = 1;
 
   HomeBloc() : super(const HomeInitialState(currentPage: 1)) {
-    on<HomeScrollCardEvent>(fun);
+    on<HomeScrollCardEvent>(scrollCard);
   }
 
-  void fun(HomeScrollCardEvent event, Emitter<HomeState> emit) {
+  void scrollCard(HomeScrollCardEvent event, Emitter<HomeState> emit) {
     currentPage = event.page + 1;
     emit(HomeInitialState(currentPage: currentPage));
   }

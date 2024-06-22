@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
@@ -84,9 +85,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: AppColors.purpleLight,
-      surfaceTintColor: AppColors.pink,
-      shadowColor: AppColors.gray,
+      backgroundColor: AppColors.black,
+      surfaceTintColor: AppColors.black,
+      shadowColor: AppColors.purple,
+      foregroundColor: AppColors.purple,
       titleSpacing: 10,
       title: Row(
         children: [
@@ -96,11 +98,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             image: AssetImage('assets/images/img_heart.png'),
             width: 24,
             height: 24,
+            color: AppColors.red,
           ),
           const SizedBox(width: 12),
 
           // #title
-          Text(titleText, style: AppTextStyles.style18(context)),
+          Text(titleText, style: AppTextStyles.style18_0(context)),
         ],
       ),
     );
@@ -328,4 +331,16 @@ class MyProfileButton extends StatelessWidget {
       ),
     );
   }
+}
+Padding myBackground(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 100.0),
+    child: Opacity(
+      opacity: 0.4,
+      child: SvgPicture.asset(
+        'assets/images/img_stethoscope.svg',
+        height: MediaQuery.of(context).size.height,
+      ),
+    ),
+  );
 }

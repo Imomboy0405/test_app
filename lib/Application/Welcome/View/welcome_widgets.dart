@@ -96,52 +96,65 @@ class MyFlagButton extends StatelessWidget {
 
 class MyCircleGlassContainer extends StatelessWidget {
   final bool mini;
-  final bool child;
+  final bool childPos;
+  final bool isStartPage;
+  final bool transparent;
+
   const MyCircleGlassContainer({
     this.mini = false,
-    this.child = false,
+    this.childPos = false,
+    this.isStartPage = true,
+    this.transparent = false,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StartBloc, StartState>(
-      builder: (context, state) {
-        StartBloc bloc = context.read<StartBloc>();
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(130),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              height: mini ? 70 : 250,
-              width: mini ? 70 : 250,
-              decoration: BoxDecoration(
-                color: AppColors.transparentBlack,
-                borderRadius: BorderRadius.circular(150),
-                border: Border.all(color: AppColors.black, width: 2),
-              ),
-              alignment: bloc.left == 41
+    return isStartPage
+        ? BlocBuilder<StartBloc, StartState>(
+            builder: (context, state) {
+              StartBloc? bloc = childPos ? context.read<StartBloc>() : null;
+              return buildGlassContainer(bloc);
+            },
+          )
+        : buildGlassContainer(null);
+  }
+
+  ClipRRect buildGlassContainer(StartBloc? bloc) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(130),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          height: mini ? 70 : bloc == null ? 170 : 250,
+          width: mini ? 70 : bloc == null ? 170 : 250,
+          decoration: BoxDecoration(
+            color: transparent ? AppColors.transparent : AppColors.transparentBlack,
+            borderRadius: BorderRadius.circular(150),
+            border: Border.all(color: AppColors.black, width: 2),
+          ),
+          alignment: childPos
+              ? bloc!.left == 41
                   ? Alignment.bottomLeft
                   : bloc.left == 40
                       ? Alignment.bottomRight
-                      : Alignment.topLeft,
-              padding: const EdgeInsets.all(30),
-              child: child
-                  ? Image(
-                      image: AssetImage('assets/images/img_${bloc.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
-                      height: 100,
-                      width: 100,
-                      color: bloc.left == 41
-                          ? AppColors.blue
-                          : bloc.left == 40
-                              ? AppColors.red
-                              : AppColors.green,
-                    )
-                  : null,
-            ),
-          ),
-        );
-      },
+                      : Alignment.topLeft
+              : null,
+          padding: const EdgeInsets.all(30),
+          child: childPos
+              ? Image(
+                  image: AssetImage('assets/images/img_${bloc!.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
+                  height: 100,
+                  width: 100,
+                  color: bloc.left == 41
+                      ? AppColors.blue
+                      : bloc.left == 40
+                          ? AppColors.red
+                          : AppColors.green,
+                )
+              : null,
+        ),
+      ),
     );
   }
 }
@@ -376,6 +389,7 @@ class MyButton extends StatelessWidget {
       height: 48,
       elevation: 0,
       highlightColor: AppColors.pink,
+      splashColor: AppColors.pink,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Text(text, style: enable ? AppTextStyles.style4(context).copyWith(color: Colors.white) : AppTextStyles.style5(context)),
     );

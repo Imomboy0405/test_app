@@ -1,83 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
-
-class TestPage extends StatelessWidget {
-  static const id = '/test_page';
-
-  const TestPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.transparent,
-      appBar: MyAppBar(titleText: 'test'.tr()),
-      body: Container(
-        height: MediaQuery.of(context).size.height - 170,
-        color: AppColors.purpleLight,
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 100.0),
-              child: Opacity(
-                opacity: .4,
-                child: SvgPicture.asset(
-                  'assets/images/img_stethoscope.svg',
-                  height: MediaQuery.of(context).size.height,
-                  color: AppColors.purple,
-                ),
-              ),
-            ),
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    MyTestCard(
-                      imgAsset: 'assets/images/img_doctor_1.png',
-                      title: 'card_text_1'.tr(),
-                      content: 'card_text_1'.tr(),
-                      question: '20',
-                      result: '14 %',
-                      startTest: () {},
-                    ),
-
-                    MyTestCard(
-                      imgAsset: 'assets/images/img_doctor_2.png',
-                      title: 'card_text_2'.tr(),
-                      content: 'card_text_2'.tr(),
-                      question: '20',
-                      result: '14 %',
-                      startTest: () {},
-
-                    ),
-
-                    MyTestCard(
-                      imgAsset: 'assets/images/img_doctor_3.png',
-                      title: 'card_text_3'.tr(),
-                      content: 'card_text_3'.tr(),
-                      question: '20',
-                      result: '14 %',
-                      startTest: () {},
-
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class MyTestCard extends StatelessWidget {
   final String imgAsset;
@@ -85,7 +12,7 @@ class MyTestCard extends StatelessWidget {
   final String content;
   final String question;
   final String result;
-  final void Function() startTest;
+  final void Function() enterTest;
 
   const MyTestCard({
     super.key,
@@ -94,7 +21,7 @@ class MyTestCard extends StatelessWidget {
     required this.content,
     required this.question,
     required this.result,
-    required this.startTest,
+    required this.enterTest,
   });
 
   @override
@@ -114,7 +41,7 @@ class MyTestCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppColors.purpleAccent.withOpacity(0.4),
                   blurRadius: 7,
                   spreadRadius: 5,
                 ),
@@ -133,7 +60,17 @@ class MyTestCard extends StatelessWidget {
                           color: AppColors.transparentPurple.withOpacity(.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Image.asset(imgAsset),
+                        padding: const EdgeInsets.all(5),
+                        child: Hero(
+                          tag: imgAsset,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.asset(
+                              imgAsset,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
                       const SizedBox(width: 10),
 
@@ -145,7 +82,7 @@ class MyTestCard extends StatelessWidget {
                             // #title
                             Text(
                               title,
-                              style: AppTextStyles.style4(context),
+                              style: AppTextStyles.style3(context),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
@@ -163,7 +100,7 @@ class MyTestCard extends StatelessWidget {
                             ),
                             // #result
                             iconText(
-                              color: AppColors.red,
+                              color: AppColors.green,
                               text: Text(' ${'result'.tr()}: $result', style: AppTextStyles.style23_3(context)),
                             ),
                           ],
@@ -177,10 +114,8 @@ class MyTestCard extends StatelessWidget {
                 // #test_button
                 MyButton(
                   enable: true,
-                  text: 'start_test'.tr(),
-                  function: () {
-                    // todo code
-                  },
+                  text: 'enter_test'.tr(),
+                  function: () => enterTest(),
                 ),
               ],
             ),
@@ -201,7 +136,7 @@ class MyTestCard extends StatelessWidget {
             shape: BoxShape.circle,
             color: AppColors.transparentBlack,
           ),
-          child: Icon(color == AppColors.red ? Icons.question_mark : Icons.question_mark, color: color, size: 18),
+          child: Icon(color == AppColors.red ? Icons.question_mark : Icons.check_circle, color: color, size: 18),
         ),
         text,
       ],

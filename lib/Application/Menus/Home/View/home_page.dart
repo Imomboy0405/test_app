@@ -1,9 +1,7 @@
 import 'dart:ui';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
@@ -30,16 +28,7 @@ class HomePage extends StatelessWidget {
 
             body: Stack(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 100.0),
-                  child: Opacity(
-                    opacity: 0.4,
-                    child: SvgPicture.asset(
-                      'assets/images/img_stethoscope.svg',
-                      height: MediaQuery.of(context).size.height,
-                    ),
-                  ),
-                ),
+                myBackground(context),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 83),
                   child: SingleChildScrollView(

@@ -40,7 +40,7 @@ dependencies:
   avatar_glow: ^3.0.1
   carousel_slider: any
   flutter_svg: any
-
+  lottie: any
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +58,7 @@ flutter:
     - assets/fonts/ubuntu/
     - assets/images/
     - assets/icons/
+    - assets/animations/
 
   fonts:
     - family: Poppins

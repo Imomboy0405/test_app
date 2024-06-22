@@ -87,7 +87,7 @@ class StartPage extends StatelessWidget {
                         curve: Curves.easeInOutBack,
                         left: bloc.left1,
                         top: bloc.top1,
-                        child: const MyCircleGlassContainer(child: true),
+                        child: const MyCircleGlassContainer(childPos: true),
                       ),
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 600),
