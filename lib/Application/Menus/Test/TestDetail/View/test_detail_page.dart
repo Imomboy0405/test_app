@@ -14,7 +14,10 @@ class TestDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int asset = ModalRoute.of(context)!.settings.arguments as int;
+    final int asset = ModalRoute
+        .of(context)!
+        .settings
+        .arguments as int;
     return BlocProvider(
       create: (context) => TestDetailBloc(),
       child: BlocBuilder<TestDetailBloc, TestDetailState>(

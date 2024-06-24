@@ -3,12 +3,15 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/Bloc/quiz_bloc.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'dart:math' as math;
+
+import 'package:test_app/Data/Services/locator_service.dart';
 
 class QuizPage extends StatelessWidget {
   static const id = '/quiz_page';
@@ -17,8 +20,9 @@ class QuizPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mainBloc = locator<MainBloc>();
     return BlocProvider(
-      create: (context) => QuizBloc(),
+      create: (context) => QuizBloc(mainBloc: mainBloc),
       child: BlocBuilder<QuizBloc, QuizState>(
         builder: (context, state) {
           QuizBloc bloc = context.read<QuizBloc>();
@@ -35,37 +39,7 @@ class QuizPage extends StatelessWidget {
                   ),
                 ),
 
-                /*SfRadialGauge(
-                  axes: <RadialAxis>[
-                    RadialAxis(
-                      minimum: 0,
-                      maximum: 100,
-                      showLabels: false,
-                      showTicks: false,
-                      axisLineStyle: const AxisLineStyle(
-                        thickness: 30,
-                        cornerStyle: CornerStyle.bothCurve,
-                        color: AppColors.pink,
-                      ),
-                      pointers: const <GaugePointer>[
-                        NeedlePointer(
-                          value: 50,
-                          needleLength: 0.95,
-                          enableAnimation: true,
-                          animationType: AnimationType.ease,
-                          needleStartWidth: 1,
-                          needleEndWidth: 5,
-                          needleColor: Colors.blue,
-                          knobStyle: KnobStyle(
-                            knobRadius: 0.08,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),*/
-
+                // #hud_progress_indicator
                 Visibility(
                   visible: state is QuizFinishState,
                   child: Container(
@@ -74,12 +48,17 @@ class QuizPage extends StatelessWidget {
                     child: HudProgressIndicator(progress: bloc.result / 100),
                   ),
                 ),
-                Lottie.asset(
-                  'assets/animations/anime_confetti.json',
-                  height: MediaQuery.of(context).size.width + 60,
-                  width: MediaQuery.of(context).size.width,
-                  repeat: false,
-                  animate: state is QuizFinishState,
+
+                // #anime_confetti
+                Visibility(
+                  visible: state is QuizFinishState && (bloc.confetti ?? false),
+                  child: Lottie.asset(
+                    'assets/animations/anime_confetti.json',
+                    height: MediaQuery.of(context).size.width + 60,
+                    width: MediaQuery.of(context).size.width,
+                    repeat: false,
+                    animate: state is QuizFinishState && (bloc.confetti ?? false),
+                  ),
                 ),
 
                 if (state is QuizInitialState)
@@ -222,8 +201,9 @@ class QuizPage extends StatelessWidget {
                                                           : BorderSide.none,
                                                       overlayColor: AppColors.pink,
                                                     ),
-                                                    onPressed: () =>
-                                                        bloc.currentQuiz != i + 1 ? bloc.add(SelectQuizNumberEvent(quizNumber: i + 1)) : (),
+                                                    onPressed: () => bloc.currentQuiz != i + 1
+                                                        ? bloc.add(SelectQuizNumberEvent(quizNumber: i + 1))
+                                                        : (),
                                                     child: Text(
                                                       (i + 1).toString(),
                                                       style: i + 1 == bloc.currentQuiz || bloc.answers[i] != 0
@@ -265,18 +245,76 @@ class QuizPage extends StatelessWidget {
                                 value: i,
                                 groupValue: bloc.selectedValue,
                                 onChanged: (int? value) => bloc.add(SelectVariantEvent(value: value!)),
+                                ball: bloc.result != -1 ? '$i' : null,
                               ),
                           ],
                         ),
 
+                      Visibility(
+                        visible: state is QuizFinishState,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 215),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                quizPageMiniButton(
+                                  context: context,
+                                  assetIcon: 'assets/icons/ic_menu_home.png',
+                                  text: 'return_home'.tr(),
+                                  onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.home, context: context)),
+                                ),
+                                quizPageMiniButton(
+                                  context: context,
+                                  assetIcon: 'assets/icons/ic_eye.png',
+                                  text: 'view_answers'.tr(),
+                                  onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.view, context: context)),
+                                ),
+                                quizPageMiniButton(
+                                  context: context,
+                                  assetIcon: 'assets/icons/ic_play_again.png',
+                                  text: 'play_again'.tr(),
+                                  onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.again, context: context)),
+                                ),
+                                quizPageMiniButton(
+                                  context: context,
+                                  assetIcon: 'assets/icons/ic_menu_chat.png',
+                                  text: 'share_chat'.tr(),
+                                  onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.chat, context: context)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Visibility(
+                        visible: state is QuizFinishState,
+                        child: Lottie.asset(
+                          'assets/animations/anime_result_${(bloc.result - 1) ~/ 20 + 1}.json',
+                          width: MediaQuery.of(context).size.width - 160,
+                          repeat: false,
+                          animate: bloc.confetti,
+                        ),
+                      ),
+
                       // #next_button
-                      const Spacer(),
+                      Visibility(
+                        visible: state is QuizInitialState,
+                        child: const Spacer(),
+                      ),
                       MyButton(
                         enable: true,
-                        text: bloc.answers.contains(0) ? 'next'.tr() : 'end_test'.tr(),
-                        function: () => bloc.add(NextButtonEvent()),
+                        text: bloc.answers.contains(0)
+                            ? 'next'.tr()
+                            : bloc.result != -1 && state is! QuizFinishState
+                                ? 'result_test'.tr()
+                                : state is QuizFinishState
+                                    ? 'exit_test'.tr()
+                                    : 'end_test'.tr(),
+                        function: () => bloc.add(NextButtonEvent(context: context)),
                       ),
-                      const Spacer(),
+                      const Spacer()
                     ],
                   ),
                 ),
@@ -287,6 +325,41 @@ class QuizPage extends StatelessWidget {
       ),
     );
   }
+
+  MaterialButton quizPageMiniButton({
+    required BuildContext context,
+    required Function() onPressed,
+    required String assetIcon,
+    required String text,
+  }) {
+    return MaterialButton(
+      onPressed: () => onPressed(),
+      padding: EdgeInsets.zero,
+      splashColor: AppColors.transparentPurple,
+      highlightColor: AppColors.transparentBlack,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // #icon
+          Image(
+            image: AssetImage(assetIcon),
+            height: 50,
+            width: 50,
+          ),
+          // #text
+          SizedBox(
+            width: 75,
+            child: Text(
+              text,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.style9(context),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class MyQuizButton extends StatelessWidget {
@@ -294,6 +367,7 @@ class MyQuizButton extends StatelessWidget {
   final int value;
   final int? groupValue;
   final ValueChanged<int?> onChanged;
+  final String? ball;
 
   const MyQuizButton({
     super.key,
@@ -301,6 +375,7 @@ class MyQuizButton extends StatelessWidget {
     required this.value,
     required this.groupValue,
     required this.onChanged,
+    required this.ball,
   });
 
   @override
@@ -322,13 +397,13 @@ class MyQuizButton extends StatelessWidget {
           child: MaterialButton(
             splashColor: AppColors.pink,
             highlightColor: AppColors.pink,
-            onPressed: () => onChanged(value),
+            onPressed: () => ball != null ? null : onChanged(value),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
                   child: Text(
-                    text,
+                    '${ball != null ? "$ball ${'ball'.tr()}. " : ''}$text',
                     maxLines: 2,
                     style: groupValue == value ? AppTextStyles.style18(context) : AppTextStyles.style18_0(context),
                   ),
@@ -336,9 +411,11 @@ class MyQuizButton extends StatelessWidget {
                 Radio<int>(
                   value: value,
                   groupValue: groupValue,
-                  onChanged: (v) => {onChanged(v)},
+                  onChanged: (v) => ball != null ? null : onChanged(v),
                   fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                    if (states.contains(WidgetState.selected)) {
+                    if (ball != null) {
+                      return AppColors.transparent;
+                    } else if (states.contains(WidgetState.selected)) {
                       return AppColors.black;
                     } else {
                       return AppColors.purple;
@@ -372,9 +449,14 @@ class _HudProgressIndicatorState extends State<HudProgressIndicator> with Single
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 750),
+      duration: const Duration(milliseconds: 1000),
     );
-    _animation = Tween<double>(begin: 0, end: widget.progress).animate(_animationController);
+    _animation = Tween<double>(begin: 0, end: widget.progress).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutBack,
+      ),
+    );
     _animationController.forward();
   }
 
@@ -430,7 +512,7 @@ class _HudProgressPainter extends CustomPainter {
     final progressPaint = Paint()
       ..color = AppColors.pink
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 25;
+      ..strokeWidth = 23;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
       2.34159265359,
@@ -439,7 +521,13 @@ class _HudProgressPainter extends CustomPainter {
       progressPaint,
     );
 
-    // #draw_circle
+    final borderPaint = Paint()
+      // #draw_circlefinal
+      ..color = AppColors.transparentBlack
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+    canvas.drawCircle(center, 46, borderPaint);
+
     final circlePaint = Paint()
       ..color = AppColors.pink
       ..style = PaintingStyle.fill;
@@ -509,16 +597,8 @@ class _HudProgressPainter extends CustomPainter {
     canvas.drawCircle(pointerEnd, pointerTipRadius, thinPaint..style = PaintingStyle.fill);
   }
 
-  void _drawText(
-      Canvas canvas,
-      Offset center,
-      double radius,
-      String text,
-      double angle,
-      double verticalOffset,
-      double horizontalOffset,
-      {bool result = false}
-      ) {
+  void _drawText(Canvas canvas, Offset center, double radius, String text, double angle, double verticalOffset, double horizontalOffset,
+      {bool result = false}) {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,

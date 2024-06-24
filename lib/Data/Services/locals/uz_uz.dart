@@ -128,8 +128,18 @@ const Map<String, String> uzUZ = {
   /// QuizPage
   'next': 'Keyingi',
   'end_test': 'Testni yakunlash',
+  'view_answers': 'Javoblarni ko\'rish',
+  'result_test': 'Natijani ko\'rish',
   'previous': 'Oldingi',
   'select_variant': 'Variant belgilang',
+  'ball': 'ball',
+  'return_home': 'Uyga qaytish',
+  'share_chat': 'Chatga ulashish',
+  'play_again': 'Qayta ishlash',
+  'exit_test': 'Testdan chiqish',
+
+  /// ChatPage
+  'chat': 'Chat ✍️ ',
 
   /// MainPage
   'exit': 'Chiqish',

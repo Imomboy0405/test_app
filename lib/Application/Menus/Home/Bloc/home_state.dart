@@ -6,9 +6,15 @@ sealed class HomeState extends Equatable {
 
 final class HomeInitialState extends HomeState {
   final int currentPage;
+  final String fullName;
 
-  const HomeInitialState({required this.currentPage});
+  const HomeInitialState({required this.fullName, required this.currentPage});
 
   @override
-  List<Object> get props => [currentPage];
+  List<Object> get props => [currentPage, fullName];
+}
+
+final class HomeLoadingState extends HomeState {
+  @override
+  List<Object> get props => [];
 }

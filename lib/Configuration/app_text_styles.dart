@@ -3,7 +3,7 @@ import 'app_colors.dart';
 
 abstract class AppTextStyles {
   /// color: blue, size: 40, weight: bold, font: monda
-  static TextStyle style0 = TextStyle(color: AppColors.purple, fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Monda', letterSpacing: 1.5);
+  static TextStyle style0 = const TextStyle(color: Color(0xff9D25A8), fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Monda', letterSpacing: 1.5);
 
   /// Example text style: color - blue, size - 20, weight - bold, font - monda
   static TextStyle style0_1(BuildContext context) => _baseStyle(context, AppColors.purple, 20, FontWeight.bold, 'Monda', letterSpacing: 1.5);

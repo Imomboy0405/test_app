@@ -1,7 +1,10 @@
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
+import 'package:test_app/Data/Models/user_model.dart';
+import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -9,13 +12,32 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   CarouselController carouselController = CarouselController();
   int currentPage = 1;
+  final MainBloc mainBloc = locator<MainBloc>();
+  bool first = true;
+  String fullName = '';
 
-  HomeBloc() : super(const HomeInitialState(currentPage: 1)) {
+  HomeBloc() : super(const HomeInitialState(currentPage: 1, fullName: '')) {
     on<HomeScrollCardEvent>(scrollCard);
+    on<InitialDataEvent>(initialData);
+  }
+
+  void initialData(InitialDataEvent event, Emitter<HomeState> emit) async {
+    if (first) {
+      first = false;
+      if (mainBloc.userModel == null) {
+        String? json = await DBService.loadData(StorageKey.user);
+        mainBloc.userModel = userFromJson(json!);
+        fullName = mainBloc.userModel!.fullName!;
+      }
+      emit(HomeInitialState(currentPage: currentPage, fullName: fullName));
+    }
   }
 
   void scrollCard(HomeScrollCardEvent event, Emitter<HomeState> emit) {
-    currentPage = event.page + 1;
-    emit(HomeInitialState(currentPage: currentPage));
+    int newPage = event.page + 1;
+    if (newPage != currentPage) {
+      currentPage = newPage;
+      emit(HomeInitialState(currentPage: currentPage, fullName: fullName));
+    }
   }
 }

@@ -12,3 +12,8 @@ class HomeScrollCardEvent extends HomeEvent {
   @override
   List<Object?> get props => [page];
 }
+
+class InitialDataEvent extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}

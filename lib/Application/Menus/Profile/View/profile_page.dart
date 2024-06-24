@@ -7,30 +7,25 @@ import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   static const id = '/profile_page';
 
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClientMixin {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocBuilder<MainBloc, MainState>(builder: (context, state) {
-      final mainBloc = BlocProvider.of<MainBloc>(context);
+      final mainBloc = locator<MainBloc>();
       return BlocProvider(
-        create: (context) => ProfileBloc(mainBloc: mainBloc),
+        create: (context) => locator<ProfileBloc>(),
         child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-          ProfileBloc bloc = context.read<ProfileBloc>();
+          final ProfileBloc bloc = locator<ProfileBloc>();
 
           if ((bloc.fullName == '' || (mainBloc.darkMode != bloc.darkMode) || (mainBloc.language != bloc.selectedLang)) &&
               state is ProfileInitialState) {
-            context.read<ProfileBloc>().add(InitialUserEvent());
+            bloc.add(InitialUserEvent());
           }
           return Stack(
             children: [
@@ -111,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                       // #theme
                       MyProfileButton(
                         text: 'theme'.tr(),
-                        function: () => context.read<ProfileBloc>().add(DarkModeEvent(darkMode: !bloc.darkMode)),
+                        function: () => bloc.add(DarkModeEvent(darkMode: !bloc.darkMode)),
                         endElement: SizedBox(
                           height: 30,
                           child: ToggleButtons(
@@ -124,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                             borderWidth: 0.3,
                             borderRadius: BorderRadius.circular(6),
                             isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
-                            onPressed: (i) => context.read<ProfileBloc>().add(DarkModeEvent(darkMode: i == 1)),
+                            onPressed: (i) => bloc.add(DarkModeEvent(darkMode: i == 1)),
                             children: const <Widget>[
                               Icon(CupertinoIcons.sun_max_fill, size: 20),
                               Icon(CupertinoIcons.moon_stars_fill, size: 20),
@@ -137,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                       // #language
                       MyProfileButton(
                         text: 'current_lang'.tr(),
-                        function: () => context.read<ProfileBloc>().add(LanguageEvent()),
+                        function: () => bloc.add(LanguageEvent()),
                         endElement: Image(
                           image: AssetImage('assets/icons/ic_flag_${bloc.selectedLang.name}.png'),
                           width: 20,
@@ -150,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                       // #sign_out
                       MyProfileButton(
                         text: 'sign_out'.tr(),
-                        function: () => context.read<ProfileBloc>().add(SignOutEvent()),
+                        function: () => bloc.add(SignOutEvent()),
                         endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.red),
                       ),
                       const SizedBox(height: 10),
@@ -158,7 +153,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                       // #info
                       MyProfileButton(
                         text: 'info'.tr(),
-                        function: () => context.read<ProfileBloc>().add(InfoEvent()),
+                        function: () => bloc.add(InfoEvent()),
                         endElement: Icon(CupertinoIcons.info, size: 24, color: AppColors.white),
                       ),
                     ],
@@ -173,8 +168,8 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                   textTitle: 'choose_lang'.tr(language: bloc.selectedLang),
                   textCancel: 'cancel'.tr(language: bloc.selectedLang),
                   textDone: 'done'.tr(language: bloc.selectedLang),
-                  functionCancel: () => context.read<ProfileBloc>().add(CancelEvent()),
-                  functionDone: () => context.read<ProfileBloc>().add(DoneEvent(context: context)),
+                  functionCancel: () => bloc.add(CancelEvent()),
+                  functionDone: () => bloc.add(DoneEvent(context: context)),
                   // #languages
                   child: SizedBox(
                     height: 175,
@@ -200,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                             selected: bloc.lang[index] == bloc.selectedLang,
                             value: bloc.lang[index],
                             groupValue: bloc.selectedLang,
-                            onChanged: (value) => context.read<ProfileBloc>().add(SelectLanguageEvent(lang: value as Language)));
+                            onChanged: (value) => bloc.add(SelectLanguageEvent(lang: value as Language)));
                       },
                     ),
                   ),
@@ -213,8 +208,8 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                   textTitle: 'sign_out'.tr(),
                   textCancel: 'cancel'.tr(),
                   textDone: 'confirm'.tr(),
-                  functionCancel: () => context.read<ProfileBloc>().add(CancelEvent()),
-                  functionDone: () => context.read<ProfileBloc>().add(ConfirmEvent(context: context)),
+                  functionCancel: () => bloc.add(CancelEvent()),
+                  functionDone: () => bloc.add(ConfirmEvent(context: context)),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Text('confirm_sign_out'.tr(), style: AppTextStyles.style23(context)),
@@ -226,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
                 MyProfileScreen(
                   textTitle: 'info'.tr(),
                   textCancel: 'back'.tr(),
-                  functionCancel: () => context.read<ProfileBloc>().add(CancelEvent()),
+                  functionCancel: () => bloc.add(CancelEvent()),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 16),
                     child: Text('info_text'.tr(), style: AppTextStyles.style23(context)),
@@ -238,7 +233,4 @@ class _ProfilePageState extends State<ProfilePage> with AutomaticKeepAliveClient
       );
     });
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

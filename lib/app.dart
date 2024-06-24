@@ -8,12 +8,11 @@ import 'package:test_app/Application/Menus/Test/Test/View/test_page.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/View/test_detail_page.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Application/Welcome/SignUp/View/sign_up_page.dart';
+import 'package:test_app/Application/Welcome/Splash/splash_page.dart';
 import 'package:test_app/Application/Welcome/Start/View/start_page.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/init_service.dart';
-
-import 'Application/Welcome/Splash/splash_page.dart';
 
 class TestApp extends StatelessWidget {
   final Future _initFuture = Init.initialize();

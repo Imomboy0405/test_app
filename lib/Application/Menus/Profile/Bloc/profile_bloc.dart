@@ -3,16 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
-import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final MainBloc mainBloc;
+  final MainBloc mainBloc = locator<MainBloc>();
   bool darkMode = ThemeService.getTheme == ThemeMode.dark;
   String fullName = '';
   String dateSign = '';
@@ -25,7 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Language.en,
   ];
 
-  ProfileBloc({required this.mainBloc}) : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
+  ProfileBloc() : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
     on<LanguageEvent>(pressLanguage);
     on<SelectLanguageEvent>(pressSelectLanguage);
@@ -42,14 +42,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     mainBloc.darkMode = darkMode;
     selectedLang = LangService.getLanguage;
 
-    String? json = await DBService.loadData(StorageKey.user);
-    mainBloc.userModel = userFromJson(json!);
-
-    fullName = mainBloc.userModel.fullName!;
-    email = mainBloc.userModel.email != null && mainBloc.userModel.email!.isNotEmpty
-        ? mainBloc.userModel.email!
+    fullName = mainBloc.userModel!.fullName!;
+    email = mainBloc.userModel!.email != null && mainBloc.userModel!.email!.isNotEmpty
+        ? mainBloc.userModel!.email!
         : null;
-    dateSign = mainBloc.userModel.createdTime!;
+    dateSign = mainBloc.userModel!.createdTime!;
 
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
   }

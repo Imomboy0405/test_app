@@ -28,7 +28,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   PageController controller = PageController(keepPage: true, initialPage: 1);
 
-  late UserModel userModel;
+  UserModel? userModel;
 
   MainBloc() : super(MainInitialState(
     screen: 1,
