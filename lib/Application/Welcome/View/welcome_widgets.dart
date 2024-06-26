@@ -113,7 +113,7 @@ class MyCircleGlassContainer extends StatelessWidget {
     return isStartPage
         ? BlocBuilder<StartBloc, StartState>(
             builder: (context, state) {
-              StartBloc? bloc = childPos ? context.read<StartBloc>() : null;
+              StartBloc? bloc = context.read<StartBloc>();
               return buildGlassContainer(bloc);
             },
           )

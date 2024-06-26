@@ -140,6 +140,8 @@ const Map<String, String> uzUZ = {
 
   /// ChatPage
   'chat': 'Chat ✍️ ',
+  'enter_chat': 'Chatga kirish',
+  'write_msg': 'Xabar yozing...',
 
   /// MainPage
   'exit': 'Chiqish',

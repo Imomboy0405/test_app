@@ -9,7 +9,7 @@ abstract class AppColors {
 
   static Color get blackBlue => ThemeService.getTheme == ThemeMode.dark ? _darker : _darkerLight;
 
-  static Color get purple => ThemeService.getTheme == ThemeMode.dark ? _blue : _blueLight;
+  static Color get purple => ThemeService.getTheme == ThemeMode.dark ? _purple : _purpleLight;
 
   static Color get transparentPurple => ThemeService.getTheme == ThemeMode.dark ? _transparentBlue : _transparentBlueLight;
 
@@ -21,7 +21,7 @@ abstract class AppColors {
 
   static Color get transparentBlueStatus => ThemeService.getTheme == ThemeMode.dark ? _transparentBlue : _cyan;
 
-  static Color get blueStatus => ThemeService.getTheme == ThemeMode.dark ? _blue : _white;
+  static Color get blueStatus => ThemeService.getTheme == ThemeMode.dark ? _purple : _white;
 
   static Color get transparentRedStatus => ThemeService.getTheme == ThemeMode.dark ? transparentRed : red;
 
@@ -55,9 +55,9 @@ abstract class AppColors {
 
   static const _black = Color(0xff000000);
 
-  static const _blue = Color(0xff00A795);
+  static const _purple = Color(0xffff00ff);
 
-  static const _blueLight = Color(0xff9D25A8);
+  static const _purpleLight = Color(0xff9D25A8);
 
   static const _cyan = Color(0xff1EBBFF);
 

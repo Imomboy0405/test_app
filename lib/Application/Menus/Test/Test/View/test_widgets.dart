@@ -10,8 +10,8 @@ class MyTestCard extends StatelessWidget {
   final String imgAsset;
   final String title;
   final String content;
-  final String question;
-  final String result;
+  final String? question;
+  final String? result;
   final void Function() enterTest;
 
   const MyTestCard({
@@ -67,7 +67,7 @@ class MyTestCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             child: Image.asset(
                               imgAsset,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.fitHeight,
                             ),
                           ),
                         ),
@@ -78,6 +78,7 @@ class MyTestCard extends StatelessWidget {
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // #title
                             Text(
@@ -91,15 +92,17 @@ class MyTestCard extends StatelessWidget {
                               content,
                               style: AppTextStyles.style9(context),
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                              maxLines: question != null ? 2 : 5,
                             ),
                             // #number_of_question
+                            if (question != null)
                             iconText(
                                 color: AppColors.red,
                                 text: Text(' ${'number_of_question'.tr()}: $question', style: AppTextStyles.style23_2(context))
                             ),
                             // #result
-                            iconText(
+                            if (result != null)
+                              iconText(
                               color: AppColors.green,
                               text: Text(' ${'result'.tr()}: $result', style: AppTextStyles.style23_3(context)),
                             ),
@@ -114,7 +117,7 @@ class MyTestCard extends StatelessWidget {
                 // #test_button
                 MyButton(
                   enable: true,
-                  text: 'enter_test'.tr(),
+                  text: question != null ? 'enter_test'.tr() : 'enter_chat'.tr(),
                   function: () => enterTest(),
                 ),
               ],

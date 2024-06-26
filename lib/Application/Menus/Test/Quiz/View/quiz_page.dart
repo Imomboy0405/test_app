@@ -98,6 +98,7 @@ class QuizPage extends StatelessWidget {
                         left: bloc.animatePosLeft,
                         top: bloc.animatePosTop,
                         child: AvatarGlow(
+                          glowColor: AppColors.black,
                           animate: bloc.percent == 100,
                           glowRadiusFactor: 0.2,
                           child: MyCircleGlassContainer(isStartPage: false, transparent: bloc.percent != 100),

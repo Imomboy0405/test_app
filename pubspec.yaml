@@ -42,11 +42,15 @@ dependencies:
   flutter_svg: any
   lottie: any
 
+  # json
+  json_annotation: any
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: any
+  build_runner: ^2.4.11
 
 flutter:
 

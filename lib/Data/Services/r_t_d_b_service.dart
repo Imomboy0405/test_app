@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:test_app/Data/Models/chat_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
 class RTDBService {
@@ -23,4 +24,18 @@ class RTDBService {
     return null;
   }
 
+  static Future<Stream<DatabaseEvent>> storeChat(ChatModel model, String uId) async {
+    await database.child('chat').child(uId).set(model.toJson());
+    return database.onChildAdded;
+  }
+
+  static Future<ChatModel> loadChat(String uId) async {
+    Query query = database.child('chat').child(uId);
+    DatabaseEvent event = await query.once();
+    ChatModel chatModel = ChatModel(messages: []);
+    if (event.snapshot.value != null && event.snapshot.value is Map) {
+      chatModel = ChatModel.fromJson(Map<String, dynamic>.from(event.snapshot.value as Map));
+    }
+    return chatModel;
+  }
 }

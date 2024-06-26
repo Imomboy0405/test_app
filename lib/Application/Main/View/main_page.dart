@@ -25,6 +25,7 @@ class MainPage extends StatelessWidget {
           bloc.controller.addListener(() => bloc.listen());
           return Scaffold(
             backgroundColor: AppColors.black,
+            resizeToAvoidBottomInset: true,
             body: Stack(
               children: [
                 myBackground(context),

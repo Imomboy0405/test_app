@@ -65,6 +65,7 @@ class TestApp extends StatelessWidget {
         TestPage.id: (context) => const TestPage(),
         TestDetailPage.id: (context) => const TestDetailPage(),
         QuizPage.id: (context) => const QuizPage(),
+        ChatDetailPage.id: (context) => const ChatDetailPage(),
       },
     );
   }

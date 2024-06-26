@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
     return BlocBuilder<MainBloc, MainState>(builder: (context, state) {
       final mainBloc = locator<MainBloc>();
       return BlocProvider(
-        create: (context) => locator<ProfileBloc>(),
+        create: (context) => ProfileBloc(),
         child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
           final ProfileBloc bloc = locator<ProfileBloc>();
 
