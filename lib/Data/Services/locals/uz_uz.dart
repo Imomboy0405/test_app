@@ -98,6 +98,7 @@ const Map<String, String> uzUZ = {
   'start_test': 'Testni boshlash',
   'result': 'Natijangiz',
   'number_of_question': 'Savollar soni',
+  'not_worked': 'Ishlanmagan',
 
   /// TestDetailPage
   'test_detail_title_1': 'ОЦЕНКА СЕКСУАЛЬНОЙ ФУНКЦИИ У ЖЕНЩИН',
@@ -137,11 +138,14 @@ const Map<String, String> uzUZ = {
   'share_chat': 'Chatga ulashish',
   'play_again': 'Qayta ishlash',
   'exit_test': 'Testdan chiqish',
+  'question': 'Savol',
+  'answer': 'Javob',
 
   /// ChatPage
   'chat': 'Chat ✍️ ',
   'enter_chat': 'Chatga kirish',
   'write_msg': 'Xabar yozing...',
+  'id': 'ID',
 
   /// MainPage
   'exit': 'Chiqish',

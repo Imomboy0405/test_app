@@ -7,6 +7,8 @@ part 'test_detail_event.dart';
 part 'test_detail_state.dart';
 
 class TestDetailBloc extends Bloc<TestDetailEvent, TestDetailState> {
+  int asset = 0;
+
   TestDetailBloc() : super(TestDetailInitialState()) {
     on<StartTestEvent>((event, emit) {
       Navigator.pushNamed(event.context, QuizPage.id);

@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_app/Data/Models/chat_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
-enum StorageKey { lang, theme, user, chat }
+enum StorageKey { lang, theme, user, chat, test }
 
 class DBService {
   static Future<bool> saveLang(String lang) async {
@@ -25,6 +25,11 @@ class DBService {
   static Future<bool> saveChat(ChatModel chat) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setString(StorageKey.chat.name, jsonEncode(chat.toJson()));
+  }
+
+  static Future<bool> saveTest(List<int> list) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString(StorageKey.test.name, jsonEncode(list));
   }
 
   static Future<String?> loadData(StorageKey storageKey) async {

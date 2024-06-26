@@ -2,6 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
+import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
+import 'package:test_app/Application/Menus/Test/TestDetail/Bloc/test_detail_bloc.dart';
+import 'package:test_app/Configuration/app_jsons.dart';
+import 'package:test_app/Data/Models/quiz_model.dart';
+import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';
@@ -11,7 +18,8 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   int currentQuiz = 1;
   int percent = 0;
   int selectedValue = 0;
-  List<int> answers = List.filled(10, 0);
+  List<int> answers = [];
+  List<QuizModel> quizModels = [];
   ScrollController quizNumberController = ScrollController();
   double animatePosLeft = 90;
   double animatePosTop = 50;
@@ -20,17 +28,57 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   double animatePosLeftMini = 70;
   double animatePosTopMini = 200;
   int result = -1;
+  String resultText = '';
   bool? confetti;
 
-  QuizBloc({required this.mainBloc}) : super(const QuizInitialState(currentQuiz: 1, percent: 0, selectedValue: 0, result: -1)) {
+  QuizBloc({required this.mainBloc})
+      : super(const QuizInitialState(
+          currentQuiz: 1,
+          percent: 0,
+          selectedValue: 0,
+          result: -1,
+          quizModels: [],
+        )) {
     on<SelectQuizNumberEvent>(selectQuizNumber);
     on<SelectVariantEvent>(selectVariant);
     on<NextButtonEvent>(pressNext);
     on<MiniButtonEvent>(pressMiniButton);
+    on<InitialQuestionsEvent>(initialData);
   }
 
+
   void emitInitial(Emitter<QuizState> emit) {
-    emit(QuizInitialState(currentQuiz: currentQuiz, percent: percent, selectedValue: selectedValue, result: result));
+    emit(QuizInitialState(
+      currentQuiz: currentQuiz,
+      percent: percent,
+      selectedValue: selectedValue,
+      result: result,
+      quizModels: quizModels,
+    ));
+  }
+
+  void initialData(InitialQuestionsEvent event, Emitter<QuizState> emit) {
+    switch (locator<TestDetailBloc>().asset) {
+      case 1:
+        {
+          quizModels = createQuizModelList(quizModelJsonStr1);
+          answers = List.filled(quizModels.length, 0);
+          break;
+        }
+      case 2:
+        {
+          quizModels = createQuizModelList(quizModelJsonStr1);
+          answers = List.filled(quizModels.length, 0);
+          break;
+        }
+      default:
+        {
+          quizModels = createQuizModelList(quizModelJsonStr1);
+          answers = List.filled(quizModels.length, 0);
+          break;
+        }
+    }
+    emitInitial(emit);
   }
 
   void selectQuizNumber(SelectQuizNumberEvent event, Emitter<QuizState> emit) {
@@ -57,32 +105,43 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void pressMiniButton(MiniButtonEvent event, Emitter<QuizState> emit) async {
     switch (event.miniButton) {
-      case MiniButton.home: {
-        Navigator.pop(event.context);
-        Navigator.pop(event.context);
-        await Future.delayed(const Duration(milliseconds: 250));
-        mainBloc.add(MainMenuButtonEvent(index: 0));
-      }
-      case MiniButton.chat: {
-        Navigator.pop(event.context);
-        Navigator.pop(event.context);
-        await Future.delayed(const Duration(milliseconds: 250));
-        mainBloc.add(MainMenuButtonEvent(index: 2));
-      }
-      case MiniButton.view: {
-        currentQuiz = 1;
-        selectedValue = answers[currentQuiz - 1];
-        emitInitial(emit);
-      }
-      default: {
-        answers = List.filled(10, 0);
-        currentQuiz = 1;
-        percent = 0;
-        result = -1;
-        confetti = null;
-        selectedValue = 0;
-        emitInitial(emit);
-      }
+      case MiniButton.home:
+        {
+          Navigator.pop(event.context);
+          Navigator.pop(event.context);
+          await Future.delayed(const Duration(milliseconds: 250));
+          mainBloc.add(MainMenuButtonEvent(index: 0));
+        }
+      case MiniButton.chat:
+        {
+          Navigator.pop(event.context);
+          Navigator.pop(event.context);
+          await Future.delayed(const Duration(milliseconds: 250));
+          mainBloc.add(MainMenuButtonEvent(index: 2));
+          if (event.context.mounted) {
+            Navigator.pushNamed(event.context, '/chat_detail_page');
+            final ChatBloc chatBloc = locator<ChatBloc>();
+
+            chatBloc.controller.text = resultText;
+            chatBloc.add(ChatSendButtonEvent());
+          }
+        }
+      case MiniButton.view:
+        {
+          currentQuiz = 1;
+          selectedValue = answers[0];
+          emitInitial(emit);
+        }
+      default:
+        {
+          answers = List.filled(quizModels.length, 0);
+          currentQuiz = 1;
+          percent = 0;
+          result = -1;
+          confetti = null;
+          selectedValue = 0;
+          emitInitial(emit);
+        }
     }
   }
 
@@ -104,9 +163,19 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       if (state is QuizFinishState) {
         Navigator.pop(event.context);
         Navigator.pop(event.context);
-        } else {
+      } else {
         if (result == -1) {
-          result = 95;
+          result = 0;
+          for (int i = 0; i < quizModels.length; i++) {
+            result += quizModels[i].answers[answers[i] - 1].value;
+            resultText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question}\n'
+                '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].value} ${'ball'.tr()}. '
+                '${quizModels[i].answers[answers[i] - 1].title}\n';
+          }
+          result = (result / (answers.length * 3) * 100).toInt();
+          resultText += '\n${'result'.tr()}: $result / 100';
+          mainBloc.resultTests[locator<TestDetailBloc>().asset - 1] = result;
+          DBService.saveTest(mainBloc.resultTests);
         }
         emit(const QuizFinishState(confetti: false));
         if (confetti == null) {

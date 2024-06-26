@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +30,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);
         fullName = mainBloc.userModel!.fullName!;
+      }
+      String? json = await DBService.loadData(StorageKey.test);
+      if (json != null) {
+        mainBloc.resultTests = List<int>.from(jsonDecode(json));
       }
       emit(HomeInitialState(currentPage: currentPage, fullName: fullName));
     }

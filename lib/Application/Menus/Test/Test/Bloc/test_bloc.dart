@@ -12,11 +12,6 @@ class TestBloc extends Bloc<TestEvent, TestState> {
     '20',
     '20',
   ];
-  List<String> result = [
-    '0',
-    '0',
-    '0',
-  ];
 
   TestBloc() : super(TestInitialState()) {
     on<EnterTestEvent>(pressEnterTest);

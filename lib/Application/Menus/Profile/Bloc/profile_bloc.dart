@@ -89,9 +89,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileLoadingState());
 
     await DBService.deleteData(StorageKey.user);
+    locator.unregister<MainBloc>();
+
     if (event.context.mounted) {
       Navigator.pushNamedAndRemoveUntil(event.context, SignInPage.id, (route) => false);
     }
+    locator.registerSingleton<MainBloc>(MainBloc());
   }
 
   void pressInfo(InfoEvent event, Emitter<ProfileState> emit) {

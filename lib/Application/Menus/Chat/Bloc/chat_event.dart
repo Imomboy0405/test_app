@@ -32,3 +32,18 @@ class ChatReceiveMessageEvent extends ChatEvent {
   @override
   List<Object?> get props => [];
 }
+
+class ChatGetUsersEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class ChatPushDetailEvent extends ChatEvent {
+  final UserModel userModel;
+  final BuildContext context;
+
+  const ChatPushDetailEvent({required this.userModel, required this.context});
+
+  @override
+  List<Object?> get props => [userModel, context];
+}

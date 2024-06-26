@@ -142,11 +142,15 @@ class StartPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     const SizedBox(width: 30),
-                                    TabPageSelector(
-                                      indicatorSize: 8,
-                                      color: AppColors.darkGrey,
-                                      selectedColor: AppColors.purple,
-                                      borderStyle: BorderStyle.none,
+                                    SizedBox(
+                                      height: 25,
+                                      width: 50,
+                                      child: TabPageSelector(
+                                        indicatorSize: 8,
+                                        color: AppColors.darkGrey,
+                                        selectedColor: AppColors.purple,
+                                        borderStyle: BorderStyle.none,
+                                      ),
                                     ),
                                     const Spacer(),
                                   ],

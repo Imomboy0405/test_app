@@ -6,6 +6,7 @@ import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 
 class ChatPage extends StatelessWidget {
   static const id = '/chat_page';
@@ -14,20 +15,53 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.transparent,
-      appBar: MyAppBar(titleText: 'chat'.tr()),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: MyTestCard(
-          imgAsset: 'assets/images/img_doctor_1.png',
-          title: 'Admin 5',
-          content: 'card_info_text_3'.tr(),
-          question: null,
-          result: null,
-          enterTest: () => Navigator.pushNamed(context, ChatDetailPage.id),
-        ),
-      ),
+    final ChatBloc bloc = locator<ChatBloc>();
+
+    return BlocBuilder<ChatBloc, ChatState>(
+      bloc: bloc,
+      builder: (context, state) {
+        if (bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22' && bloc.users.isEmpty) {
+          bloc.add(ChatGetUsersEvent());
+        }
+        return Scaffold(
+          backgroundColor: AppColors.transparent,
+          appBar: MyAppBar(titleText: 'chat'.tr()),
+          body: bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22'
+              ? Container(
+                  height: MediaQuery.of(context).size.height - 170,
+                  color: AppColors.transparent,
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: bloc.users.length,
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: MyTestCard(
+                          imgAsset: 'assets/images/img_shield.png',
+                          title: bloc.users[index].fullName!,
+                          content: '${'email'.tr()}: ${bloc.users[index].email!}\n${'id'.tr()}: ${bloc.users[index].uId!}',
+                          question: null,
+                          result: null,
+                          enterTest: () => bloc.add(ChatPushDetailEvent(userModel: bloc.users[index], context: context)),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: MyTestCard(
+                    imgAsset: 'assets/images/img_doctor_1.png',
+                    title: 'Admin ism familiyasi',
+                    content: bloc.messages.isEmpty ? '' : bloc.messages.last.msg,
+                    question: null,
+                    result: null,
+                    enterTest: () => Navigator.pushNamed(context, ChatDetailPage.id),
+                  ),
+                ),
+        );
+      },
     );
   }
 }
@@ -39,36 +73,43 @@ class ChatDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ChatBloc(),
-      child: BlocBuilder<ChatBloc, ChatState>(
-        builder: (context, state) {
-          final ChatBloc bloc = BlocProvider.of<ChatBloc>(context);
-          if (bloc.initial) {
-            bloc.add(ChatInitialEvent());
-          }
-          return Scaffold(
-            backgroundColor: AppColors.black,
-            resizeToAvoidBottomInset: true,
-            appBar: const MyAppBar(titleText: 'Admin 5'),
-            body: Column(
-              children: [
+    final ChatBloc bloc = locator<ChatBloc>();
+
+    return BlocBuilder<ChatBloc, ChatState>(
+      bloc: bloc,
+      builder: (context, state) {
+        if (bloc.initial) {
+          bloc.add(ChatInitialEvent());
+        }
+        return Scaffold(
+          backgroundColor: AppColors.black,
+          resizeToAvoidBottomInset: true,
+          appBar: const MyAppBar(titleText: 'Admin 5'),
+          body: Column(
+            children: [
               Expanded(
                 child: ListView.builder(
                   reverse: true,
                   itemCount: bloc.messages.length,
                   itemBuilder: (context, index) {
                     return Row(
-                      mainAxisAlignment: bloc.messages[bloc.messages.length - index - 1].typeUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+                      mainAxisAlignment:
+                          bloc.messages[bloc.messages.length - index - 1].typeUser
+                              ? bloc.user != null ? MainAxisAlignment.end : MainAxisAlignment.start
+                              : bloc.user != null ? MainAxisAlignment.start : MainAxisAlignment.end,
                       children: [
                         Container(
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width - 100
-                          ),
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 100),
                           padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
                           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                           decoration: BoxDecoration(
-                            color: bloc.messages[bloc.messages.length - index - 1].typeUser ? AppColors.purple : AppColors.purpleAccent,
+                            color: bloc.messages[bloc.messages.length - index - 1].typeUser
+                                ? bloc.user != null
+                                    ? AppColors.purple
+                                    : AppColors.purpleAccent
+                                : bloc.user != null
+                                    ? AppColors.purpleAccent
+                                    : AppColors.purple,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
@@ -92,6 +133,7 @@ class ChatDetailPage extends StatelessWidget {
                   },
                 ),
               ),
+
               // #text_field
               ChatTextField(
                 controller: bloc.controller,
@@ -100,12 +142,11 @@ class ChatDetailPage extends StatelessWidget {
                 pressEmoji: ({required String emoji}) => bloc.add(ChatEmojiEvent(emoji: emoji)),
                 pressEmojiButton: () => bloc.add(ChatEmojiButtonEvent()),
                 pressSendButton: () => bloc.add(ChatSendButtonEvent()),
-              ), // ChatTextField widget'i
+              ),
             ],
-            ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -118,14 +159,14 @@ class ChatTextField extends StatelessWidget {
   final void Function() pressEmojiButton;
   final void Function({required String emoji}) pressEmoji;
 
-  const ChatTextField({
-    required this.showEmojis,
-    required this.controller,
-    required this.emojis,
-    required this.pressSendButton,
-    required this.pressEmojiButton,
-    required this.pressEmoji,
-    super.key});
+  const ChatTextField(
+      {required this.showEmojis,
+      required this.controller,
+      required this.emojis,
+      required this.pressSendButton,
+      required this.pressEmojiButton,
+      required this.pressEmoji,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -135,17 +176,11 @@ class ChatTextField extends StatelessWidget {
         if (showEmojis)
           Container(
             height: 200,
-            decoration: BoxDecoration(
-                color: AppColors.black,
-                border: Border.all(color: AppColors.purple)
-            ),
+            decoration: BoxDecoration(color: AppColors.black, border: Border.all(color: AppColors.purple)),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery
-                    .of(context)
-                    .size
-                    .width ~/ 50,
+                crossAxisCount: MediaQuery.of(context).size.width ~/ 50,
               ),
               itemCount: emojis.length,
               itemBuilder: (context, index) {
@@ -183,8 +218,7 @@ class ChatTextField extends StatelessWidget {
                       hintStyle: AppTextStyles.style25(context),
                       fillColor: AppColors.black,
                       filled: true,
-                      border: InputBorder.none
-                  ),
+                      border: InputBorder.none),
                 ),
               ),
               IconButton(

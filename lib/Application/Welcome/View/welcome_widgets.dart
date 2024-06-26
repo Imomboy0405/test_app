@@ -262,6 +262,8 @@ class MyTextField extends StatelessWidget {
         keyboardType: keyboard,
         focusNode: focus,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.transparent.withOpacity(.0001),
           contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           error: errorState ? const SizedBox.shrink() : null,
           prefixIcon: SizedBox(

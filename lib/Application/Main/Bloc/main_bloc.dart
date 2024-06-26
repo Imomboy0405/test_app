@@ -14,6 +14,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   int currentScreen = 1;
   int oldScreen = 1;
+  List<int> resultTests = [-1, -1, -1];
   bool menuButtonPressed = false;
   final List<AssetImage> listOfMenuIcons = [
     const AssetImage('assets/icons/ic_menu_home_outlined.png'),

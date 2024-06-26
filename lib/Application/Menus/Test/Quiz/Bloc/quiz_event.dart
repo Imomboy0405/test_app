@@ -16,11 +16,12 @@ class SelectQuizNumberEvent extends QuizEvent {
 
 class SelectVariantEvent extends QuizEvent {
   final int value;
+  final int ball;
 
-  const SelectVariantEvent({required this.value});
+  const SelectVariantEvent({required this.value, required this.ball});
 
   @override
-  List<Object?> get props => [value];
+  List<Object?> get props => [value, ball];
 }
 
 class NextButtonEvent extends QuizEvent {
@@ -40,4 +41,9 @@ class MiniButtonEvent extends QuizEvent {
 
   @override
   List<Object?> get props => [miniButton, context];
+}
+
+class InitialQuestionsEvent extends QuizEvent {
+  @override
+  List<Object?> get props => [];
 }

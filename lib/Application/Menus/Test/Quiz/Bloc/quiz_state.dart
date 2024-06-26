@@ -9,11 +9,18 @@ final class QuizInitialState extends QuizState {
   final int percent;
   final int selectedValue;
   final int result;
+  final List<QuizModel> quizModels;
 
-  const QuizInitialState({required this.currentQuiz, required this.percent, required this.selectedValue, required this.result});
+  const QuizInitialState({
+    required this.currentQuiz,
+    required this.percent,
+    required this.selectedValue,
+    required this.result,
+    required this.quizModels,
+  });
 
   @override
-  List<Object> get props => [currentQuiz, percent, selectedValue, result];
+  List<Object> get props => [currentQuiz, percent, selectedValue, result, quizModels];
 }
 
 final class QuizFinishState extends QuizState {

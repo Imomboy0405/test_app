@@ -24,6 +24,26 @@ class RTDBService {
     return null;
   }
 
+  static Future<List<UserModel>> loadUsers() async {
+    Query query = database.child('users');
+    DatabaseEvent event = await query.once();
+    List<UserModel> users = [];
+    if (event.snapshot.value != null && event.snapshot.value is Map) {
+      users = (event.snapshot.value as Map<dynamic, dynamic>).values
+          .map((model) {
+        try {
+          return UserModel.fromJson(Map<String, dynamic>.from(model));
+        } catch (e) {
+          print('Xatolik: $e');
+          return null;
+        }
+      })
+          .whereType<UserModel>()
+          .toList();
+    }
+    return users;
+  }
+
   static Future<Stream<DatabaseEvent>> storeChat(ChatModel model, String uId) async {
     await database.child('chat').child(uId).set(model.toJson());
     return database.onChildAdded;

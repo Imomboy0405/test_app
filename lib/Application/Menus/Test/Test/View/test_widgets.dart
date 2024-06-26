@@ -61,16 +61,24 @@ class MyTestCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(5),
-                        child: Hero(
-                          tag: imgAsset,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              imgAsset,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
+                        child: question == null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  imgAsset,
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              )
+                            : Hero(
+                                tag: imgAsset,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.asset(
+                                    imgAsset,
+                                    fit: BoxFit.fitHeight,
+                                  ),
+                                ),
+                              ),
                       ),
                       const SizedBox(width: 10),
 
@@ -96,16 +104,15 @@ class MyTestCard extends StatelessWidget {
                             ),
                             // #number_of_question
                             if (question != null)
-                            iconText(
-                                color: AppColors.red,
-                                text: Text(' ${'number_of_question'.tr()}: $question', style: AppTextStyles.style23_2(context))
-                            ),
+                              iconText(
+                                  color: AppColors.red,
+                                  text: Text(' ${'number_of_question'.tr()}: $question', style: AppTextStyles.style23_2(context))),
                             // #result
                             if (result != null)
                               iconText(
-                              color: AppColors.green,
-                              text: Text(' ${'result'.tr()}: $result', style: AppTextStyles.style23_3(context)),
-                            ),
+                                color: AppColors.green,
+                                text: Text(' ${'result'.tr()}: $result', style: AppTextStyles.style23_3(context)),
+                              ),
                           ],
                         ),
                       ),

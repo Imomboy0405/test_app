@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/Test/Bloc/test_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 
 import 'test_widgets.dart';
 
@@ -14,6 +16,7 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainBloc mainBloc = locator<MainBloc>();
     return BlocProvider(
       create: (context) => TestBloc(),
       child: BlocBuilder<TestBloc, TestState>(
@@ -40,7 +43,7 @@ class TestPage extends StatelessWidget {
                           title: 'card_text_$i'.tr(),
                           content: 'card_text_$i'.tr(),
                           question: bloc.question[i - 1],
-                          result: bloc.result[i - 1],
+                          result: mainBloc.resultTests[i - 1] != -1 ? '${mainBloc.resultTests[i - 1]}' : 'not_worked'.tr(),
                           enterTest: () => bloc.add(EnterTestEvent(context: context, index: i)),
                         );
                       });
