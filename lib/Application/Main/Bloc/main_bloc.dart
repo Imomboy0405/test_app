@@ -26,6 +26,16 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     const AssetImage('assets/icons/ic_menu_chat.png'),
     const AssetImage('assets/icons/ic_menu_profile.png'),
   ];
+  final List<AssetImage> listOfMenuIconsDarkMode = [
+    const AssetImage('assets/icons/ic_menu_home_outlined_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_test_outlined_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_chat_outlined_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_profile_outlined_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_home_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_test_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_chat_dark_mode.png'),
+    const AssetImage('assets/icons/ic_menu_profile_dark_mode.png'),
+  ];
 
   PageController controller = PageController(keepPage: true, initialPage: 1);
 

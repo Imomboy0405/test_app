@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_page.dart';
+import 'package:test_app/Application/Menus/Profile/View/profile_detail_page.dart';
 import 'package:test_app/Application/Menus/Profile/View/profile_page.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/View/quiz_page.dart';
 import 'package:test_app/Application/Menus/Test/Test/View/test_page.dart';
@@ -59,6 +60,7 @@ class TestApp extends StatelessWidget {
         SignUpPage.id: (context) => const SignUpPage(),
         SignInPage.id: (context) => const SignInPage(),
         ProfilePage.id: (context) => const ProfilePage(),
+        ProfileDetailPage.id: (context) => const ProfileDetailPage(),
         MainPage.id: (context) => const MainPage(),
         HomePage.id: (context) => const HomePage(),
         ChatPage.id: (context) => const ChatPage(),

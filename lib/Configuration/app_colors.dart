@@ -41,15 +41,25 @@ abstract class AppColors {
 
   static Color get transparentGray => ThemeService.getTheme == ThemeMode.dark ? _transparentGray : _transparentBlueLight;
 
-  static const purpleAccent = Color(0xffEE8AF8);
+  static Color get purpleLight => ThemeService.getTheme == ThemeMode.dark ? _purpleLightLightMode : _purpleLightDarkMode;
 
-  static const purpleLight = Color(0xffFF84E8);
+  static Color get purpleAccent => ThemeService.getTheme == ThemeMode.dark ? _purpleAccent : _purpleAccentDarkMode;
+
+  static const _purpleAccent = Color(0x9fff00Ff);
+
+  static const whiteConst = Color(0xffffffff);
+
+  static const _purpleAccentDarkMode = Color(0xffEE4AF8);
+
+  static const _purpleLightLightMode = Color(0x77FF0fE8);
+
+  static const _purpleLightDarkMode = Color(0xffFF84E8);
 
   static const pink = Color(0xffFF00FA);
 
   static const blue = Color(0xff00AAFF);
 
-  static const green = Color(0xff00DD00);
+  static const green = Color(0xff00dd00);
 
   static const _white = Color(0xffffffff);
 

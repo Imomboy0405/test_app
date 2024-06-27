@@ -39,71 +39,63 @@ class ProfilePage extends StatelessWidget {
                         child: Column(
                           children: [
                             // #profil
-                            Container(
-                              height: 188,
-                              margin: const EdgeInsets.only(top: 20, bottom: 10),
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: AppColors.dark,
-                                borderRadius: BorderRadius.circular(6),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    spreadRadius: 0.5,
-                                    blurRadius: 1,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
+                            const SizedBox(height: 20),
+                            MyProfileButton(
+                              endElement: SizedBox(
+                                height: 178,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // #full_name
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Icon(Icons.account_circle_rounded, color: AppColors.purple, size: 48),
+                                        const SizedBox(width: 10),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(bloc.fullName, style: AppTextStyles.style3(context)),
+                                            Text('i_billing_user'.tr(), style: AppTextStyles.style23_0(context)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                
+                                    // #date_of_sign_up
+                                    Row(
+                                      children: [
+                                        Text("${'date_sign'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                        const SizedBox(width: 10),
+                                        Text(bloc.dateSign, style: AppTextStyles.style23(context)),
+                                      ],
+                                    ),
+                                
+                                    // #phone_number
+                                    Row(
+                                      children: [
+                                        Text("${'phone_num'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                        const SizedBox(width: 10),
+                                        Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
+                                            style: AppTextStyles.style23(context)),
+                                      ],
+                                    ),
+                                
+                                    // #email
+                                    Row(
+                                      children: [
+                                        Text("${'email'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                        const SizedBox(width: 10),
+                                        Text(bloc.email == null ? 'email_not_set'.tr() : bloc.email!, style: AppTextStyles.style23(context)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // #full_name
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Icon(Icons.account_circle_rounded, color: AppColors.purple, size: 48),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(bloc.fullName, style: AppTextStyles.style3(context)),
-                                          Text('i_billing_user'.tr(), style: AppTextStyles.style19(context)),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-
-                                  // #date_of_sign_up
-                                  Row(
-                                    children: [
-                                      Text("${'date_sign'.tr()}:", style: AppTextStyles.style19(context)),
-                                      const SizedBox(width: 10),
-                                      Text(bloc.dateSign, style: AppTextStyles.style23(context)),
-                                    ],
-                                  ),
-
-                                  // #phone_number
-                                  Row(
-                                    children: [
-                                      Text("${'phone_num'.tr()}:", style: AppTextStyles.style19(context)),
-                                      const SizedBox(width: 10),
-                                      Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
-                                          style: AppTextStyles.style23(context)),
-                                    ],
-                                  ),
-
-                                  // #email
-                                  Row(
-                                    children: [
-                                      Text("${'email'.tr()}:", style: AppTextStyles.style19(context)),
-                                      const SizedBox(width: 10),
-                                      Text(bloc.email == null ? 'email_not_set'.tr() : bloc.email!, style: AppTextStyles.style23(context)),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                              function: () => bloc.add(ProfileUpdateEvent(context: context)),
                             ),
+                            const SizedBox(height: 10),
 
                             // #theme
                             MyProfileButton(
@@ -113,11 +105,10 @@ class ProfilePage extends StatelessWidget {
                                 height: 30,
                                 child: ToggleButtons(
                                   selectedColor: Colors.white,
-                                  color: AppColors.darkGrey,
+                                  color: AppColors.purple,
                                   fillColor: AppColors.purple,
-                                  hoverColor: AppColors.red,
                                   splashColor: AppColors.purple,
-                                  borderColor: AppColors.darkGrey,
+                                  borderColor: AppColors.purple,
                                   borderWidth: 0.3,
                                   borderRadius: BorderRadius.circular(6),
                                   isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
@@ -152,6 +143,14 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
 
+                            // #delete_account
+                            MyProfileButton(
+                              text: 'delete_account'.tr(),
+                              function: () => bloc.add(DeleteAccountEvent()),
+                              endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.red),
+                            ),
+                            const SizedBox(height: 10),
+
                             // #info
                             MyProfileButton(
                               text: 'info'.tr(),
@@ -181,10 +180,13 @@ class ProfilePage extends StatelessWidget {
                             padding: EdgeInsets.zero,
                             itemBuilder: (c, index) {
                               return RadioListTile(
-                                  activeColor: AppColors.purple,
-                                  hoverColor: AppColors.purple,
-                                  overlayColor: WidgetStatePropertyAll(AppColors.transparentPurple),
-                                  selectedTileColor: AppColors.purple,
+                                  fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                                    if (states.contains(WidgetState.selected)) {
+                                      return Colors.white;
+                                    } else {
+                                      return AppColors.purple;
+                                    }
+                                  }),
                                   controlAffinity: ListTileControlAffinity.trailing,
                                   contentPadding: EdgeInsets.zero,
                                   secondary: Image(
@@ -193,11 +195,11 @@ class ProfilePage extends StatelessWidget {
                                     height: 24,
                                     fit: BoxFit.fill,
                                   ),
-                                  title: Text('button_$index'.tr(), style: AppTextStyles.style23(context)),
+                                  title: Text('button_$index'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
                                   selected: bloc.lang[index] == bloc.selectedLang,
                                   value: bloc.lang[index],
                                   groupValue: bloc.selectedLang,
-                                  onChanged: (value) => bloc.add(SelectLanguageEvent(lang: value as Language)));
+                                  onChanged: (value) => bloc.add(ConfirmLanguageEvent(lang: value as Language)));
                             },
                           ),
                         ),
@@ -214,7 +216,22 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(ConfirmEvent(context: context)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('confirm_sign_out'.tr(), style: AppTextStyles.style23(context)),
+                          child: Text('confirm_sign_out'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                        ),
+                      ),
+
+                    // #delete_account_screen
+                    if (state is ProfileDeleteAccountState)
+                      MyProfileScreen(
+                        doneButton: true,
+                        textTitle: 'delete_account'.tr(),
+                        textCancel: 'cancel'.tr(),
+                        textDone: 'confirm'.tr(),
+                        functionCancel: () => bloc.add(CancelEvent()),
+                        functionDone: () => bloc.add(ConfirmEvent(context: context, delete: true)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Text('confirm_delete_account'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
                         ),
                       ),
 
@@ -226,7 +243,7 @@ class ProfilePage extends StatelessWidget {
                         functionCancel: () => bloc.add(CancelEvent()),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('info_text'.tr(), style: AppTextStyles.style23(context)),
+                          child: Text('info_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
                         ),
                       ),
                   ],

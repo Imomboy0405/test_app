@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
@@ -12,6 +12,7 @@ import 'package:test_app/Data/Services/lang_service.dart';
 import 'dart:math' as math;
 
 import 'package:test_app/Data/Services/locator_service.dart';
+import 'package:test_app/Data/Services/theme_service.dart';
 
 class QuizPage extends StatelessWidget {
   static const id = '/quiz_page';
@@ -420,8 +421,8 @@ class MyQuizButton extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: MaterialButton(
-            splashColor: AppColors.pink,
-            highlightColor: AppColors.pink,
+            splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+            highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
             onPressed: () => ball != null ? null : onChanged(value),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -522,7 +523,7 @@ class _HudProgressPainter extends CustomPainter {
 
     // #background_progress
     final backgroundPaint = Paint()
-      ..color = AppColors.transparentBlack
+      ..color = Colors.white.withOpacity(.8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 25;
     canvas.drawArc(
@@ -548,7 +549,7 @@ class _HudProgressPainter extends CustomPainter {
 
     final borderPaint = Paint()
       // #draw_circlefinal
-      ..color = AppColors.transparentBlack
+      ..color = Colors.white.withOpacity(.8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
     canvas.drawCircle(center, 46, borderPaint);
@@ -589,7 +590,7 @@ class _HudProgressPainter extends CustomPainter {
       end = Alignment.centerRight;
     }
     final gradient = LinearGradient(
-      colors: const [AppColors.purpleAccent, AppColors.pink],
+      colors: [AppColors.purpleAccent, AppColors.pink],
       begin: begin,
       end: end,
     );
@@ -627,7 +628,7 @@ class _HudProgressPainter extends CustomPainter {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,
-        style: result ? AppTextStyles.style12(context) : AppTextStyles.style18(context),
+        style: result ? AppTextStyles.style12(context).copyWith(color: Colors.white) : AppTextStyles.style18(context).copyWith(color: Colors.white),
       ),
       textDirection: TextDirection.ltr,
     );

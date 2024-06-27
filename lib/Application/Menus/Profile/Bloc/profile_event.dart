@@ -12,10 +12,10 @@ class LanguageEvent extends ProfileEvent {
   List<Object?> get props => [];
 }
 
-class SelectLanguageEvent extends ProfileEvent {
+class ConfirmLanguageEvent extends ProfileEvent {
   final Language lang;
 
-  SelectLanguageEvent({required this.lang});
+  ConfirmLanguageEvent({required this.lang});
 
   @override
   List<Object?> get props => [lang];
@@ -35,6 +35,15 @@ class DoneEvent extends ProfileEvent {
   List<Object?> get props => [context];
 }
 
+class ProfileUpdateEvent extends ProfileEvent {
+  final BuildContext context;
+
+  ProfileUpdateEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
+}
+
 class DarkModeEvent extends ProfileEvent {
   final bool darkMode;
 
@@ -49,13 +58,19 @@ class SignOutEvent extends ProfileEvent {
   List<Object?> get props => [];
 }
 
+class DeleteAccountEvent extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+}
+
 class ConfirmEvent extends ProfileEvent {
   final BuildContext context;
+  final bool delete;
 
-  ConfirmEvent({required this.context});
+  ConfirmEvent({required this.context, this.delete = false});
 
   @override
-  List<Object?> get props => [context];
+  List<Object?> get props => [context, delete];
 }
 
 class InfoEvent extends ProfileEvent {

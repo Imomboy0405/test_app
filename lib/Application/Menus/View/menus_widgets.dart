@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_svg/svg.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:test_app/Data/Services/theme_service.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
   const MyBottomNavigationBar({
@@ -25,7 +26,7 @@ class MyBottomNavigationBar extends StatelessWidget {
         color: AppColors.purpleLight,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: AppColors.transparentBlack,
             spreadRadius: 3,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -40,17 +41,23 @@ class MyBottomNavigationBar extends StatelessWidget {
           width: screenWidth * .245,
           child: MaterialButton(
             onPressed: () => bloc.add(MainMenuButtonEvent(index: index)),
-            splashColor: AppColors.transparentPurple,
-            highlightColor: AppColors.transparentBlack,
+            splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.transparentPurple,
+            highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.transparentPurple,
             padding: const EdgeInsets.only(top: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // #menu_icon
                 Image(
-                  image: index + 1 == bloc.currentScreen ? bloc.listOfMenuIcons[index + 4] : bloc.listOfMenuIcons[index],
-                  height: 50,
-                  width: 50,
+                  image: index + 1 == bloc.currentScreen
+                      ? ThemeService.getTheme == ThemeMode.light
+                          ? bloc.listOfMenuIcons[index + 4]
+                          : bloc.listOfMenuIconsDarkMode[index + 4]
+                      : ThemeService.getTheme == ThemeMode.light
+                          ? bloc.listOfMenuIcons[index]
+                          : bloc.listOfMenuIconsDarkMode[index],
+                  height: index == 0 && !(index + 1 == bloc.currentScreen) ? 59 : 50,
+                  width: index == 0 && !(index + 1 == bloc.currentScreen) ? 59 : 50,
                 ),
                 // #shadow
                 if (index + 1 == bloc.currentScreen && bloc.currentScreen != 1)
@@ -160,16 +167,8 @@ class MyProfileScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.fromLTRB(24, 18, 24, 20),
           decoration: BoxDecoration(
-            color: AppColors.dark,
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            color: AppColors.purpleLight,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +176,7 @@ class MyProfileScreen extends StatelessWidget {
             children: [
               Material(
                 color: AppColors.transparent,
-                child: Text(textTitle, style: AppTextStyles.style20(context), textAlign: TextAlign.center),
+                child: Text(textTitle, style: AppTextStyles.style20(context).copyWith(color: Colors.white), textAlign: TextAlign.center),
               ),
               const SizedBox(height: 16),
               child,
@@ -287,16 +286,16 @@ class SelectButton extends StatelessWidget {
               ? function()
               : () {}
           : function(),
-      color: select ? AppColors.blue : AppColors.transparentPurple,
-      splashColor: AppColors.blue,
+      color: select ? AppColors.purple : AppColors.purpleLight,
+      splashColor: AppColors.pink,
       elevation: 0,
-      highlightColor: AppColors.transparentPurple,
+      highlightColor: AppColors.pink,
       minWidth: (MediaQuery.of(context).size.width - 130) / 2,
       height: 37,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Text(
         text,
-        style: select ? AppTextStyles.style13(context).copyWith(color: Colors.white) : AppTextStyles.style14(context),
+        style: AppTextStyles.style13(context).copyWith(color: Colors.white),
       ),
     );
   }
@@ -304,34 +303,45 @@ class SelectButton extends StatelessWidget {
 
 class MyProfileButton extends StatelessWidget {
   final Function function;
-  final String text;
+  final String? text;
   final Widget endElement;
 
   const MyProfileButton({
     super.key,
-    required this.text,
+    this.text,
     required this.function,
     required this.endElement,
   });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () => function(),
-      height: 44,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      color: AppColors.dark,
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(text, style: AppTextStyles.style19(context)),
-          endElement,
-        ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: MaterialButton(
+          onPressed: () => function(),
+          height: text == null ? 188 : 44,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          color: AppColors.purpleLight,
+          splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+          highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: text != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(text!, style: AppTextStyles.style19(context)),
+                    endElement,
+                  ],
+                )
+              : endElement,
+        ),
       ),
     );
   }
 }
+
 Padding myBackground(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(top: 100.0),

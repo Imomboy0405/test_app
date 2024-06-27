@@ -13,6 +13,7 @@ class RTDBService {
 
   static Future<Stream<DatabaseEvent>> deleteUser(UserModel userModel) async {
     await database.child('users').child(userModel.uId!).remove();
+    await database.child('chat').child(userModel.uId!).remove();
     return database.onChildAdded;
   }
 

@@ -6,6 +6,7 @@ import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
+import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 
 part 'profile_event.dart';
@@ -27,12 +28,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc() : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
+    on<ProfileUpdateEvent>(pressProfileUpdate);
     on<LanguageEvent>(pressLanguage);
-    on<SelectLanguageEvent>(pressSelectLanguage);
+    on<ConfirmLanguageEvent>(pressSelectLanguage);
     on<CancelEvent>(pressCancel);
     on<DoneEvent>(pressDone);
     on<DarkModeEvent>(pressDarkMode);
     on<SignOutEvent>(pressSignOut);
+    on<DeleteAccountEvent>(pressDeleteAccount);
     on<ConfirmEvent>(pressConfirm);
     on<InfoEvent>(pressInfo);
   }
@@ -51,12 +54,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
   }
 
+  void pressProfileUpdate(ProfileUpdateEvent event, Emitter<ProfileState> emit) {
+    Navigator.pushNamed(event.context, '/profile_detail_page');
+  }
+
   void pressLanguage(LanguageEvent event, Emitter<ProfileState> emit) {
     mainBloc.add(MainHideBottomNavigationBarEvent());
     emit(ProfileLangState(lang: selectedLang));
   }
 
-  void pressSelectLanguage(SelectLanguageEvent event, Emitter<ProfileState> emit) {
+  void pressSelectLanguage(ConfirmLanguageEvent event, Emitter<ProfileState> emit) {
     selectedLang = event.lang;
     emit(ProfileLangState(lang: selectedLang));
   }
@@ -85,15 +92,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileSignOutState());
   }
 
+  void pressDeleteAccount(DeleteAccountEvent event, Emitter<ProfileState> emit) {
+    mainBloc.add(MainHideBottomNavigationBarEvent());
+    emit(ProfileDeleteAccountState());
+  }
+
   void pressConfirm(ConfirmEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoadingState());
 
+    if (event.delete) {
+      await RTDBService.deleteUser(mainBloc.userModel!);
+    }
     await DBService.deleteData(StorageKey.user);
     locator.unregister<MainBloc>();
+    locator.unregister<ProfileBloc>();
 
     if (event.context.mounted) {
       Navigator.pushNamedAndRemoveUntil(event.context, SignInPage.id, (route) => false);
     }
+    locator.registerSingleton<ProfileBloc>(ProfileBloc());
     locator.registerSingleton<MainBloc>(MainBloc());
   }
 

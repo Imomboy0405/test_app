@@ -1,12 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Welcome/Start/Bloc/start_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/theme_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
 
 class MyFlagButton extends StatelessWidget {
@@ -390,7 +391,7 @@ class MyButton extends StatelessWidget {
       minWidth: double.infinity,
       height: 48,
       elevation: 0,
-      highlightColor: AppColors.pink,
+      highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.transparentBlack : AppColors.pink,
       splashColor: AppColors.pink,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       child: Text(text, style: enable ? AppTextStyles.style4(context).copyWith(color: Colors.white) : AppTextStyles.style5(context)),
