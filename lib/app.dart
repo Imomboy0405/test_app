@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_page.dart';
-import 'package:test_app/Application/Menus/Profile/View/profile_detail_page.dart';
+import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_page.dart';
 import 'package:test_app/Application/Menus/Profile/View/profile_page.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/View/quiz_page.dart';
 import 'package:test_app/Application/Menus/Test/Test/View/test_page.dart';
@@ -14,6 +14,9 @@ import 'package:test_app/Application/Welcome/Start/View/start_page.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/init_service.dart';
+
+import 'Application/Menus/Chat/View/chat_detail_page.dart';
+import 'Application/Menus/Chat/View/chat_user_info_page.dart';
 
 class TestApp extends StatelessWidget {
   final Future _initFuture = Init.initialize();
@@ -68,6 +71,7 @@ class TestApp extends StatelessWidget {
         TestDetailPage.id: (context) => const TestDetailPage(),
         QuizPage.id: (context) => const QuizPage(),
         ChatDetailPage.id: (context) => const ChatDetailPage(),
+        ChatUserInfoPage.id: (context) => const ChatUserInfoPage(),
       },
     );
   }

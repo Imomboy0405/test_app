@@ -41,9 +41,11 @@ dependencies:
   carousel_slider: any
   flutter_svg: any
   lottie: any
+  numberpicker: any
 
   # json
   json_annotation: any
+
 
 dev_dependencies:
   flutter_test:

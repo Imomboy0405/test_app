@@ -47,3 +47,13 @@ class ChatPushDetailEvent extends ChatEvent {
   @override
   List<Object?> get props => [userModel, context];
 }
+
+class ChatPushInfoEvent extends ChatEvent {
+  final UserModel userModel;
+  final BuildContext context;
+
+  const ChatPushInfoEvent({required this.userModel, required this.context});
+
+  @override
+  List<Object?> get props => [userModel, context];
+}

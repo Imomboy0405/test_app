@@ -78,3 +78,30 @@ class InfoEvent extends ProfileEvent {
   List<Object?> get props => [];
 }
 
+class NextEvent extends ProfileEvent {
+  final int index;
+  final BuildContext context;
+
+  NextEvent({required this.index, required this.context});
+
+  @override
+  List<Object?> get props => [index, context];
+
+}
+
+class ListenScrollEvent extends ProfileEvent {
+  final BuildContext context;
+
+  ListenScrollEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
+
+}
+
+class UpdateDetailEvent extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
+
+}
+

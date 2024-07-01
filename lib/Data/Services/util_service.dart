@@ -19,7 +19,7 @@ class Utils {
           ),
           margin: const EdgeInsets.only(bottom: 80),
           alignment: Alignment.center,
-          decoration: BoxDecoration(color: errorState ? AppColors.red : AppColors.purple, borderRadius: BorderRadius.circular(6)),
+          decoration: BoxDecoration(color: errorState ? AppColors.red : AppColors.pink, borderRadius: BorderRadius.circular(6)),
           child: Text(txt, style: AppTextStyles.style13(context).copyWith(color: Colors.white), textAlign: TextAlign.center),
         ),
       ),

@@ -65,7 +65,9 @@ const Map<String, String> uzUZ = {
 
   /// ProfilePage
   'profile': 'Profil',
-  'i_billing_user': 'IBilling foydalanuvchisi',
+  'medical_info': 'Tibbiy ma\'lumot',
+  'medical_info_not_found': 'Tibbiy ma\'lumot o\'rnatilmagan',
+  'test_app_user': 'Test app foydalanuvchisi',
   'date_sign': 'Ro\'yxatdan o\'tish sanasi',
   'current_lang': 'O\'zbek (lotin)',
   'cancel': 'Bekor qilish',
@@ -78,11 +80,13 @@ const Map<String, String> uzUZ = {
   'confirm_delete_account': 'Haqiqatan ham hisobingizni o\'chirmoqchi ekanligingizni tasdiqlang',
   'info': 'Ilova haqida ma\'lumot',
   'info_text':
-      'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.03.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
+      'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
   'email_not_set': 'E-pochta o\'rnatilmagan',
   'phone_not_set': 'Telefon raqami o\'rnatilmagan',
+  'update_profile_success': 'Profil muvofaqqiyatli yangilandi',
 
   /// ProfileDetailPage
+  'save': 'Saqlash',
   'medical_history': 'KASALLIKLAR TARIXI',
   'medications_taken': 'QABUL QILINGAN DORILAR',
   'surgical_interventions': 'JARROHLIK ARALASHUVI',
@@ -151,6 +155,15 @@ const Map<String, String> uzUZ = {
   'psychotraumatic_situation': 'Psixotravmatik vaziyat',
   'rapid_weight_gain': 'Tez vazn ortishi',
   'sharp_weight_loss': 'Keskin vazn yo\'qotish',
+  'by_kg': 'Kg:',
+  "height_cm": "Bo'y (sm)",
+  "weight_kg": "Vazn (kg)",
+  "waist": "Bel",
+  "hips": "Son",
+  "volume": "Hajm",
+  "blood_pressure_mm_hg": "Qon bosimi (mm sim. ust.)",
+  "physic_state": "Umumiy fizik holati",
+  "unselected": "Tanlanmagan! ",
 
   /// NewPage
   'fisher_full_name': 'Ism-familiya',
@@ -219,6 +232,7 @@ const Map<String, String> uzUZ = {
   'enter_chat': 'Chatga kirish',
   'write_msg': 'Xabar yozing...',
   'id': 'ID',
+  'user_info': 'Foydalanuvchi ma\'lumotlari',
 
   /// MainPage
   'exit': 'Chiqish',

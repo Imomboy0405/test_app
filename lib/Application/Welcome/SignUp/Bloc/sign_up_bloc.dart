@@ -94,6 +94,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         uId: FirebaseAuth.instance.currentUser!.uid,
         createdTime: DateTime.now().toString().substring(0, 10),
         loginType: 'email',
+        userDetailList: [],
       );
       try {
         await RTDBService.storeUser(userModel);
@@ -160,6 +161,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         uId: FirebaseAuth.instance.currentUser!.uid,
         createdTime: DateTime.now().toString().substring(0, 10),
         loginType: '',
+        userDetailList: [],
       );
 
       try {

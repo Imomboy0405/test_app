@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
-import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
+import 'package:test_app/Application/Menus/Chat/View/chat_detail_page.dart';
+import 'package:test_app/Application/Menus/Chat/View/chat_user_info_page.dart';
 import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
@@ -14,7 +15,7 @@ part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final MainBloc mainBloc = locator<MainBloc>();
+  MainBloc mainBloc = locator<MainBloc>();
   DatabaseReference messagesRef = FirebaseDatabase.instance.ref();
   TextEditingController controller = TextEditingController();
   List<MessageModel> messages = [];
@@ -138,9 +139,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     loginType: '',
     password: '',
     uId: '',
+    userDetailList: [],
   ))) {
     on<ChatGetUsersEvent>(getUsers);
     on<ChatPushDetailEvent>(pushDetail);
+    on<ChatPushInfoEvent>(pushUserInfo);
     on<ChatEmojiEvent>(pressEmoji);
     on<ChatEmojiButtonEvent>(pressEmojiButton);
     on<ChatSendButtonEvent>(pressSendButton);
@@ -171,6 +174,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             password: '',
             createdTime: '',
             loginType: '',
+            userDetailList: [],
           ),
     ));
   }
@@ -186,6 +190,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     messages = [];
     initial = true;
     Navigator.pushNamed(event.context, ChatDetailPage.id);
+    emitComfort(emit);
+  }
+
+  void pushUserInfo(ChatPushInfoEvent event, Emitter<ChatState> emit) {
+    user = event.userModel;
+    Navigator.pushNamed(event.context, ChatUserInfoPage.id);
     emitComfort(emit);
   }
 

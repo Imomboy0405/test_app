@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/Bloc/test_detail_bloc.dart';
-import 'package:test_app/Configuration/app_jsons.dart';
+import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Data/Models/quiz_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';

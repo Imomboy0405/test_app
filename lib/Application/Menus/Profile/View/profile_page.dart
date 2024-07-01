@@ -57,7 +57,7 @@ class ProfilePage extends StatelessWidget {
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(bloc.fullName, style: AppTextStyles.style3(context)),
-                                            Text('i_billing_user'.tr(), style: AppTextStyles.style23_0(context)),
+                                            Text('test_app_user'.tr(), style: AppTextStyles.style23_0(context)),
                                           ],
                                         ),
                                       ],
@@ -93,7 +93,15 @@ class ProfilePage extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              function: () => (),
+                            ),
+                            const SizedBox(height: 10),
+
+                            // #theme
+                            MyProfileButton(
+                              text: mainBloc.userModel!.userDetailList.isNotEmpty ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
                               function: () => bloc.add(ProfileUpdateEvent(context: context)),
+                              endElement: const Icon(Icons.health_and_safety, size: 24, color: AppColors.whiteConst),
                             ),
                             const SizedBox(height: 10),
 
@@ -120,6 +128,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                               ),
                             ),
+
                             const SizedBox(height: 10),
 
                             // #language
@@ -155,7 +164,7 @@ class ProfilePage extends StatelessWidget {
                             MyProfileButton(
                               text: 'info'.tr(),
                               function: () => bloc.add(InfoEvent()),
-                              endElement: Icon(CupertinoIcons.info, size: 24, color: AppColors.white),
+                              endElement: const Icon(CupertinoIcons.info, size: 24, color: AppColors.whiteConst),
                             ),
                           ],
                         ),

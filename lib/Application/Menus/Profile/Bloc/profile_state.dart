@@ -6,6 +6,7 @@ class ProfileInitialState extends ProfileState {
   final bool darkMode;
   final String? phone;
   final String? email;
+
   ProfileInitialState({required this.darkMode, required this.email, required this.phone});
 
   @override
@@ -39,5 +40,14 @@ class ProfileDeleteAccountState extends ProfileState {
 class ProfileInfoState extends ProfileState {
   @override
   List<Object?> get props => [];
+}
+
+class ProfileDetailPageState extends ProfileState {
+  final int index;
+  final UserModel userModel;
+  ProfileDetailPageState({required this.index, required this.userModel});
+
+  @override
+  List<Object?> get props => [index, userModel];
 }
 

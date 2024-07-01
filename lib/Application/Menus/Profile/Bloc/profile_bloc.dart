@@ -1,13 +1,18 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
+import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
+import 'package:test_app/Application/Menus/Profile/Detail/Bloc/profile_detail_bloc.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
+import 'package:test_app/Configuration/app_constants.dart';
+import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
+import 'package:test_app/Data/Services/util_service.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -25,6 +30,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Language.ru,
     Language.en,
   ];
+  int currentTab = 0;
+  UserModel? userModel;
+  List<List<Map<String, dynamic>>> profileDetailJsons = [
+    medicalHistory,
+    medicationsToken,
+    surgicalInterventions,
+    hereditaryFactors,
+    anthropometry,
+  ];
 
   ProfileBloc() : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
@@ -38,6 +52,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<DeleteAccountEvent>(pressDeleteAccount);
     on<ConfirmEvent>(pressConfirm);
     on<InfoEvent>(pressInfo);
+    on<NextEvent>(pressNext);
+    on<ListenScrollEvent>(listenScroll);
+    on<UpdateDetailEvent>(updateEmit);
   }
 
   void initialUser(InitialUserEvent event, Emitter<ProfileState> emit) async {
@@ -46,9 +63,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     selectedLang = LangService.getLanguage;
 
     fullName = mainBloc.userModel!.fullName!;
-    email = mainBloc.userModel!.email != null && mainBloc.userModel!.email!.isNotEmpty
-        ? mainBloc.userModel!.email!
-        : null;
+    email = mainBloc.userModel!.email != null && mainBloc.userModel!.email!.isNotEmpty ? mainBloc.userModel!.email! : null;
     dateSign = mainBloc.userModel!.createdTime!;
 
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
@@ -106,16 +121,88 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     await DBService.deleteData(StorageKey.user);
     locator.unregister<MainBloc>();
     locator.unregister<ProfileBloc>();
+    locator.unregister<ChatBloc>();
 
     if (event.context.mounted) {
       Navigator.pushNamedAndRemoveUntil(event.context, SignInPage.id, (route) => false);
     }
-    locator.registerSingleton<ProfileBloc>(ProfileBloc());
     locator.registerSingleton<MainBloc>(MainBloc());
+    locator.registerSingleton<ProfileBloc>(ProfileBloc());
+    locator.registerSingleton<ChatBloc>(ChatBloc());
   }
 
   void pressInfo(InfoEvent event, Emitter<ProfileState> emit) {
     mainBloc.add(MainHideBottomNavigationBarEvent());
     emit(ProfileInfoState());
+  }
+
+  void pressNext(NextEvent event, Emitter<ProfileState> emit) async {
+    if (event.index != 5) {
+      currentTab = event.index;
+      DefaultTabController.of(event.context).animateTo(event.index);
+      emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
+    } else {
+      for (int i = 4; i <= 8; i++) {
+        UserDetailModel userDetail = userModel!.userDetailList[3][i];
+        if (userDetail.index >= 4) {
+          bool checked = false;
+          for (Entries entry in userDetail.entries) {
+            if (entry.value == true) {
+              checked = true;
+              break;
+            }
+          }
+          if (!checked) {
+            Utils.mySnackBar(txt: 'unselected'.tr() + userDetail.title!.tr(), context: event.context, errorState: true);
+            currentTab = 3;
+            DefaultTabController.of(event.context).animateTo(3);
+            await Future.delayed(const Duration(milliseconds: 300));
+            if (event.context.mounted) {
+              event.context.read<ProfileDetailBloc>().add(UpdateDetailExpansionPanelEvent(
+                    tabIndex: 3,
+                    value: userDetail.index,
+                    pressSaveButton: true,
+                  ));
+            }
+            emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
+            return;
+          }
+        }
+      }
+
+      try {
+        event.context.read<ProfileDetailBloc>().add(DetailLoadingEvent());
+        await RTDBService.storeUser(userModel!);
+        await DBService.saveUser(userModel!);
+        mainBloc.userModel = userModel;
+        if (event.context.mounted) {
+          currentTab = 0;
+          Navigator.pop(event.context);
+          Utils.mySnackBar(txt: 'update_profile_success'.tr(), context: event.context);
+        }
+        emit(ProfileInitialState(darkMode: darkMode, email: email, phone: phoneNumber));
+      } catch (e) {
+        if (event.context.mounted) {
+          Navigator.pop(event.context);
+          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+        }
+      }
+    }
+  }
+
+  void listenScroll(ListenScrollEvent event, Emitter<ProfileState> emit) {
+    DefaultTabController.of(event.context).addListener(() async {
+      if (DefaultTabController.of(event.context).index != currentTab) {
+        currentTab = DefaultTabController.of(event.context).index;
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await Future.delayed(Duration.zero);
+          add(UpdateDetailEvent());
+        });
+      }
+    });
+  }
+
+  void updateEmit(UpdateDetailEvent event, Emitter<ProfileState> emit) {
+    emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
   }
 }

@@ -14,7 +14,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   CarouselController carouselController = CarouselController();
   int currentPage = 1;
-  final MainBloc mainBloc = locator<MainBloc>();
+  MainBloc mainBloc = locator<MainBloc>();
   bool first = true;
   String fullName = '';
 
@@ -26,6 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void initialData(InitialDataEvent event, Emitter<HomeState> emit) async {
     if (first) {
       first = false;
+      mainBloc = locator<MainBloc>();
       if (mainBloc.userModel == null) {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);
