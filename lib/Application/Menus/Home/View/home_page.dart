@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
+import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 
@@ -17,137 +19,206 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeBloc>(
-      create: (context) => HomeBloc(),
-      child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
-          HomeBloc bloc = context.read<HomeBloc>();
-          bloc.add(InitialDataEvent());
+    HomeBloc bloc = locator<HomeBloc>();
 
+    return BlocBuilder<HomeBloc, HomeState>(
+      bloc: bloc,
+      builder: (context, state) {
+        bloc.add(InitialDataEvent());
+        if (state is HomeLoadingState) {
           return Scaffold(
             backgroundColor: AppColors.transparent,
-            appBar: MyAppBar(titleText: 'hello'.tr() + (locator<MainBloc>().userModel?.fullName ?? '')),
-            body: Padding(
-              padding: const EdgeInsets.only(bottom: 83),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // #cards_scroll
-                    CarouselSlider(
-                      carouselController: bloc.carouselController,
-                      options: CarouselOptions(
-                        height: 218.0,
-                        enlargeCenterPage: true,
-                        viewportFraction: 0.875,
-                        enlargeFactor: .2,
-                        onPageChanged: (page, reason) => bloc.add(HomeScrollCardEvent(page: page)),
-                      ),
-                      items: [1, 2, 3].map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Stack(
-                              alignment: Alignment.topCenter,
-                              children: [
-                                // #card_shadows
-                                ClipRRect(
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                    child: Stack(
-                                      alignment: Alignment.topCenter,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context).size.width - 80,
-                                          margin: const EdgeInsets.only(top: 160),
-                                          height: 50,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.purpleLight.withOpacity(0.5),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
+            body: myIsLoading(context),
+          );
+        } else {
+          return Scaffold(
+          backgroundColor: AppColors.transparent,
+          appBar: MyAppBar(titleText: 'hello'.tr() + (locator<MainBloc>().userModel?.fullName ?? '')),
+          body: Padding(
+            padding: const EdgeInsets.only(bottom: 83),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // #cards_scroll
+                  CarouselSlider(
+                    carouselController: bloc.carouselController,
+                    options: CarouselOptions(
+                      height: 218.0,
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.875,
+                      enlargeFactor: .2,
+                      autoPlay: bloc.autoPlay,
+                      onPageChanged: (page, reason) => bloc.add(HomeScrollCardEvent(page: page)),
+                    ),
+                    items: bloc.articles.map((article) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              // #card_shadows
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(16),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                  child: Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width - 80,
+                                        margin: const EdgeInsets.only(top: 160),
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.purpleLight.withOpacity(0.5),
+                                          borderRadius: BorderRadius.circular(16),
                                         ),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width - 120,
-                                          margin: const EdgeInsets.only(top: 158),
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.purpleLight.withOpacity(0.2),
-                                            borderRadius: BorderRadius.circular(16),
-                                          ),
+                                      ),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width - 120,
+                                        margin: const EdgeInsets.only(top: 158),
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.purpleLight.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(16),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                // #card
-                                Stack(
-                                  alignment: Alignment.bottomLeft,
-                                  children: [
-                                    const MyCard(),
-                                    Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        // #card_image
-                                        Image.asset(
-                                          'assets/images/img_doctor_$i.png',
-                                          height: 200,
+                              ),
+                              // #card
+                              Stack(
+                                alignment: Alignment.bottomLeft,
+                                children: [
+                                  const MyCard(),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      // #card_image
+                                      Image.asset(
+                                        'assets/images/img_doctor_${(article.order + 2) % 3 + 1}.png',
+                                        height: 200,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            // #card_title
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                maxHeight: 80,
+                                                maxWidth: 170,
+                                                minWidth: 170,
+                                              ),
+                                              child: Text(
+                                                article.title,
+                                                style: AppTextStyles.style4_1(context),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(right: 8.0),
+                                              child: Divider(),
+                                            ),
+                                            // #card_info_text
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                maxHeight: 50,
+                                                maxWidth: 170,
+                                                minWidth: 170,
+                                              ),
+                                              child: Text(
+                                                article.content[0].content.trim(),
+                                                style: AppTextStyles.style8(context),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Expanded(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              // #card_text
-                                              SizedBox(
-                                                height: 80,
-                                                width: 170,
-                                                child: Text(
-                                                  'card_text_$i'.tr(),
-                                                  style: AppTextStyles.style4_1(context),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 3,
-                                                ),
-                                              ),
-                                              // #card_info_text
-                                              SizedBox(
-                                                height: 50,
-                                                width: 170,
-                                                child: Text(
-                                                  'card_info_text_$i'.tr(),
-                                                  style: AppTextStyles.style27(context),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 3,
-                                                ),
-                                              ),
-                                            ],
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }).toList(),
+                  ),
+
+                  // #content_texts
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: bloc.articles[bloc.currentPage - 1].content.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Content content = bloc.articles[bloc.currentPage - 1].content[index];
+                        if (index == 0) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                              child: Container(
+                                height: MediaQuery.of(context).size.width * 0.607,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.transparentPurple.withOpacity(.2),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        content.content,
+                                        style: AppTextStyles.style26(context).copyWith(
+                                          fontSize: content.large ? 18 : null,
+                                          color: AppColors.pink,
+                                          fontWeight: content.bold ? FontWeight.w600 : null,
+                                          fontStyle: content.italic ? FontStyle.italic : null,
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                      AnimatedOpacity(
+                                        opacity: bloc.opacityAnime,
+                                        duration: const Duration(milliseconds: 500),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(10),
+                                          child: Image.asset(
+                                            'assets/images/img_test_${bloc.opacityAnime == 0 ? (bloc.newPage + 2) % 3 + 1 : (bloc.newPage + 2) % 3 + 1}.png',
                                           ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          );
+                        }
+                        return Text(
+                          content.content,
+                          style: AppTextStyles.style26(context).copyWith(
+                            fontSize: content.large ? 18 : null,
+                            fontWeight: content.bold ? FontWeight.w600 : null,
+                            fontStyle: content.italic ? FontStyle.italic : null,
+                          ),
+                          textAlign: TextAlign.justify,
                         );
-                      }).toList(),
+                      },
                     ),
-                    // #content_texts
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                        12,
-                            (index) => Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Text('$index) ${'card_info_text_${bloc.currentPage}'.tr()}', style: AppTextStyles.style26(context)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+        }
+      },
     );
   }
 }
