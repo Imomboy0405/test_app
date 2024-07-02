@@ -20,9 +20,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   TextEditingController controller = TextEditingController();
   List<MessageModel> messages = [];
   bool showEmojis = false;
+  bool showKeyboard = false;
   bool initial = true;
   List<UserModel> users = [];
   UserModel? user;
+  FocusNode focusNode = FocusNode();
+  bool focus = true;
+  double keyboardHeight = 0;
 
   final List<String> emojis = [
     '😀',
@@ -132,7 +136,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     '👿'
   ];
 
-  ChatBloc() : super(ChatInitialState(showEmojis: false, messages: const [], length: 0, user: UserModel(
+  ChatBloc() : super(ChatInitialState(showEmojis: false, messages: const [], length: 0, focusNode: false, user: UserModel(
     fullName: '',
     createdTime: '',
     email: '',
@@ -148,6 +152,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatEmojiButtonEvent>(pressEmojiButton);
     on<ChatSendButtonEvent>(pressSendButton);
     on<ChatReceiveMessageEvent>(receiveMessage);
+    on<ChatKeyboardEvent>(keyboardUpdate);
     on<ChatInitialEvent>((event, emit) {
       if (initial) {
         if (user != null) {
@@ -166,6 +171,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       showEmojis: showEmojis,
       messages: messages,
       length: messages.length,
+      focusNode: focus,
       user: user ??
           UserModel(
             uId: '',
@@ -177,6 +183,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             userDetailList: [],
           ),
     ));
+  }
+
+  void keyboardUpdate(ChatKeyboardEvent event, Emitter<ChatState> emit) {
+    keyboardHeight = mainBloc.keyboardHeight;
+
+    if (keyboardHeight > 0) {
+      if (user == null) {
+        mainBloc.add(MainHideBottomNavigationBarEvent());
+      }
+      focus = false;
+    } else if (keyboardHeight == 0){
+      focus = true;
+      focusNode.unfocus();
+      if (user == null) {
+        mainBloc.add(MainLanguageEvent());
+      }
+    }
+    emitComfort(emit);
   }
 
   Future<void> getUsers(ChatGetUsersEvent event, Emitter<ChatState> emit) async {
@@ -214,18 +238,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> pressSendButton(ChatSendButtonEvent event, Emitter<ChatState> emit) async {
-    final msgModel = MessageModel(
-      msg: controller.text,
-      typeUser: user != null ? true : false,
-      dateTime: DateTime.now().toString().substring(11, 16),
-      id: DateTime.now().toString(),
-    );
-    messages.add(msgModel);
-    controller.clear();
+    if (controller.text.trim().isNotEmpty) {
+      final msgModel = MessageModel(
+        msg: controller.text.trim(),
+        typeUser: user != null ? true : false,
+        dateTime: DateTime.now().toString().substring(11, 16),
+        id: DateTime.now().toString(),
+      );
+      messages.add(msgModel);
+      controller.clear();
 
-    await messagesRef.push().set(msgModel.toJson());
-    if (!isClosed) {
-      emitComfort(emit);
+      await messagesRef.push().set(msgModel.toJson());
+      if (!isClosed) {
+        emitComfort(emit);
+      }
     }
   }
 

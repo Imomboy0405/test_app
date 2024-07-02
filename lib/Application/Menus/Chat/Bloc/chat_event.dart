@@ -57,3 +57,8 @@ class ChatPushInfoEvent extends ChatEvent {
   @override
   List<Object?> get props => [userModel, context];
 }
+
+class ChatKeyboardEvent extends ChatEvent {
+  @override
+  List<Object?> get props => [];
+}

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
@@ -23,22 +24,45 @@ class ChatUserInfoPage extends StatelessWidget {
       appBar: MyAppBar(
         titleText: bloc.user!.fullName!,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(5),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              // #user_info
-              Center(
-                child: Text(
-                  'user_info'.tr(),
-                  style: AppTextStyles.style0_1(context),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: bloc.user!.uId!,
+                    child: Container(
+                      height: 65,
+                      width: 65,
+                      decoration: BoxDecoration(
+                        color: AppColors.transparentPurple.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(33),
+                      ),
+                      child: Icon(
+                        CupertinoIcons.profile_circled,
+                        color: AppColors.purple,
+                        size: 60,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  // #user_info
+                  Flexible(
+                    child: Text(
+                      'user_info'.tr(),
+                      style: AppTextStyles.style0_1(context),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                ],
               ),
+
 
               Container(
                 width: double.infinity,
@@ -189,7 +213,7 @@ class ChatUserInfoPage extends StatelessWidget {
                       ),
                     );
                   },
-                )
+                ),
             ],
           ),
         ),

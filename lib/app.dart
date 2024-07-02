@@ -3,7 +3,6 @@ import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_page.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_page.dart';
-import 'package:test_app/Application/Menus/Profile/View/profile_page.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/View/quiz_page.dart';
 import 'package:test_app/Application/Menus/Test/Test/View/test_page.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/View/test_detail_page.dart';
@@ -17,6 +16,7 @@ import 'package:test_app/Data/Services/init_service.dart';
 
 import 'Application/Menus/Chat/View/chat_detail_page.dart';
 import 'Application/Menus/Chat/View/chat_user_info_page.dart';
+import 'Application/Menus/Profile/Profile/View/profile_page.dart';
 
 class TestApp extends StatelessWidget {
   final Future _initFuture = Init.initialize();

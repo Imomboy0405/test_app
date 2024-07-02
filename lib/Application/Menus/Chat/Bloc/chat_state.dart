@@ -9,11 +9,12 @@ final class ChatInitialState extends ChatState {
   final List<MessageModel> messages;
   final int length;
   final UserModel user;
+  final bool focusNode;
 
-  const ChatInitialState({required this.showEmojis, required this.messages, required this.length, required this.user});
+  const ChatInitialState({required this.showEmojis, required this.messages, required this.length, required this.user, required this.focusNode});
 
   @override
-  List<Object> get props => [showEmojis, messages, length, user];
+  List<Object> get props => [showEmojis, messages, length, user, focusNode];
 }
 
 final class ChatAdminState extends ChatState {

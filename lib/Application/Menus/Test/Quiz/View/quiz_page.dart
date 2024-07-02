@@ -79,39 +79,40 @@ class QuizPage extends StatelessWidget {
                 if (state is QuizInitialState)
                   Stack(
                     children: [
-                      Container(),
-
                       // #line_img
-                      const Padding(
-                        padding: EdgeInsets.only(left: 270, top: 30),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 270, top: 30),
                         child: Image(
-                          image: AssetImage('assets/images/img_line.png'),
+                          image: const AssetImage('assets/images/img_line.png'),
                           height: 100,
                           width: 40,
+                          color: AppColors.black,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 165, left: 50),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 165, left: 50),
                         child: Image(
-                          image: AssetImage('assets/images/img_line.png'),
+                          image: const AssetImage('assets/images/img_line.png'),
                           height: 80,
                           width: 40,
+                          color: AppColors.black,
                         ),
                       ),
 
                       // #circle_grass_containers
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOutBack,
-                        left: bloc.animatePosLeft2,
-                        top: bloc.animatePosTop2,
-                        child: const MyCircleGlassContainer(isStartPage: false),
+                      const Positioned(
+                        left: 30,
+                        top: 30,
+                        child: MyCircleGlassContainer(isStartPage: false),
                       ),
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOutBack,
-                        left: bloc.animatePosLeft,
-                        top: bloc.animatePosTop,
+                      const Positioned(
+                        left: 70,
+                        top: 190,
+                        child: MyCircleGlassContainer(isStartPage: false, mini: true),
+                      ),
+                      Positioned(
+                        left: 90,
+                        top: 50,
                         child: AvatarGlow(
                           glowColor: AppColors.black,
                           animate: bloc.percent == 100,
@@ -119,20 +120,11 @@ class QuizPage extends StatelessWidget {
                           child: MyCircleGlassContainer(isStartPage: false, transparent: bloc.percent != 100),
                         ),
                       ),
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOutBack,
-                        left: bloc.animatePosLeftMini,
-                        top: bloc.animatePosTopMini,
-                        child: const MyCircleGlassContainer(isStartPage: false, mini: true),
-                      ),
 
                       // #test_percent
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.easeInOutBack,
-                        left: bloc.animatePosLeft + 52,
-                        top: bloc.animatePosTop + 65,
+                      Positioned(
+                        left: 142,
+                        top: 115,
                         child: Stack(
                           children: [
                             Padding(

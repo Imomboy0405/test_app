@@ -14,6 +14,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   int currentScreen = 1;
   int oldScreen = 1;
+  double keyboardHeight = 0;
   List<int> resultTests = [-1, -1, -1];
   bool menuButtonPressed = false;
   final List<AssetImage> listOfMenuIcons = [

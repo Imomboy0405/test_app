@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
-import 'package:test_app/Application/Menus/Profile/Bloc/profile_bloc.dart';
+import 'package:test_app/Application/Menus/Profile/Profile/Bloc/profile_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/Bloc/profile_detail_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
@@ -408,7 +408,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Image.asset(
-                    'assets/images/bmi.png',
+                    'assets/images/img_bmi.png',
                     height: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value.toDouble(),
                     width: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value * 1.2,
                     fit: BoxFit.fill,

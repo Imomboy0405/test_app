@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:test_app/Data/Models/chat_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
@@ -35,7 +36,7 @@ class RTDBService {
         try {
           return UserModel.fromJson(Map<String, dynamic>.from(model));
         } catch (e) {
-          print('Xatolik: $e');
+          debugPrint('Xatolik: $e');
           return null;
         }
       })

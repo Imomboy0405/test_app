@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
-import 'package:test_app/Application/Menus/Profile/Bloc/profile_bloc.dart';
+import 'package:test_app/Application/Menus/Profile/Profile/Bloc/profile_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';

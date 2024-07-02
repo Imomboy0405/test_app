@@ -1,10 +1,10 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_detail_page.dart';
-import 'package:test_app/Application/Menus/Test/Test/View/test_widgets.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
@@ -28,6 +28,8 @@ class ChatPage extends StatelessWidget {
         }
         return Scaffold(
           backgroundColor: AppColors.transparent,
+          resizeToAvoidBottomInset: true,
+
           appBar: MyAppBar(titleText: 'chat'.tr()),
           body: bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22'
               ? Container(
@@ -64,25 +66,27 @@ class ChatPage extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: [
-                                    // #image
-                                    Container(
-                                        width: 65,
-                                        height: 65,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.transparentPurple.withOpacity(.2),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: InkWell(
-                                          onTap: () => bloc.add(ChatPushInfoEvent(userModel: bloc.users[index], context: context)),
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: Image.asset(
-                                              'assets/images/img_shield.png',
-                                              fit: BoxFit.fitHeight,
-                                            ),
+                                    // #profile_button
+                                    InkWell(
+                                      onTap: () => bloc.add(ChatPushInfoEvent(userModel: bloc.users[index], context: context)),
+                                      borderRadius: BorderRadius.circular(33),
+                                      child: Hero(
+                                        tag: bloc.users[index].uId!,
+                                        child: Container(
+                                          width: 65,
+                                          height: 65,
+                                          decoration: BoxDecoration(
+                                            color: AppColors.transparentPurple.withOpacity(.2),
+                                            borderRadius: BorderRadius.circular(33),
                                           ),
-                                        )),
+                                          child: Icon(
+                                            CupertinoIcons.profile_circled,
+                                            color: AppColors.purple,
+                                            size: 60,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     const SizedBox(width: 10),
 
                                     // #texts
@@ -119,17 +123,7 @@ class ChatPage extends StatelessWidget {
                     },
                   ),
                 )
-              : Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: MyTestCard(
-                    imgAsset: 'assets/images/img_doctor_1.png',
-                    title: 'Admin ism familiyasi',
-                    content: bloc.messages.isEmpty ? '' : bloc.messages.last.msg,
-                    question: null,
-                    result: null,
-                    enterTest: () => Navigator.pushNamed(context, ChatDetailPage.id),
-                  ),
-                ),
+              : const ChatDetailPage(),
         );
       },
     );

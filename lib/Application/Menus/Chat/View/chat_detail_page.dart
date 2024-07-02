@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
-import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
@@ -15,7 +14,6 @@ class ChatDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatBloc bloc = locator<ChatBloc>();
-
     return BlocBuilder<ChatBloc, ChatState>(
       bloc: bloc,
       builder: (context, state) {
@@ -25,12 +23,13 @@ class ChatDetailPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: AppColors.black,
           resizeToAvoidBottomInset: true,
-          appBar: const MyAppBar(titleText: 'Admin 5'),
+          // appBar: MyAppBar(titleText: bloc.user != null ? bloc.user!.fullName! : 'Imomboy Mirislomov'),
           body: Column(
             children: [
               Expanded(
                 child: ListView.builder(
                   reverse: true,
+                  shrinkWrap: true,
                   itemCount: bloc.messages.length,
                   itemBuilder: (context, index) {
                     return Row(
@@ -50,9 +49,9 @@ class ChatDetailPage extends StatelessWidget {
                             color: bloc.messages[bloc.messages.length - index - 1].typeUser
                                 ? bloc.user != null
                                     ? AppColors.purple
-                                    : AppColors.purpleAccent
+                                    : AppColors.darkPink
                                 : bloc.user != null
-                                    ? AppColors.purpleAccent
+                                    ? AppColors.darkPink
                                     : AppColors.purple,
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -62,12 +61,12 @@ class ChatDetailPage extends StatelessWidget {
                               // #massage_text
                               Text(
                                 bloc.messages[bloc.messages.length - index - 1].msg,
-                                style: AppTextStyles.style8(context),
+                                style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
                               ),
                               // #date_time
                               Text(
                                 bloc.messages[bloc.messages.length - index - 1].dateTime,
-                                style: AppTextStyles.style8(context),
+                                style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
                               ),
                             ],
                           ),
@@ -81,12 +80,15 @@ class ChatDetailPage extends StatelessWidget {
               // #text_field
               ChatTextField(
                 controller: bloc.controller,
+                focusNode: bloc.focusNode,
                 emojis: bloc.emojis,
                 showEmojis: bloc.showEmojis,
                 pressEmoji: ({required String emoji}) => bloc.add(ChatEmojiEvent(emoji: emoji)),
                 pressEmojiButton: () => bloc.add(ChatEmojiButtonEvent()),
                 pressSendButton: () => bloc.add(ChatSendButtonEvent()),
+                onTap: () => (),
               ),
+              if (bloc.focus && bloc.user == null) const SizedBox(height: 83),
             ],
           ),
         );
@@ -98,9 +100,11 @@ class ChatDetailPage extends StatelessWidget {
 class ChatTextField extends StatelessWidget {
   final bool showEmojis;
   final TextEditingController controller;
+  final FocusNode focusNode;
   final List<String> emojis;
   final void Function() pressSendButton;
   final void Function() pressEmojiButton;
+  final void Function() onTap;
   final void Function({required String emoji}) pressEmoji;
 
   const ChatTextField(
@@ -110,34 +114,41 @@ class ChatTextField extends StatelessWidget {
       required this.pressSendButton,
       required this.pressEmojiButton,
       required this.pressEmoji,
+      required this.onTap,
+      required this.focusNode,
       super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return Stack(
+      alignment: Alignment.bottomCenter,
       children: [
-        if (showEmojis)
-          Container(
-            height: 200,
-            decoration: BoxDecoration(color: AppColors.black, border: Border.all(color: AppColors.purple)),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: MediaQuery.of(context).size.width ~/ 50,
-              ),
-              itemCount: emojis.length,
-              itemBuilder: (context, index) {
-                return IconButton(
-                  onPressed: () => pressEmoji(emoji: emojis[index]),
-                  icon: Text(
-                    emojis[index],
-                    style: const TextStyle(fontSize: 28),
-                  ),
-                );
-              },
-            ),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 500),
+          height: showEmojis ? 220 : 0,
+          decoration: BoxDecoration(
+            color: AppColors.black,
+            border: Border.all(color: AppColors.purple, width: 1)
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          margin: const EdgeInsets.only(bottom: 55),
+          child: GridView.builder(
+            padding: EdgeInsets.zero,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: MediaQuery.of(context).size.width ~/ 50,
+            ),
+            itemCount: emojis.length,
+            itemBuilder: (context, index) {
+              return IconButton(
+                onPressed: () => pressEmoji(emoji: emojis[index]),
+                icon: Text(
+                  emojis[index],
+                  style: const TextStyle(fontSize: 28),
+                ),
+              );
+            },
+          ),
+        ),
         Container(
           margin: const EdgeInsets.only(bottom: 5),
           decoration: BoxDecoration(
@@ -152,11 +163,13 @@ class ChatTextField extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  focusNode: focusNode,
                   minLines: 1,
                   maxLines: 6,
                   controller: controller,
                   cursorColor: AppColors.purple,
                   style: AppTextStyles.style9(context),
+                  onTap: () => onTap(),
                   decoration: InputDecoration(
                       hintText: 'write_msg'.tr(),
                       hintStyle: AppTextStyles.style25(context),

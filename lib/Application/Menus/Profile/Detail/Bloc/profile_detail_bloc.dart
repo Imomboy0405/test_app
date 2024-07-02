@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app/Application/Menus/Profile/Bloc/profile_bloc.dart';
+import 'package:test_app/Application/Menus/Profile/Profile/Bloc/profile_bloc.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 
