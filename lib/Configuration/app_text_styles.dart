@@ -3,7 +3,7 @@ import 'app_colors.dart';
 
 abstract class AppTextStyles {
   /// color: blue, size: 40, weight: bold, font: monda
-  static TextStyle style0 = const TextStyle(color: Color(0xff9D25A8), fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Monda', letterSpacing: 1.5);
+  static TextStyle style0 = const TextStyle(color: Color(0xffFF00FA), fontSize: 40, fontWeight: FontWeight.bold, fontFamily: 'Monda', letterSpacing: 1.5);
 
   /// Example text style: color - blue, size - 20, weight - bold, font - monda
   static TextStyle style0_1(BuildContext context) => _baseStyle(context, AppColors.purple, 20, FontWeight.bold, 'Monda', letterSpacing: 1.5);
@@ -134,8 +134,8 @@ abstract class AppTextStyles {
   /// Example text style: color - lightGrey, size - 14, weight - w700, font - Ubuntu
   static TextStyle style25_2(BuildContext context) => _baseStyle(context, AppColors.lightGrey, 14, FontWeight.w700, 'Ubuntu');
 
-  /// Example text style: color - white, size - 14, weight - w400, font - Ubuntu
-  static TextStyle style26(BuildContext context) => _baseStyle(context, AppColors.white, 14, FontWeight.w400, 'Ubuntu');
+  /// Example text style: color - white, size - 16, weight - w400, font - Ubuntu
+  static TextStyle style26(BuildContext context) => _baseStyle(context, AppColors.white, 16, FontWeight.w400, 'Ubuntu');
 
   /// Example text style: color - black, size - 12, weight - w500, font - Ubuntu
   static TextStyle style27(BuildContext context) => _baseStyle(context, AppColors.black, 11, FontWeight.w500, 'Ubuntu');

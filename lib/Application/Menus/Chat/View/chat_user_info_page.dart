@@ -76,13 +76,13 @@ class ChatUserInfoPage extends StatelessWidget {
                   children: [
                     // #full_name
                     userInfoChild(context: context, bloc: bloc, title: 'full_name'.tr(), child: bloc.user!.fullName!),
-                    const Divider(),
+                    Divider(color: AppColors.black),
                     // #id
                     userInfoChild(context: context, bloc: bloc, title: 'id'.tr(), child: bloc.user!.uId!),
-                    const Divider(),
+                    Divider(color: AppColors.black),
                     // #email
                     userInfoChild(context: context, bloc: bloc, title: 'email'.tr(), child: bloc.user!.email!),
-                    const Divider(),
+                    Divider(color: AppColors.black),
                     // #created_date
                     userInfoChild(context: context, bloc: bloc, title: 'date_sign'.tr(), child: bloc.user!.createdTime!),
                   ],
@@ -125,11 +125,18 @@ class ChatUserInfoPage extends StatelessWidget {
                             width: double.infinity,
                             color: AppColors.black,
                             alignment: Alignment.center,
-                            child: Text(
-                              tabTitles[tabIndex].tr(),
-                              style: AppTextStyles.style18_0(context),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  tabTitles[tabIndex].tr(),
+                                  style: AppTextStyles.style18_0(context),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                const SizedBox(width: 5),
+                                bloc.icons[tabIndex]
+                              ],
                             ),
                           ),
                           if (list[0] is Entries) const SizedBox(height: 5),
@@ -150,7 +157,7 @@ class ChatUserInfoPage extends StatelessWidget {
                                         ? Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              if (index != 0 && tabIndex != 3) const Divider(),
+                                              if (index != 0 && tabIndex != 3) Divider(color: AppColors.black),
                                               if (tabIndex == 3 && index == 0) const SizedBox(height: 5),
 
                                               // #check_select_model_found_and_model_value_is_yes

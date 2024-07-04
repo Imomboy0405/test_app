@@ -66,11 +66,17 @@ class DeleteAccountEvent extends ProfileEvent {
 class ConfirmEvent extends ProfileEvent {
   final BuildContext context;
   final bool delete;
+  final bool tutorial;
 
-  ConfirmEvent({required this.context, this.delete = false});
+  ConfirmEvent({required this.context, this.delete = false, this.tutorial = false});
 
   @override
-  List<Object?> get props => [context, delete];
+  List<Object?> get props => [context, delete, tutorial];
+}
+
+class TutorialEvent extends ProfileEvent {
+  @override
+  List<Object?> get props => [];
 }
 
 class InfoEvent extends ProfileEvent {
@@ -105,3 +111,11 @@ class UpdateDetailEvent extends ProfileEvent {
 
 }
 
+class ProfileShowCaseEvent extends ProfileEvent {
+  final BuildContext context;
+
+  ProfileShowCaseEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
+}

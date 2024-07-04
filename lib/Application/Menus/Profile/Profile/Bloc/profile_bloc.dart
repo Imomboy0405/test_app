@@ -1,11 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
+import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/Bloc/profile_detail_bloc.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Configuration/app_constants.dart';
+import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
@@ -18,7 +21,7 @@ part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final MainBloc mainBloc = locator<MainBloc>();
+  final MainBloc mainBloc;
   bool darkMode = ThemeService.getTheme == ThemeMode.dark;
   String fullName = '';
   String dateSign = '';
@@ -40,7 +43,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     anthropometry,
   ];
 
-  ProfileBloc() : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
+  final keyMedicalInfo = GlobalKey(debugLabel: 'showMedicalInfo');
+
+  ProfileBloc({required this.mainBloc}) : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
     on<ProfileUpdateEvent>(pressProfileUpdate);
     on<LanguageEvent>(pressLanguage);
@@ -55,6 +60,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<NextEvent>(pressNext);
     on<ListenScrollEvent>(listenScroll);
     on<UpdateDetailEvent>(updateEmit);
+    on<ProfileShowCaseEvent>(showCase);
+    on<TutorialEvent>(pressTutorial);
+  }
+
+  Future<void> showCase(ProfileShowCaseEvent event, Emitter<ProfileState> emit) async {
+    ShowCaseWidget.of(event.context).startShowCase([keyMedicalInfo]);
+    emit(ProfileInitialState(darkMode: darkMode, email: email, phone: phoneNumber));
+    mainBloc.showCaseModel.profile = true;
+    await DBService.saveShowCase(mainBloc.showCaseModel);
   }
 
   void initialUser(InitialUserEvent event, Emitter<ProfileState> emit) async {
@@ -114,6 +128,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void pressConfirm(ConfirmEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileLoadingState());
+    if (event.tutorial) {
+      mainBloc.showCaseModel = ShowCaseModel();
+      await DBService.saveShowCase(mainBloc.showCaseModel);
+      mainBloc.add(MainLanguageEvent());
+      return;
+    }
 
     if (event.delete) {
       await RTDBService.deleteUser(mainBloc.userModel!);
@@ -121,19 +141,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     await DBService.deleteData(StorageKey.user);
     locator.unregister<MainBloc>();
     locator.unregister<ProfileBloc>();
+    locator.unregister<HomeBloc>();
     locator.unregister<ChatBloc>();
 
     if (event.context.mounted) {
       Navigator.pushNamedAndRemoveUntil(event.context, SignInPage.id, (route) => false);
     }
     locator.registerSingleton<MainBloc>(MainBloc());
-    locator.registerSingleton<ProfileBloc>(ProfileBloc());
+    locator.registerSingleton<ProfileBloc>(ProfileBloc(mainBloc: locator<MainBloc>()));
+    locator.registerSingleton<HomeBloc>(HomeBloc());
     locator.registerSingleton<ChatBloc>(ChatBloc());
   }
 
   void pressInfo(InfoEvent event, Emitter<ProfileState> emit) {
     mainBloc.add(MainHideBottomNavigationBarEvent());
     emit(ProfileInfoState());
+  }
+
+  void pressTutorial(TutorialEvent event, Emitter<ProfileState> emit) {
+    mainBloc.add(MainHideBottomNavigationBarEvent());
+    emit(ProfileTutorialState());
   }
 
   void pressNext(NextEvent event, Emitter<ProfileState> emit) async {

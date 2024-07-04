@@ -16,17 +16,13 @@ part 'quiz_state.dart';
 class QuizBloc extends Bloc<QuizEvent, QuizState> {
   MainBloc mainBloc;
   int currentQuiz = 1;
+  int oldQuiz = 1;
   int percent = 0;
   int selectedValue = 0;
+  double opacityAnime = 1;
   List<int> answers = [];
   List<QuizModel> quizModels = [];
   ScrollController quizNumberController = ScrollController();
-  double animatePosLeft = 90;
-  double animatePosTop = 50;
-  double animatePosLeft2 = 30;
-  double animatePosTop2 = 30;
-  double animatePosLeftMini = 70;
-  double animatePosTopMini = 200;
   int result = -1;
   String resultText = '';
   bool? confetti;
@@ -38,6 +34,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           selectedValue: 0,
           result: -1,
           quizModels: [],
+          opacityAnime: 1,
         )) {
     on<SelectQuizNumberEvent>(selectQuizNumber);
     on<SelectVariantEvent>(selectVariant);
@@ -54,6 +51,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       selectedValue: selectedValue,
       result: result,
       quizModels: quizModels,
+      opacityAnime: opacityAnime,
     ));
   }
 
@@ -81,10 +79,15 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emitInitial(emit);
   }
 
-  void selectQuizNumber(SelectQuizNumberEvent event, Emitter<QuizState> emit) {
+  void selectQuizNumber(SelectQuizNumberEvent event, Emitter<QuizState> emit) async {
+    opacityAnime = 0;
+    oldQuiz = currentQuiz;
     currentQuiz = event.quizNumber;
     selectedValue = answers[event.quizNumber - 1];
     percent = answers.where((answer) => answer != 0).length * 100 ~/ answers.length;
+    emitInitial(emit);
+    await Future.delayed(const Duration(milliseconds: 300));
+    opacityAnime = 1;
     emitInitial(emit);
   }
 
@@ -94,7 +97,6 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         selectedValue = event.value;
         answers[currentQuiz - 1] = selectedValue;
         percent = answers.where((answer) => answer != 0).length * 100 ~/ answers.length;
-        updateAnimate();
       } else {
         selectedValue = event.value;
         answers[currentQuiz - 1] = selectedValue;
@@ -147,6 +149,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void pressNext(NextButtonEvent event, Emitter<QuizState> emit) async {
     if (answers.contains(0)) {
+      oldQuiz = currentQuiz;
       if (currentQuiz < answers.lastIndexOf(0) + 1) {
         currentQuiz = answers.indexOf(0, currentQuiz) + 1;
       } else {
@@ -158,6 +161,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       } else if (currentQuiz * 55 - 55 < quizNumberController.offset) {
         quizNumberController.animateTo(currentQuiz * 55 - 55, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       }
+      opacityAnime = 0;
+      emitInitial(emit);
+      await Future.delayed(const Duration(milliseconds: 300));
+      opacityAnime = 1;
       emitInitial(emit);
     } else {
       if (state is QuizFinishState) {
@@ -188,14 +195,5 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         }
       }
     }
-  }
-
-  void updateAnimate() {
-    animatePosLeft = animatePosLeft == 90 ? 40 : 90;
-    animatePosTop = animatePosTop == 50 ? 35 : 50;
-    animatePosLeft2 = animatePosLeft2 == 30 ? 100 : 30;
-    animatePosTop2 = animatePosTop2 == 30 ? 80 : 30;
-    animatePosLeftMini = animatePosLeftMini == 70 ? 250 : 70;
-    animatePosTopMini = animatePosTopMini == 200 ? 60 : 200;
   }
 }

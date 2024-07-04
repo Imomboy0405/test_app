@@ -28,11 +28,9 @@ class QuizPage extends StatelessWidget {
         builder: (context, state)
     {
       QuizBloc bloc = context.read<QuizBloc>();
-      if (bloc.quizModels.isEmpty) {
-        bloc.add(InitialQuestionsEvent());
-      }
 
         if (bloc.quizModels.isEmpty) {
+          bloc.add(InitialQuestionsEvent());
           return const Center(child: CircularProgressIndicator());
         } else {
           return Scaffold(
@@ -232,15 +230,22 @@ class QuizPage extends StatelessWidget {
                                             }),
                                       ),
                                       const Spacer(),
+
                                       // #quiz_text
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                                        child: Text(
-                                          '${bloc.currentQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.currentQuiz - 1].question}',
-                                          style: AppTextStyles.style16(context),
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 3,
+                                      AnimatedOpacity(
+                                        opacity: bloc.opacityAnime,
+                                        duration: const Duration(milliseconds: 300),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: Text(
+                                            bloc.opacityAnime == 0
+                                              ? '${bloc.oldQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.oldQuiz - 1].question}'
+                                              : '${bloc.currentQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.currentQuiz - 1].question}',
+                                            style: AppTextStyles.style16(context),
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                          ),
                                         ),
                                       ),
                                       const Spacer(),
@@ -263,6 +268,7 @@ class QuizPage extends StatelessWidget {
                           ],
                         ),
 
+                      // #mini_buttons
                       Visibility(
                         visible: state is QuizFinishState,
                         child: Column(
@@ -301,6 +307,7 @@ class QuizPage extends StatelessWidget {
                         ),
                       ),
 
+                      // #anime_result
                       Visibility(
                         visible: state is QuizFinishState,
                         child: Lottie.asset(

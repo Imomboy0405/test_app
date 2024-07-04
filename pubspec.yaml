@@ -42,6 +42,9 @@ dependencies:
   flutter_svg: any
   lottie: any
   numberpicker: any
+  animated_text_kit: any
+  shimmer: any
+  showcaseview: any
 
   # json
   json_annotation: any

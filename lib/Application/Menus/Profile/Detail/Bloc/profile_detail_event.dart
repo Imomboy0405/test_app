@@ -49,3 +49,22 @@ class UpdateDetailExpansionPanelEvent extends ProfileDetailEvent {
   @override
   List<Object?> get props => [tabIndex, value, false];
 }
+
+class ShowCaseEvent extends ProfileDetailEvent {
+  final BuildContext context;
+  final bool tapCheckBox;
+  final bool tapNextButton;
+  final bool tapBMI;
+  final bool tapSave;
+
+  const ShowCaseEvent({
+    required this.context,
+    this.tapCheckBox = false,
+    this.tapNextButton = false,
+    this.tapBMI = false,
+    this.tapSave = false,
+  });
+
+  @override
+  List<Object?> get props => [context, tapCheckBox, tapNextButton, tapBMI, tapSave];
+}

@@ -9,8 +9,8 @@ final locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   locator.registerSingleton<MainBloc>(MainBloc());
-  locator.registerSingleton<ProfileBloc>(ProfileBloc());
+  locator.registerSingleton<ProfileBloc>(ProfileBloc(mainBloc: locator<MainBloc>()));
   locator.registerSingleton<ChatBloc>(ChatBloc());
-  locator.registerSingleton<TestDetailBloc>(TestDetailBloc());
+  locator.registerSingleton<TestDetailBloc>(TestDetailBloc(mainBloc: locator<MainBloc>()));
   locator.registerSingleton<HomeBloc>(HomeBloc());
 }

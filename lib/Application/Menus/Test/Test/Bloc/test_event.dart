@@ -12,5 +12,14 @@ class EnterTestEvent extends TestEvent {
 
   @override
   List<Object?> get props => [index, context];
+}
 
+
+class ShowCaseEvent extends TestEvent {
+  final BuildContext context;
+
+  const ShowCaseEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
 }

@@ -45,8 +45,8 @@ class MainPage extends StatelessWidget {
 
                       PageView(
                         physics: state is MainInitialState
-                                   ? const BouncingScrollPhysics()
-                                   : const NeverScrollableScrollPhysics(),
+                            ? const BouncingScrollPhysics()
+                            : const NeverScrollableScrollPhysics(),
                         controller: bloc.controller,
                         pageSnapping: true,
                         children: const [

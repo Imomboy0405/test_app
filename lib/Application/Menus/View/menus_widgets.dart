@@ -1,10 +1,13 @@
 import 'dart:ui';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_svg/svg.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
@@ -85,21 +88,24 @@ class MyBottomNavigationBar extends StatelessWidget {
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String titleText;
+  final bool animatedHellos;
+  final bool purpleBackground;
+  final void Function()? titleTap;
 
-  const MyAppBar({super.key, required this.titleText});
+  const MyAppBar({super.key, required this.titleText, this.animatedHellos = false, this.titleTap, this.purpleBackground = false});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0,
-      backgroundColor: AppColors.black,
+      backgroundColor: purpleBackground ? AppColors.purpleAccent : AppColors.black,
       surfaceTintColor: AppColors.black,
       shadowColor: AppColors.purple,
       foregroundColor: AppColors.purple,
       titleSpacing: 10,
       title: Row(
         children: [
-          // #color_image
+          // #image
           const SizedBox(width: 10),
           const Image(
             image: AssetImage('assets/images/img_heart.png'),
@@ -109,8 +115,34 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(width: 12),
 
-          // #title
-          Text(titleText, style: AppTextStyles.style18_0(context)),
+          // #title_text
+          if (titleTap != null)
+            GestureDetector(
+              onTap: () => titleTap!(),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Text(titleText, style: AppTextStyles.style18_0(context)),
+              ),
+            )
+          else
+            Text(titleText, style: purpleBackground ? AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst) : AppTextStyles.style18_0(context)),
+
+          // #animated_text
+          if (animatedHellos)
+            Flexible(
+              child: AnimatedTextKit(
+                totalRepeatCount: 1,
+                animatedTexts: [
+                  RotateAnimatedText('hello1'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello2'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello3'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello4'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello5'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello6'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  RotateAnimatedText('hello7'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                ],
+              ),
+            ),
         ],
       ),
     );
@@ -352,5 +384,91 @@ Padding myBackground(BuildContext context) {
         height: MediaQuery.of(context).size.height,
       ),
     ),
+  );
+}
+
+class MyCard extends StatelessWidget {
+  const MyCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 185,
+      decoration: BoxDecoration(
+        color: AppColors.pink,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.purpleAccent.withOpacity(0.3),
+            blurRadius: 7,
+            spreadRadius: 2,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Stack(
+          children: [
+            Positioned(
+              top: -20,
+              left: -20,
+              child: myShadow(),
+            ),
+            Positioned(
+              bottom: -20,
+              right: -20,
+              child: myShadow(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container myShadow() {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.transparentBlack,
+            blurRadius: 50,
+            spreadRadius: 75,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Showcase myShowcase({
+  required BuildContext context,
+  required GlobalKey key,
+  required String title,
+  required String description,
+  required Widget child,
+  void Function()? onTap,
+}) {
+  return Showcase(
+    key: key,
+    description: description,
+    title: title,
+    titleTextStyle: AppTextStyles.style18_0(context),
+    descTextStyle: AppTextStyles.style23(context),
+    titleAlignment: TextAlign.center,
+    disableMovingAnimation: true,
+    disableScaleAnimation: true,
+    tooltipPadding: const EdgeInsets.all(15),
+    onBarrierClick: () => onTap != null? onTap() : (),
+    onToolTipClick: () => onTap != null? onTap() : (),
+    onTargetClick: () => onTap != null? onTap() : (),
+    disposeOnTap: true,
+    child: child,
   );
 }

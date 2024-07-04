@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/theme_service.dart' as theme;
 import 'package:test_app/Data/Services/lang_service.dart';
@@ -11,6 +12,7 @@ part 'main_state.dart';
 class MainBloc extends Bloc<MainEvent, MainState> {
   bool darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
   Language language = LangService.getLanguage;
+  ShowCaseModel showCaseModel = ShowCaseModel();
 
   int currentScreen = 1;
   int oldScreen = 1;

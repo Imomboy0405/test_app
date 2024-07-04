@@ -1,9 +1,9 @@
 const Map<String, String> uzUZ = {
   /// StartPage
-  'welcome_1': 'IBillinga hush kelibsiz',
-  'welcome_2': 'IBillingda saqlang va qidiring',
-  'welcome_3': 'IBillingda yuksaling',
-  'welcome_info': 'IBilling vositasi mijozlar va istiqbolli aloqa ma\'lumotlarini saqlash, sotish imkoniyatlarini aniqlash imkonini beradi',
+  'welcome_1': 'Test appga hush kelibsiz',
+  'welcome_2': 'Sog\'lik muommolaridan halos bo\'ling',
+  'welcome_3': 'Ilova yordamida doim sog\'lom bo\'ling',
+  'welcome_info': 'Test app sog\'ligingiz haqida maqolalar, tibbiy ma\'lumotlar, testlarni sizga taqdim etadi',
   'log_in': 'Tizimga kirish',
   'log_info': 'Tizimga kirish orqali siz quyidagilarga rozilik berasiz ',
   'terms': 'Foydalanish shartlari',
@@ -78,12 +78,13 @@ const Map<String, String> uzUZ = {
   'delete_account': 'Akauntni o\'chirish',
   'confirm_sign_out': 'Haqiqatan ham hisobingizdan chiqmoqchi ekanligingizni tasdiqlang',
   'confirm_delete_account': 'Haqiqatan ham hisobingizni o\'chirmoqchi ekanligingizni tasdiqlang',
+  'tutorial': 'Foydalanishni qo\'llanmasi',
+  'tutorial_text': 'Ilovadan foydalanish qo\'llanmasini qaytadan namoyish qilishni tasdiqlang',
   'info': 'Ilova haqida ma\'lumot',
-  'info_text':
-      'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
+  'info_text': 'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
   'email_not_set': 'E-pochta o\'rnatilmagan',
   'phone_not_set': 'Telefon raqami o\'rnatilmagan',
-  'update_profile_success': 'Profil muvofaqqiyatli yangilandi',
+  'update_profile_success': 'Tibbiy m\'lumotlar muvofaqqiyatli yangilandi',
 
   /// ProfileDetailPage
   'save': 'Saqlash',
@@ -158,25 +159,34 @@ const Map<String, String> uzUZ = {
   'by_kg': 'Kg:',
   "height_cm": "Bo'y (sm)",
   "weight_kg": "Vazn (kg)",
-  "waist": "Bel",
-  "hips": "Son",
+  "waist": "Bel o'lchami",
+  "hips": "Son o'lchami",
   "volume": "Hajm",
   "blood_pressure_mm_hg": "Qon bosimi (mm sim. ust.)",
   "physic_state": "Umumiy fizik holati",
   "unselected": "Tanlanmagan! ",
 
-  /// NewPage
-  'fisher_full_name': 'Ism-familiya',
-  'snack_full_name': 'Ism-familiya to\'liq kiritilishi kerak',
-
   /// HomePage
-  'hello': 'Salom👋, ',
-  'card_text_1': 'Oddiy usullar Sog\'lom hayot uchun',
-  'card_text_2': 'Sizning sog\'ligingiz Bizning ustuvorligimiz',
-  'card_text_3': 'Sog\'lom turmush tarzida davom eting',
-  'card_info_text_1': 'Biz tavsiya bergan usullardan hayotingizda foydalaning',
-  'card_info_text_2': 'Biz sizni sog\'ligingiz haqida qayg\'uramiz',
-  'card_info_text_3': 'Sog\'lom turmush tarzini qanday topish mumkin qiyin ish o\'rtasida.',
+  'hello1': ' 👋 Salom!',
+  'hello2': ' 👋 Hello!',
+  'hello3': ' 👋 Привет!',
+  'hello4': ' 👋 Bonjour!',
+  'hello5': ' 👋 Hallo!',
+  'hello6': ' !أهلاً بك 👋 ',
+  'hello7': ' 👋 Саламатсызба!',
+  'show_carousel_title': 'Karuselni suring',
+  'show_carousel_description': 'Karuselni surish orqali keyingi maqolaga o\'ting',
+  'show_medical_info_title': 'Tibbiy ma\'lumotlaringiz',
+  'show_medical_info_description': 'Tibbiy ma\'lumot bo\'limiga kirib tibbiy ma\'lumotlaringizni o\'rnating va saqlang',
+  'show_check_box_title': 'Belgilash uchun bosing',
+  'show_check_box_description': 'Sizga ta\'luqli bo\'lgan barcha holatlarni belgilang va tibbiy ma\'lumotlaringizni shaklantiring, '
+      'bu ma\'lumotlarni shifokor o\'rganib chiqadi',
+  'show_next_button_title': 'Keyingi tugmani bosing',
+  'show_next_button_description': 'Ushbu oyna ma\'lumotlarini to\'ldirib bo\'lgach keyingi oynaga o\'tish uchun bosing',
+  'show_BMI_title': 'Fizik holatingizni sozlang',
+  'show_BMI_description': 'Bo\'yingiz, vazningiz va boshqa ma\'lumotlarni slayderlarni surish orqali o\'rnating',
+  'show_save_button_title': 'Saqlash tugmasini bosing',
+  'show_save_button_description': 'Barcha m\'lumotlarni to\'ldirgach tibbiy ma\'lumotingizni saqlashni unutmang',
 
   /// TestPage
   'test': 'Test ishlaymiz 🙆‍♀️',
@@ -185,8 +195,18 @@ const Map<String, String> uzUZ = {
   'result': 'Natijangiz',
   'number_of_question': 'Savollar soni',
   'not_worked': 'Ishlanmagan',
+  'show_test_title': 'Testga kirish tugmasini bosing',
+  'show_test_description': 'Bu yerda testga kirishdan avval test ma\'lumotlarini va oxirgi natijangizni ko\'rishingiz mumkin',
 
   /// TestDetailPage
+  'show_test_detail_title': 'Testni boshlash uchun bosing',
+  'show_test_detail_description': 'Test boshlashda avval test haqida batafsil tanishib chiqqach, testni ishlashni hohlasangiz tugmani bosing',
+  'test_detail_title_0': 'ШКАЛА ГРИНА',
+  'test_detail_info_0': 'Тестирование по шкале Грина – это эффективный инструмент для оценки тяжести климактерического синдрома, который '
+      'происходит из-за общего старения организма и постепенного снижения или резкого прекращения гормональной функции яичников. Обычно он '
+      'возникает у женщин в возрасте от 45-55 лет.'
+      '\nОбратите внимание: результат тестирования не может быть определяющим фактором наличия или отсутствия болезни, а полученные '
+      'данные помогают врачам назначить или скорректировать уже назначенное лечение.',
   'test_detail_title_1': 'ОЦЕНКА СЕКСУАЛЬНОЙ ФУНКЦИИ У ЖЕНЩИН',
   'test_detail_info_1': 'Сексуальная сфера – это важная и сложная часть жизни каждой женщины, которая в большой степени влияет на '
       'качество жизни в целом. Тест позволяет оценить состояние сексуальной функции женщин с учетом ее шести основных составляющих: '
@@ -205,12 +225,6 @@ const Map<String, String> uzUZ = {
       'этой группы.'
       '\nОбратите внимание: результат тестирования не может быть определяющим фактором наличия или отсутствия болезни, а полученные данные '
       'используются врачами в комплексной диагностике.',
-  'test_detail_title_3': 'ШКАЛА ГРИНА',
-  'test_detail_info_3': 'Тестирование по шкале Грина – это эффективный инструмент для оценки тяжести климактерического синдрома, который '
-      'происходит из-за общего старения организма и постепенного снижения или резкого прекращения гормональной функции яичников. Обычно он '
-      'возникает у женщин в возрасте от 45-55 лет.'
-      '\nОбратите внимание: результат тестирования не может быть определяющим фактором наличия или отсутствия болезни, а полученные '
-      'данные помогают врачам назначить или скорректировать уже назначенное лечение.',
 
   /// QuizPage
   'next': 'Keyingi',

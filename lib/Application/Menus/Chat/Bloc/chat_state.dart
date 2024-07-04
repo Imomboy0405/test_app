@@ -10,11 +10,19 @@ final class ChatInitialState extends ChatState {
   final int length;
   final UserModel user;
   final bool focusNode;
+  final bool shimmer;
 
-  const ChatInitialState({required this.showEmojis, required this.messages, required this.length, required this.user, required this.focusNode});
+  const ChatInitialState({
+    required this.showEmojis,
+    required this.messages,
+    required this.length,
+    required this.user,
+    required this.focusNode,
+    required this.shimmer,
+  });
 
   @override
-  List<Object> get props => [showEmojis, messages, length, user, focusNode];
+  List<Object> get props => [showEmojis, messages, length, user, focusNode, shimmer];
 }
 
 final class ChatAdminState extends ChatState {

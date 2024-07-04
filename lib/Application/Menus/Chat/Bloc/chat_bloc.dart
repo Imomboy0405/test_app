@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_detail_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_user_info_page.dart';
+import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
@@ -18,10 +18,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   MainBloc mainBloc = locator<MainBloc>();
   DatabaseReference messagesRef = FirebaseDatabase.instance.ref();
   TextEditingController controller = TextEditingController();
-  List<MessageModel> messages = [];
+  List<MessageModel>? messages;
   bool showEmojis = false;
   bool showKeyboard = false;
   bool initial = true;
+  bool shimmer = true;
   List<UserModel> users = [];
   UserModel? user;
   FocusNode focusNode = FocusNode();
@@ -135,16 +136,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     '😈',
     '👿'
   ];
+  List<Widget> icons = [
+    Icon(Icons.medical_information, color: AppColors.purple),
+    Icon(Icons.medication_liquid, color: AppColors.purple),
+    Icon(Icons.medical_services, color: AppColors.purple),
+    Row(
+      children: [
+        Icon(Icons.elderly_woman, color: AppColors.purple),
+        Icon(Icons.elderly, color: AppColors.purple),
+      ],
+    ),
+    Icon(Icons.woman, color: AppColors.purple),
+  ];
 
-  ChatBloc() : super(ChatInitialState(showEmojis: false, messages: const [], length: 0, focusNode: false, user: UserModel(
-    fullName: '',
-    createdTime: '',
-    email: '',
-    loginType: '',
-    password: '',
-    uId: '',
-    userDetailList: [],
-  ))) {
+  ChatBloc()
+      : super(ChatInitialState(
+            showEmojis: false,
+            shimmer: true,
+            messages: const [],
+            length: 0,
+            focusNode: false,
+            user: UserModel(
+              fullName: '',
+              createdTime: '',
+              email: '',
+              loginType: '',
+              password: '',
+              uId: '',
+              userDetailList: [],
+            ))) {
     on<ChatGetUsersEvent>(getUsers);
     on<ChatPushDetailEvent>(pushDetail);
     on<ChatPushInfoEvent>(pushUserInfo);
@@ -161,6 +181,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           messagesRef = FirebaseDatabase.instance.ref('chat/${mainBloc.userModel!.uId}/messages');
         }
         initial = false;
+        shimmer = false;
         add(ChatReceiveMessageEvent());
       }
     });
@@ -169,9 +190,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   void emitComfort(Emitter<ChatState> emit) {
     emit(ChatInitialState(
       showEmojis: showEmojis,
-      messages: messages,
-      length: messages.length,
+      messages: messages ?? [],
+      length: messages?.length ?? 0,
       focusNode: focus,
+      shimmer: shimmer,
       user: user ??
           UserModel(
             uId: '',
@@ -193,7 +215,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         mainBloc.add(MainHideBottomNavigationBarEvent());
       }
       focus = false;
-    } else if (keyboardHeight == 0){
+    } else if (keyboardHeight == 0) {
       focus = true;
       focusNode.unfocus();
       if (user == null) {
@@ -211,15 +233,52 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   void pushDetail(ChatPushDetailEvent event, Emitter<ChatState> emit) {
     user = event.userModel;
-    messages = [];
+    messages = null;
     initial = true;
-    Navigator.pushNamed(event.context, ChatDetailPage.id);
+    shimmer = true;
+    Navigator.push(
+      event.context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const ChatDetailPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0, -1);
+          const end = Offset.zero;
+          const curve = Curves.easeIn;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
     emitComfort(emit);
   }
 
   void pushUserInfo(ChatPushInfoEvent event, Emitter<ChatState> emit) {
     user = event.userModel;
-    Navigator.pushNamed(event.context, ChatUserInfoPage.id);
+    Navigator.push(
+      event.context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const ChatUserInfoPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0, 1);
+          const end = Offset.zero;
+          const curve = Curves.easeIn;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        },
+      ),
+    );
     emitComfort(emit);
   }
 
@@ -227,8 +286,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     await for (var event in messagesRef.onChildAdded) {
       if (event.snapshot.value is Map) {
         final newMsg = MessageModel.fromJson(Map<String, dynamic>.from(event.snapshot.value as Map));
-        if (!messages.contains(newMsg)) {
-          messages.add(newMsg);
+        messages ??= [];
+        if (!messages!.contains(newMsg)) {
+          messages!.add(newMsg);
           if (!isClosed) {
             emitComfort(emit);
           }
@@ -245,7 +305,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         dateTime: DateTime.now().toString().substring(11, 16),
         id: DateTime.now().toString(),
       );
-      messages.add(msgModel);
+      messages ??= [];
+      messages!.add(msgModel);
       controller.clear();
 
       await messagesRef.push().set(msgModel.toJson());

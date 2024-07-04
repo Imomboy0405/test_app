@@ -32,7 +32,7 @@ class ChatPage extends StatelessWidget {
 
           appBar: MyAppBar(titleText: 'chat'.tr()),
           body: bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22'
-              ? Container(
+              ? bloc.users.isNotEmpty ? Container(
                   height: MediaQuery.of(context).size.height - 170,
                   color: AppColors.transparent,
                   child: ListView.builder(
@@ -121,6 +121,19 @@ class ChatPage extends StatelessWidget {
                         ),
                       );
                     },
+                  ),
+                ) : Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      buildShimmer(false, true),
+                      const SizedBox(height: 10),
+                      buildShimmer(false, true),
+                      const SizedBox(height: 10),
+                      buildShimmer(false, true),
+                      const SizedBox(height: 10),
+                      buildShimmer(false, true),
+                    ],
                   ),
                 )
               : const ChatDetailPage(),

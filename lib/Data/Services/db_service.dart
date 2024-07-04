@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/chat_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
-enum StorageKey { lang, theme, user, chat, test }
+enum StorageKey { lang, theme, user, chat, test, showCase }
 
 class DBService {
+
   static Future<bool> saveLang(String lang) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setString(StorageKey.lang.name, lang);
@@ -30,6 +32,11 @@ class DBService {
   static Future<bool> saveTest(List<int> list) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setString(StorageKey.test.name, jsonEncode(list));
+  }
+
+  static Future<bool> saveShowCase(ShowCaseModel model) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString(StorageKey.showCase.name, showCaseModelToJson(model));
   }
 
   static Future<String?> loadData(StorageKey storageKey) async {

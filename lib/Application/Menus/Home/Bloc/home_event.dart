@@ -13,7 +13,16 @@ class HomeScrollCardEvent extends HomeEvent {
   List<Object?> get props => [page];
 }
 
-class InitialDataEvent extends HomeEvent {
+class HomeInitialDataEvent extends HomeEvent {
   @override
   List<Object?> get props => [];
+}
+
+class HomeShowCaseEvent extends HomeEvent {
+  final BuildContext context;
+
+  const HomeShowCaseEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
 }

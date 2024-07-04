@@ -37,6 +37,11 @@ class ProfileDeleteAccountState extends ProfileState {
   List<Object?> get props => [];
 }
 
+class ProfileTutorialState extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}
+
 class ProfileInfoState extends ProfileState {
   @override
   List<Object?> get props => [];
