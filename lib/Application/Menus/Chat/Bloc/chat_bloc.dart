@@ -227,7 +227,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> getUsers(ChatGetUsersEvent event, Emitter<ChatState> emit) async {
     users = await RTDBService.loadUsers();
-    users.removeAt(0);
+    var userToRemove = users.firstWhere((user) => user.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2');
+    users.remove(userToRemove);
     emit(ChatAdminState(users: users));
   }
 

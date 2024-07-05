@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/auth_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
@@ -98,6 +100,14 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       );
       try {
         await RTDBService.storeUser(userModel);
+        DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
+        final msgModel = MessageModel(
+          msg: 'welcome_user'.tr() + userModel.fullName!,
+          typeUser: true,
+          dateTime: DateTime.now().toString().substring(11, 16),
+          id: DateTime.now().toString(),
+        );
+        await messagesRef.push().set(msgModel.toJson());
         if (event.context.mounted) {
           Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
           Navigator.pushReplacementNamed(event.context, SignInPage.id);
@@ -160,12 +170,21 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         email: emailController.text.trim(),
         uId: FirebaseAuth.instance.currentUser!.uid,
         createdTime: DateTime.now().toString().substring(0, 10),
-        loginType: '',
+        loginType: 'googleOrFacebook',
         userDetailList: [],
       );
 
       try {
         await RTDBService.storeUser(userModel);
+        DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
+        final msgModel = MessageModel(
+          msg: 'welcome_user'.tr() + userModel.fullName!,
+          typeUser: true,
+          dateTime: DateTime.now().toString().substring(11, 16),
+          id: DateTime.now().toString(),
+        );
+        await messagesRef.push().set(msgModel.toJson());
+
         if (event.context.mounted) {
           Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
           Navigator.pushReplacementNamed(event.context, SignInPage.id);

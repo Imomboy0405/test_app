@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_page.dart';
@@ -38,6 +39,11 @@ class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       title: 'Test App',
       supportedLocales: const [
         Locale('en', 'US'),

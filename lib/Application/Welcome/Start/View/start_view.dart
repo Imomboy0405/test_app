@@ -25,7 +25,7 @@ class StartView extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.4,
               child: Container(
                 width: 200,
-                margin: EdgeInsets.only(top: img == 2 ? 130 : 100, left: img == 2 ? 110 : 65),
+                margin: EdgeInsets.only(top: img == 1 ? 100 : img == 2 ? 130 : 80, left: img == 2 ? 110 : 65),
                 child: Text(
                   'welcome_$img'.tr(),
                   textAlign: TextAlign.center,

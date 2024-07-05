@@ -10,51 +10,53 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # icons
-  cupertino_icons: any
+  flutter_localizations:
+    sdk: flutter
 
+  # icons
+  cupertino_icons: ^1.0.8
   # state management
-  flutter_bloc: any
+  flutter_bloc: ^8.1.6
 
   # objects equals
-  equatable: any
+  equatable: ^2.0.5
 
   # data base
-  shared_preferences: any
+  shared_preferences: ^2.2.3
 
   # sign in
-  google_sign_in: any
-  flutter_facebook_auth: any
+  google_sign_in: ^6.2.1
+  flutter_facebook_auth: ^7.0.1
 
   # firebase
-  firebase_core: any
-  firebase_auth: any
-  firebase_dynamic_links: any
-  firebase_database: any
+  firebase_core: ^3.1.1
+  firebase_auth: ^5.1.1
+  firebase_dynamic_links: ^6.0.2
+  firebase_database: ^11.0.2
 
   # dependency injection
-  get_it: any
+  get_it: ^7.7.0
 
   # ui component
-  url_launcher: any
+  url_launcher: ^6.3.0
   avatar_glow: ^3.0.1
-  carousel_slider: any
-  flutter_svg: any
-  lottie: any
-  numberpicker: any
-  animated_text_kit: any
-  shimmer: any
-  showcaseview: any
+  carousel_slider: ^4.2.1
+  flutter_svg: ^2.0.10+1
+  lottie: ^3.1.2
+  numberpicker: ^2.1.2
+  animated_text_kit: ^4.2.2
+  shimmer: ^3.0.0
+  showcaseview: ^3.0.0
 
   # json
-  json_annotation: any
+  json_annotation: ^4.9.0
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: any
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.11
 
 flutter:

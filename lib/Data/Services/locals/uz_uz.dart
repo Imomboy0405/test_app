@@ -1,8 +1,8 @@
 const Map<String, String> uzUZ = {
   /// StartPage
   'welcome_1': 'Test appga hush kelibsiz',
-  'welcome_2': 'Sog\'lik muommolaridan halos bo\'ling',
-  'welcome_3': 'Ilova yordamida doim sog\'lom bo\'ling',
+  'welcome_2': 'Sog\'lik muom-molaridan halos bo\'ling',
+  'welcome_3': 'Ilova bilan doim sog\'lom bo\'ling',
   'welcome_info': 'Test app sog\'ligingiz haqida maqolalar, tibbiy ma\'lumotlar, testlarni sizga taqdim etadi',
   'log_in': 'Tizimga kirish',
   'log_info': 'Tizimga kirish orqali siz quyidagilarga rozilik berasiz ',

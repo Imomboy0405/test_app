@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -136,6 +137,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event.delete) {
+      var user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.delete();
+      }
       await RTDBService.deleteUser(mainBloc.userModel!);
     }
     await DBService.deleteData(StorageKey.user);

@@ -23,7 +23,7 @@ class ChatPage extends StatelessWidget {
     return BlocBuilder<ChatBloc, ChatState>(
       bloc: bloc,
       builder: (context, state) {
-        if (bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22' && bloc.users.isEmpty) {
+        if (bloc.mainBloc.userModel!.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2' && bloc.users.isEmpty) {
           bloc.add(ChatGetUsersEvent());
         }
         return Scaffold(
@@ -31,7 +31,7 @@ class ChatPage extends StatelessWidget {
           resizeToAvoidBottomInset: true,
 
           appBar: MyAppBar(titleText: 'chat'.tr()),
-          body: bloc.mainBloc.userModel!.uId == 'UvPEVhAp5oMsgx2x19W5mZzHDq22'
+          body: bloc.mainBloc.userModel!.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2'
               ? bloc.users.isNotEmpty ? Container(
                   height: MediaQuery.of(context).size.height - 170,
                   color: AppColors.transparent,
