@@ -222,7 +222,7 @@ class ProfilePage extends StatelessWidget {
                               return RadioListTile(
                                   fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
                                     if (states.contains(WidgetState.selected)) {
-                                      return Colors.white;
+                                      return AppColors.whiteConst;
                                     } else {
                                       return AppColors.purple;
                                     }
@@ -235,7 +235,7 @@ class ProfilePage extends StatelessWidget {
                                     height: 24,
                                     fit: BoxFit.fill,
                                   ),
-                                  title: Text('button_$index'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                                  title: Text('button_$index'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                                   selected: bloc.lang[index] == bloc.selectedLang,
                                   value: bloc.lang[index],
                                   groupValue: bloc.selectedLang,
@@ -256,7 +256,7 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(ConfirmEvent(context: context)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('confirm_sign_out'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                          child: Text('confirm_sign_out'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
 
@@ -271,7 +271,7 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(ConfirmEvent(context: context, delete: true)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('confirm_delete_account'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                          child: Text('confirm_delete_account'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
 
@@ -286,7 +286,7 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(ConfirmEvent(context: context, tutorial: true)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('tutorial_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                          child: Text('tutorial_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
 
@@ -298,7 +298,7 @@ class ProfilePage extends StatelessWidget {
                         functionCancel: () => bloc.add(CancelEvent()),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('info_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: Colors.white)),
+                          child: Text('info_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
                   ],

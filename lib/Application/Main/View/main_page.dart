@@ -81,7 +81,7 @@ class MainPage extends StatelessWidget {
                     functionCancel: () => bloc.add(MainCancelEvent()),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text('confirm_exit'.tr(), style: AppTextStyles.style13(context)),
+                      child: Text('confirm_exit'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                     ),
                   )
               ],
