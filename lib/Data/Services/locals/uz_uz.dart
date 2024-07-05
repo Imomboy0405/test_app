@@ -240,6 +240,7 @@ const Map<String, String> uzUZ = {
   'exit_test': 'Testdan chiqish',
   'question': 'Savol',
   'answer': 'Javob',
+  'marked_answer': 'Siz javob tanlab bo\'ldingiz',
 
   /// ChatPage
   'chat': 'Chat ✍️ ',

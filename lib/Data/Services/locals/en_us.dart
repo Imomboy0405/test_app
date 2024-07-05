@@ -241,6 +241,7 @@ const Map<String, String> enUS = {
   'exit_test': 'Exit test',
   'question': 'Question',
   'answer': 'Answer',
+  'marked_answer': 'You\'ve marked your answer',
 
   /// ChatPage
   'chat': 'Chat ✍️ ',

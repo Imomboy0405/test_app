@@ -24,10 +24,8 @@ class QuizPage extends StatelessWidget {
     final mainBloc = locator<MainBloc>();
     return BlocProvider(
       create: (context) => QuizBloc(mainBloc: mainBloc),
-      child: BlocBuilder<QuizBloc, QuizState>(
-        builder: (context, state)
-    {
-      QuizBloc bloc = context.read<QuizBloc>();
+      child: BlocBuilder<QuizBloc, QuizState>(builder: (context, state) {
+        QuizBloc bloc = context.read<QuizBloc>();
 
         if (bloc.quizModels.isEmpty) {
           bloc.add(InitialQuestionsEvent());
@@ -37,7 +35,6 @@ class QuizPage extends StatelessWidget {
             backgroundColor: AppColors.black,
             body: Stack(
               children: [
-                // #background
                 ClipRRect(
                   borderRadius: BorderRadius.circular(30),
                   child: Container(
@@ -61,14 +58,8 @@ class QuizPage extends StatelessWidget {
                   visible: state is QuizFinishState && (bloc.confetti ?? false),
                   child: Lottie.asset(
                     'assets/animations/anime_confetti.json',
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .width + 60,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    height: MediaQuery.of(context).size.width + 60,
+                    width: MediaQuery.of(context).size.width,
                     repeat: false,
                     animate: state is QuizFinishState && (bloc.confetti ?? false),
                   ),
@@ -198,20 +189,18 @@ class QuizPage extends StatelessWidget {
                                                       backgroundColor: bloc.answers[i] != 0
                                                           ? AppColors.green
                                                           : bloc.currentQuiz == i + 1
-                                                          ? AppColors.pink
-                                                          : AppColors.black,
+                                                              ? AppColors.pink
+                                                              : AppColors.black,
                                                       shape: const CircleBorder(),
                                                       side: i + 1 != bloc.currentQuiz
                                                           ? BorderSide(
-                                                          width: 2,
-                                                          color: bloc.answers[i] == 0 ? AppColors.purpleAccent : AppColors.green)
+                                                              width: 2,
+                                                              color: bloc.answers[i] == 0 ? AppColors.purpleAccent : AppColors.green)
                                                           : BorderSide.none,
                                                       overlayColor: AppColors.pink,
                                                     ),
                                                     onPressed: () =>
-                                                    bloc.currentQuiz != i + 1
-                                                        ? bloc.add(SelectQuizNumberEvent(quizNumber: i + 1))
-                                                        : (),
+                                                        bloc.currentQuiz != i + 1 ? bloc.add(SelectQuizNumberEvent(quizNumber: i + 1)) : (),
                                                     child: Text(
                                                       (i + 1).toString(),
                                                       style: i + 1 == bloc.currentQuiz || bloc.answers[i] != 0
@@ -239,8 +228,8 @@ class QuizPage extends StatelessWidget {
                                           padding: const EdgeInsets.symmetric(horizontal: 10),
                                           child: Text(
                                             bloc.opacityAnime == 0
-                                              ? '${bloc.oldQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.oldQuiz - 1].question}'
-                                              : '${bloc.currentQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.currentQuiz - 1].question}',
+                                                ? '${bloc.oldQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.oldQuiz - 1].question}'
+                                                : '${bloc.currentQuiz}/${bloc.answers.length} ${bloc.quizModels[bloc.currentQuiz - 1].question}',
                                             style: AppTextStyles.style16(context),
                                             textAlign: TextAlign.center,
                                             overflow: TextOverflow.ellipsis,
@@ -262,8 +251,13 @@ class QuizPage extends StatelessWidget {
                                 text: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].title,
                                 value: i,
                                 groupValue: bloc.selectedValue,
-                                onChanged: (int? value) => bloc.add(SelectVariantEvent(value: value!, ball: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value)),
+                                onChanged: (int? value) => bloc.add(SelectVariantEvent(
+                                  value: value!,
+                                  ball: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value,
+                                  context: context,
+                                )),
                                 ball: bloc.result != -1 ? bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value.toString() : null,
+                                selected: bloc.answers[bloc.currentQuiz - 1] != 0 && bloc.answers[bloc.currentQuiz - 1] != i,
                               ),
                           ],
                         ),
@@ -312,10 +306,7 @@ class QuizPage extends StatelessWidget {
                         visible: state is QuizFinishState,
                         child: Lottie.asset(
                           'assets/animations/anime_result_${(bloc.result - 1) ~/ 20 + 1}.json',
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width - 160,
+                          width: MediaQuery.of(context).size.width - 160,
                           repeat: false,
                           animate: bloc.confetti,
                         ),
@@ -331,10 +322,10 @@ class QuizPage extends StatelessWidget {
                         text: bloc.answers.contains(0)
                             ? 'next'.tr()
                             : bloc.result != -1 && state is! QuizFinishState
-                            ? 'result_test'.tr()
-                            : state is QuizFinishState
-                            ? 'exit_test'.tr()
-                            : 'end_test'.tr(),
+                                ? 'result_test'.tr()
+                                : state is QuizFinishState
+                                    ? 'exit_test'.tr()
+                                    : 'end_test'.tr(),
                         function: () => bloc.add(NextButtonEvent(context: context)),
                       ),
                       const Spacer()
@@ -345,9 +336,7 @@ class QuizPage extends StatelessWidget {
             ),
           );
         }
-
-    }
-      ),
+      }),
     );
   }
 
@@ -376,7 +365,7 @@ class QuizPage extends StatelessWidget {
             width: 75,
             child: Text(
               text,
-              maxLines: 2,
+              maxLines: 3,
               textAlign: TextAlign.center,
               style: AppTextStyles.style9(context),
             ),
@@ -393,6 +382,7 @@ class MyQuizButton extends StatelessWidget {
   final int? groupValue;
   final ValueChanged<int?> onChanged;
   final String? ball;
+  final bool selected;
 
   const MyQuizButton({
     super.key,
@@ -401,6 +391,7 @@ class MyQuizButton extends StatelessWidget {
     required this.groupValue,
     required this.onChanged,
     required this.ball,
+    required this.selected,
   });
 
   @override
@@ -438,7 +429,7 @@ class MyQuizButton extends StatelessWidget {
                   groupValue: groupValue,
                   onChanged: (v) => ball != null ? null : onChanged(v),
                   fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                    if (ball != null) {
+                    if (selected) {
                       return AppColors.transparent;
                     } else if (states.contains(WidgetState.selected)) {
                       return AppColors.black;
@@ -627,7 +618,9 @@ class _HudProgressPainter extends CustomPainter {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,
-        style: result ? AppTextStyles.style12(context).copyWith(color: Colors.white) : AppTextStyles.style18(context).copyWith(color: Colors.white),
+        style: result
+            ? AppTextStyles.style12(context).copyWith(color: Colors.white)
+            : AppTextStyles.style18(context).copyWith(color: Colors.white),
       ),
       textDirection: TextDirection.ltr,
     );

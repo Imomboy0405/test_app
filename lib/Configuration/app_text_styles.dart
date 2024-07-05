@@ -142,9 +142,11 @@ abstract class AppTextStyles {
 
   /// Base text style function to avoid code duplication.
   static TextStyle _baseStyle(BuildContext context, Color color, double fontSize, FontWeight fontWeight, String fontFamily, {double letterSpacing = 0.0}) {
+    double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+
     return TextStyle(
       color: color,
-      fontSize: fontSize,
+      fontSize: fontSize / devicePixelRatio * 2.75,
       fontWeight: fontWeight,
       fontFamily: fontFamily,
       letterSpacing: letterSpacing,

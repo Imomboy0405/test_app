@@ -17,11 +17,12 @@ class SelectQuizNumberEvent extends QuizEvent {
 class SelectVariantEvent extends QuizEvent {
   final int value;
   final int ball;
+  final BuildContext context;
 
-  const SelectVariantEvent({required this.value, required this.ball});
+  const SelectVariantEvent({required this.value, required this.ball, required this.context});
 
   @override
-  List<Object?> get props => [value, ball];
+  List<Object?> get props => [value, ball, context];
 }
 
 class NextButtonEvent extends QuizEvent {

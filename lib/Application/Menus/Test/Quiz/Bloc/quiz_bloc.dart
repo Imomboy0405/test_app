@@ -9,6 +9,7 @@ import 'package:test_app/Data/Models/quiz_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
+import 'package:test_app/Data/Services/util_service.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';
@@ -91,17 +92,22 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emitInitial(emit);
   }
 
-  void selectVariant(SelectVariantEvent event, Emitter<QuizState> emit) {
+  void selectVariant(SelectVariantEvent event, Emitter<QuizState> emit) async {
     if (selectedValue != event.value) {
       if (selectedValue == 0) {
         selectedValue = event.value;
         answers[currentQuiz - 1] = selectedValue;
         percent = answers.where((answer) => answer != 0).length * 100 ~/ answers.length;
+        emitInitial(emit);
+        if (percent != 100) {
+          await Future.delayed(const Duration(milliseconds: 350));
+          if (event.context.mounted) {
+            add(NextButtonEvent(context: event.context));
+          }
+        }
       } else {
-        selectedValue = event.value;
-        answers[currentQuiz - 1] = selectedValue;
+        Utils.mySnackBar(txt: 'marked_answer'.tr(), context: event.context, errorState: true);
       }
-      emitInitial(emit);
     }
   }
 
@@ -120,13 +126,9 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           Navigator.pop(event.context);
           await Future.delayed(const Duration(milliseconds: 250));
           mainBloc.add(MainMenuButtonEvent(index: 2));
-          if (event.context.mounted) {
-            Navigator.pushNamed(event.context, '/chat_detail_page');
-            final ChatBloc chatBloc = locator<ChatBloc>();
-
-            chatBloc.controller.text = resultText;
-            chatBloc.add(ChatSendButtonEvent());
-          }
+          final ChatBloc chatBloc = locator<ChatBloc>();
+          chatBloc.controller.text = resultText;
+          chatBloc.add(ChatSendButtonEvent());
         }
       case MiniButton.view:
         {
@@ -176,12 +178,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           for (int i = 0; i < quizModels.length; i++) {
             result += quizModels[i].answers[answers[i] - 1].value;
             resultText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question}\n'
-                '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].value} ${'ball'.tr()}. '
-                '${quizModels[i].answers[answers[i] - 1].title}\n';
+                '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title}\n';
           }
           result = (result / (answers.length * 3) * 100).toInt();
           resultText += '\n${'result'.tr()}: $result / 100';
-          mainBloc.resultTests[locator<TestDetailBloc>().asset - 1] = result;
+          mainBloc.resultTests = List.from(mainBloc.resultTests);
+          mainBloc.resultTests[locator<TestDetailBloc>().asset] = result;
+          mainBloc.add(MainLanguageEvent());
           DBService.saveTest(mainBloc.resultTests);
         }
         emit(const QuizFinishState(confetti: false));

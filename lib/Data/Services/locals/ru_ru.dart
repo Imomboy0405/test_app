@@ -241,6 +241,7 @@ const Map<String, String> ruRU = {
   'exit_test': 'Выйти из теста',
   'question': 'Вопрос',
   'answer': 'Ответ',
+  'marked_answer': 'Вы отметили свой ответ',
 
   /// ChatPage
   'chat': 'Чат ✍️ ',

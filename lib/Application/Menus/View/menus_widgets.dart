@@ -125,7 +125,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           else
-            Text(titleText, style: purpleBackground ? AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst) : AppTextStyles.style18_0(context)),
+            Flexible(child: Text(titleText, style: purpleBackground ? AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst) : AppTextStyles.style18_0(context))),
 
           // #animated_text
           if (animatedHellos)
@@ -133,13 +133,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: AnimatedTextKit(
                 totalRepeatCount: 1,
                 animatedTexts: [
-                  RotateAnimatedText('hello1'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello2'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello3'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello4'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello5'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello6'.tr(), textStyle: AppTextStyles.style18_0(context)),
-                  RotateAnimatedText('hello7'.tr(), textStyle: AppTextStyles.style18_0(context)),
+                  for (int i = 1; i <= 7; i++)
+                  RotateAnimatedText('hello$i'.tr(), textStyle: AppTextStyles.style18_0(context), alignment: Alignment.centerLeft),
                 ],
               ),
             ),

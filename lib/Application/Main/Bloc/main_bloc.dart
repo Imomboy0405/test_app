@@ -17,7 +17,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   int currentScreen = 1;
   int oldScreen = 1;
   double keyboardHeight = 0;
-  List<int> resultTests = [-1, -1, -1];
+  List<int> resultTests = List.filled(3, -1);
   bool menuButtonPressed = false;
   final List<AssetImage> listOfMenuIcons = [
     const AssetImage('assets/icons/ic_menu_home_outlined.png'),
@@ -48,6 +48,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     screen: 1,
     lang: LangService.getLanguage,
     darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
+    resultTests: List.filled(3, -1),
   )) {
     on<MainScrollMenuEvent>(scrollMenu);
     on<MainMenuButtonEvent>(pressMenuButton);
@@ -61,6 +62,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       screen: currentScreen,
       lang: language,
       darkMode: darkMode,
+      resultTests: resultTests,
     ));
   }
 
