@@ -362,7 +362,8 @@ class QuizPage extends StatelessWidget {
           ),
           // #text
           SizedBox(
-            width: 75,
+            width: MediaQuery.of(context).size.width / 5,
+            height: MediaQuery.of(context).size.height / 15,
             child: Text(
               text,
               maxLines: 3,

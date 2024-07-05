@@ -125,16 +125,25 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           else
-            Flexible(child: Text(titleText, style: purpleBackground ? AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst) : AppTextStyles.style18_0(context))),
+            Flexible(
+              flex: 4,
+              child: Text(
+                titleText,
+                style: purpleBackground
+                    ? AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst)
+                    : AppTextStyles.style18_0(context),
+              ),
+            ),
 
           // #animated_text
           if (animatedHellos)
             Flexible(
+              flex: 3,
               child: AnimatedTextKit(
                 totalRepeatCount: 1,
                 animatedTexts: [
                   for (int i = 1; i <= 7; i++)
-                  RotateAnimatedText('hello$i'.tr(), textStyle: AppTextStyles.style18_0(context), alignment: Alignment.centerLeft),
+                    RotateAnimatedText('hello$i'.tr(), textStyle: AppTextStyles.style18_0(context), alignment: Alignment.centerLeft),
                 ],
               ),
             ),
@@ -460,9 +469,9 @@ Showcase myShowcase({
     disableMovingAnimation: true,
     disableScaleAnimation: true,
     tooltipPadding: const EdgeInsets.all(15),
-    onBarrierClick: () => onTap != null? onTap() : (),
-    onToolTipClick: () => onTap != null? onTap() : (),
-    onTargetClick: () => onTap != null? onTap() : (),
+    onBarrierClick: () => onTap != null ? onTap() : (),
+    onToolTipClick: () => onTap != null ? onTap() : (),
+    onTargetClick: () => onTap != null ? onTap() : (),
     disposeOnTap: true,
     child: child,
   );

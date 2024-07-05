@@ -252,5 +252,5 @@ const Map<String, String> enUS = {
 
   /// MainPage
   'exit': 'Exit',
-  'confirm_exit': 'Confirm that you really want to exit of IBilling',
+  'confirm_exit': 'Confirm application exit',
 };

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     const AssetImage('assets/icons/ic_menu_chat_dark_mode.png'),
     const AssetImage('assets/icons/ic_menu_profile_dark_mode.png'),
   ];
+  bool exitState = false;
 
   PageController controller = PageController(keepPage: true, initialPage: 1);
 
@@ -55,6 +57,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainHideBottomNavigationBarEvent>(hideBottomNavigationBar);
     on<MainLanguageEvent>(languageUpdate);
     on<MainThemeEvent>(themeUpdate);
+    on<MainExitEvent>(pressExit);
+    on<MainCancelEvent>(pressCancel);
+    on<MainDoneEvent>(pressDone);
   }
 
   void emitComfort(Emitter<MainState> emit) {
@@ -125,5 +130,19 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   void themeUpdate(MainThemeEvent event, Emitter<MainState> emit) {
     darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
     emitComfort(emit);
+  }
+
+  void pressExit(MainExitEvent event, Emitter<MainState> emit) {
+    exitState = true;
+    emit(MainHideBottomNavigationBarState());
+  }
+
+  void pressCancel(MainCancelEvent event, Emitter<MainState> emit) {
+    exitState = false;
+    emitComfort(emit);
+  }
+
+  void pressDone(MainDoneEvent event, Emitter<MainState> emit) {
+    SystemNavigator.pop();
   }
 }
