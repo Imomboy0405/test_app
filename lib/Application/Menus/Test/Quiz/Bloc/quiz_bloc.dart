@@ -28,6 +28,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   String resultText = '';
   bool? confetti;
 
+  double animatePosLeft = 90;
+  double animatePosTop = 50;
+  double animatePosLeft2 = 30;
+  double animatePosTop2 = 30;
+  double animatePosLeftMini = 70;
+  double animatePosTopMini = 200;
+
   QuizBloc({required this.mainBloc})
       : super(const QuizInitialState(
           currentQuiz: 1,
@@ -98,6 +105,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         selectedValue = event.value;
         answers[currentQuiz - 1] = selectedValue;
         percent = answers.where((answer) => answer != 0).length * 100 ~/ answers.length;
+        updateAnimate();
         emitInitial(emit);
         if (percent != 100) {
           await Future.delayed(const Duration(milliseconds: 350));
@@ -198,5 +206,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         }
       }
     }
+  }
+
+  void updateAnimate() {
+    animatePosLeft = animatePosLeft == 90 ? 40 : 90;
+    animatePosTop = animatePosTop == 50 ? 35 : 50;
+    animatePosLeft2 = animatePosLeft2 == 30 ? 100 : 30;
+    animatePosTop2 = animatePosTop2 == 30 ? 80 : 30;
+    animatePosLeftMini = animatePosLeftMini == 70 ? 250 : 70;
+    animatePosTopMini = animatePosTopMini == 200 ? 60 : 200;
   }
 }

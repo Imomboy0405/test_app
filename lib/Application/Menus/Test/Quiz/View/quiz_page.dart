@@ -66,78 +66,90 @@ class QuizPage extends StatelessWidget {
                 ),
 
                 if (state is QuizInitialState)
-                  Stack(
-                    children: [
-                      // #line_img
-                      Padding(
-                        padding: const EdgeInsets.only(left: 270, top: 30),
-                        child: Image(
-                          image: const AssetImage('assets/images/img_line.png'),
-                          height: 100,
-                          width: 40,
-                          color: AppColors.black,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width - 50,
+                    height: MediaQuery.of(context).size.width - 50,
+                    child: Stack(
+                      children: [
+                        // #line_img
+                        Padding(
+                          padding: const EdgeInsets.only(left: 270, top: 30),
+                          child: Image(
+                            image: const AssetImage('assets/images/img_line.png'),
+                            height: 100,
+                            width: 40,
+                            color: AppColors.black,
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 165, left: 50),
-                        child: Image(
-                          image: const AssetImage('assets/images/img_line.png'),
-                          height: 80,
-                          width: 40,
-                          color: AppColors.black,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 165, left: 50),
+                          child: Image(
+                            image: const AssetImage('assets/images/img_line.png'),
+                            height: 80,
+                            width: 40,
+                            color: AppColors.black,
+                          ),
                         ),
-                      ),
 
-                      // #circle_grass_containers
-                      const Positioned(
-                        left: 30,
-                        top: 30,
-                        child: MyCircleGlassContainer(isStartPage: false),
-                      ),
-                      const Positioned(
-                        left: 70,
-                        top: 190,
-                        child: MyCircleGlassContainer(isStartPage: false, mini: true),
-                      ),
-                      Positioned(
-                        left: 90,
-                        top: 50,
-                        child: AvatarGlow(
-                          glowColor: AppColors.black,
-                          animate: bloc.percent == 100,
-                          glowRadiusFactor: 0.2,
-                          child: MyCircleGlassContainer(isStartPage: false, transparent: bloc.percent != 100),
+                        // #circle_grass_containers
+                        AnimatedPositioned(
+                          left: bloc.animatePosLeft2,
+                          top: bloc.animatePosTop2,
+                          duration: const Duration(milliseconds: 600),
+                          curve: Curves.easeInOutBack,
+                          child: const MyCircleGlassContainer(isStartPage: false),
                         ),
-                      ),
+                        AnimatedPositioned(
+                          left: bloc.animatePosLeftMini,
+                          top: bloc.animatePosTopMini,
+                          duration: const Duration(milliseconds: 1000),
+                          curve: Curves.fastEaseInToSlowEaseOut,
+                          child: const MyCircleGlassContainer(isStartPage: false, mini: true),
+                        ),
+                        AnimatedPositioned(
+                          left: bloc.animatePosLeft,
+                          top: bloc.animatePosTop,
+                          curve: Curves.easeInOutBack,
+                          duration: const Duration(milliseconds: 600),
+                          child: AvatarGlow(
+                            glowColor: AppColors.black,
+                            animate: bloc.percent == 100,
+                            glowRadiusFactor: 0.2,
+                            child: MyCircleGlassContainer(isStartPage: false, transparent: bloc.percent != 100),
+                          ),
+                        ),
 
-                      // #test_percent
-                      Positioned(
-                        left: 142,
-                        top: 115,
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(15, 3, 0, 0),
-                              child: CircularProgressIndicator(
-                                value: bloc.percent / 100,
-                                color: AppColors.green,
-                                backgroundColor: AppColors.black,
-                                strokeAlign: 8,
-                                strokeWidth: 10,
+                        // #test_percent
+                        AnimatedPositioned(
+                          left: bloc.animatePosLeft + 50,
+                          top: bloc.animatePosTop + 65,
+                          curve: Curves.easeInOutBack,
+                          duration: const Duration(milliseconds: 600),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(17, 3, 0, 0),
+                                child: CircularProgressIndicator(
+                                  value: bloc.percent / 100,
+                                  color: AppColors.green,
+                                  backgroundColor: AppColors.black,
+                                  strokeAlign: 8,
+                                  strokeWidth: 10,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 79,
-                              child: Text(
-                                '${bloc.percent} %',
-                                textAlign: TextAlign.center,
-                                style: AppTextStyles.style3_0(context),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.22,
+                                child: Text(
+                                  '${bloc.percent} %',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.style3_0(context),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
 
                 Padding(

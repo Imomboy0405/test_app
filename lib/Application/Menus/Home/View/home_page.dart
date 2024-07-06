@@ -169,79 +169,96 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
 
+                      // #animated_text_image
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                                height: MediaQuery.of(context).size.width * 0.607,
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.transparentPurple.withOpacity(.2),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Builder(builder: (context) {
+                                      return SizedBox(
+                                        height: 26,
+                                        child: AnimatedTextKit(
+                                          totalRepeatCount: 1,
+                                          key: Key(bloc.articles[bloc.currentPage].content[0].content),
+                                          animatedTexts: [
+                                            TyperAnimatedText(
+                                              bloc.articles[bloc.currentPage].content[0].content,
+                                              textStyle: AppTextStyles.style26(context).copyWith(
+                                                fontSize: 18,
+                                                color: AppColors.pink,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                                    AnimatedOpacity(
+                                      opacity: bloc.opacityAnime,
+                                      duration: const Duration(milliseconds: 300),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset(
+                                          width: MediaQuery.of(context).size.width - 22,
+                                          height: MediaQuery.of(context).size.width * 0.51,
+                                          'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ),
+
                       // #content_texts
                       Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: bloc.articles[bloc.currentPage].content.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            Content content = bloc.articles[bloc.currentPage].content[index];
-                            if (index == 0) {
-                              return ClipRRect(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              decoration: BoxDecoration(
+                                color: AppColors.transparentPurple,
                                 borderRadius: BorderRadius.circular(10),
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                  child: Container(
-                                      height: MediaQuery.of(context).size.width * 0.607,
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.transparentPurple.withOpacity(.2),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Builder(builder: (context) {
-                                            return SizedBox(
-                                              height: 26,
-                                              child: AnimatedTextKit(
-                                                totalRepeatCount: 1,
-                                                key: Key(content.content),
-                                                animatedTexts: [
-                                                  TyperAnimatedText(
-                                                    content.content,
-                                                    textStyle: AppTextStyles.style26(context).copyWith(
-                                                      fontSize: content.large ? 18 : null,
-                                                      color: AppColors.pink,
-                                                      fontWeight: content.bold ? FontWeight.w600 : null,
-                                                      fontStyle: content.italic ? FontStyle.italic : null,
-                                                    ),
-                                                    textAlign: TextAlign.justify,
-                                                  )
-                                                ],
-                                              ),
-                                            );
-                                          }),
-                                          AnimatedOpacity(
-                                            opacity: bloc.opacityAnime,
-                                            duration: const Duration(milliseconds: 300),
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(10),
-                                              child: Image.asset(
-                                                width: MediaQuery.of(context).size.width - 22,
-                                                height: MediaQuery.of(context).size.width * 0.51,
-                                                'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              );
-                            }
-                            // #content_text
-                            return Text(
-                              content.content,
-                              style: AppTextStyles.style26(context).copyWith(
-                                fontSize: content.large ? 18 : null,
-                                fontWeight: content.bold ? FontWeight.w600 : null,
-                                fontStyle: content.italic ? FontStyle.italic : null,
                               ),
-                              textAlign: TextAlign.justify,
-                            );
-                          },
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: bloc.articles[bloc.currentPage].content.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  Content content = bloc.articles[bloc.currentPage].content[index];
+                                  if (index == 0) return const SizedBox.shrink();
+
+                                  // #content_text
+                                  return Text(
+                                    content.content,
+                                    style: AppTextStyles.style26(context).copyWith(
+                                      fontSize: content.large ? 18 : null,
+                                      fontWeight: content.bold ? FontWeight.w600 : null,
+                                      fontStyle: content.italic ? FontStyle.italic : null,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         ),
                       )
                     ],

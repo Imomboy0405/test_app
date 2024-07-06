@@ -178,7 +178,7 @@ class ChatTextField extends StatelessWidget {
                 onPressed: () => pressEmoji(emoji: emojis[index]),
                 icon: Text(
                   emojis[index],
-                  style: const TextStyle(fontSize: 28),
+                  style: AppTextStyles.style0_2(context),
                 ),
               );
             },
