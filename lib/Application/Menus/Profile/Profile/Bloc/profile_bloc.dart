@@ -34,6 +34,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Language.uz,
     Language.ru,
     Language.en,
+    Language.qr,
+    Language.kr,
   ];
   int currentTab = 0;
   UserModel? userModel;

@@ -13,6 +13,8 @@ const Map<String, String> enUS = {
   'button_0': 'Uzbek (Latin)',
   'button_1': 'Russian',
   'button_2': 'English (USA)',
+  'button_3': 'Karakalpak',
+  'button_4': 'Uzbek (Cyrillic)',
   'skip': 'Skip',
 
   /// SignInPage

@@ -10,9 +10,11 @@ const Map<String, String> ruRU = {
   'and': ' и ',
   'policy': 'Политика конфиденциальности',
   'choose_lang': 'Выберите язык',
-  'button_0': 'O\'zbek (Lotin)',
-  'button_1': 'Pусский',
-  'button_2': 'English (USA)',
+  'button_0': 'Узбекский (латиница)',
+  'button_1': 'Русский',
+  'button_2':'Английский (США)',
+  'button_3': 'Каракалпакский',
+  'button_4': 'Узбекский (кириллица)',
   'skip': 'Пропустить',
 
   /// SignInPage

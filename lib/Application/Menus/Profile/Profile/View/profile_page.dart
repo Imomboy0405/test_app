@@ -32,203 +32,202 @@ class ProfilePage extends StatelessWidget {
                 }
                 return Stack(
                   children: [
-                    ShowCaseWidget(
-                      builder: (context) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) async {
-                          await Future.delayed(const Duration(milliseconds: 300));
-                          if (!mainBloc.showCaseModel.profile && mainBloc.currentScreen == 4) {
-                            if (context.mounted) {
-                              bloc.add(ProfileShowCaseEvent(context: context));
-                            }
+                    ShowCaseWidget(builder: (context) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) async {
+                        await Future.delayed(const Duration(milliseconds: 300));
+                        if (!mainBloc.showCaseModel.profile && mainBloc.currentScreen == 4) {
+                          if (context.mounted) {
+                            bloc.add(ProfileShowCaseEvent(context: context));
                           }
-                        });
-                        return Scaffold(
-                          backgroundColor: AppColors.transparent,
-                          appBar: MyAppBar(titleText: 'profile'.tr()),
-                          body: Padding(
-                            padding: const EdgeInsets.fromLTRB(16, 0, 16, 83),
-                            child: SingleChildScrollView(
-                              physics: const BouncingScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  // #profil
-                                  const SizedBox(height: 10),
-                                  MyProfileButton(
-                                    endElement: SizedBox(
-                                      height: 178,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          // #full_name
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Icon(Icons.account_circle_rounded, color: AppColors.purple, size: 48),
-                                              const SizedBox(width: 10),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(bloc.fullName, style: AppTextStyles.style3(context)),
-                                                  Text('test_app_user'.tr(), style: AppTextStyles.style23_0(context)),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                        }
+                      });
+                      return Scaffold(
+                        backgroundColor: AppColors.transparent,
+                        appBar: MyAppBar(titleText: 'profile'.tr()),
+                        body: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 83),
+                          child: SingleChildScrollView(
+                            physics: const BouncingScrollPhysics(),
+                            child: Column(
+                              children: [
+                                // #profil
+                                const SizedBox(height: 10),
+                                MyProfileButton(
+                                  endElement: SizedBox(
+                                    height: 178,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // #full_name
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Icon(Icons.account_circle_rounded, color: AppColors.purple, size: 48),
+                                            const SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(bloc.fullName, style: AppTextStyles.style3(context)),
+                                                Text('test_app_user'.tr(), style: AppTextStyles.style23_0(context)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
 
-                                          // #date_of_sign_up
-                                          Row(
-                                            children: [
-                                              Text("${'date_sign'.tr()}:", style: AppTextStyles.style23_0(context)),
-                                              const SizedBox(width: 10),
-                                              Text(bloc.dateSign, style: AppTextStyles.style23(context)),
-                                            ],
-                                          ),
+                                        // #date_of_sign_up
+                                        Row(
+                                          children: [
+                                            Text("${'date_sign'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            const SizedBox(width: 10),
+                                            Text(bloc.dateSign, style: AppTextStyles.style23(context)),
+                                          ],
+                                        ),
 
-                                          // #phone_number
-                                          Row(
-                                            children: [
-                                              Text("${'phone_num'.tr()}:", style: AppTextStyles.style23_0(context)),
-                                              const SizedBox(width: 10),
-                                              Flexible(
-                                                child: Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
-                                                    style: AppTextStyles.style23(context)),
-                                              ),
-                                            ],
-                                          ),
-
-                                          // #email
-                                          Row(
-                                            children: [
-                                              Text("${'email'.tr()}:", style: AppTextStyles.style23_0(context)),
-                                              const SizedBox(width: 10),
-                                              Text(bloc.email == null ? 'email_not_set'.tr() : bloc.email!,
+                                        // #phone_number
+                                        Row(
+                                          children: [
+                                            Text("${'phone_num'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            const SizedBox(width: 10),
+                                            Flexible(
+                                              child: Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
                                                   style: AppTextStyles.style23(context)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    function: () => (),
-                                  ),
-                                  const SizedBox(height: 10),
+                                            ),
+                                          ],
+                                        ),
 
-                                  // #medical_info
-                                  myShowcase(
-                                    context: context,
-                                    key: bloc.keyMedicalInfo,
-                                    title: 'show_medical_info_title'.tr(),
-                                    description: 'show_medical_info_description'.tr(),
-                                    onTap: () => ShowCaseWidget.of(context).dismiss(),
-                                    child: MyProfileButton(
-                                      text: mainBloc.userModel!.userDetailList.isNotEmpty ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
-                                      function: () => bloc.add(ProfileUpdateEvent(context: context)),
-                                      endElement: const Icon(Icons.health_and_safety, size: 24, color: AppColors.whiteConst),
+                                        // #email
+                                        Row(
+                                          children: [
+                                            Text("${'email'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            const SizedBox(width: 10),
+                                            Text(bloc.email == null ? 'email_not_set'.tr() : bloc.email!,
+                                                style: AppTextStyles.style23(context)),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  function: () => (),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #theme
-                                  MyProfileButton(
-                                    text: 'theme'.tr(),
-                                    function: () => bloc.add(DarkModeEvent(darkMode: !bloc.darkMode)),
-                                    endElement: SizedBox(
-                                      height: 30,
-                                      child: ToggleButtons(
-                                        selectedColor: AppColors.whiteConst,
-                                        color: AppColors.purple,
-                                        fillColor: AppColors.purple,
-                                        splashColor: AppColors.purple,
-                                        borderColor: AppColors.purple,
-                                        borderWidth: 0.3,
-                                        borderRadius: BorderRadius.circular(6),
-                                        isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
-                                        onPressed: (i) => bloc.add(DarkModeEvent(darkMode: i == 1)),
-                                        children: const <Widget>[
-                                          Icon(CupertinoIcons.sun_max_fill, size: 20),
-                                          Icon(CupertinoIcons.moon_stars_fill, size: 20),
-                                        ],
-                                      ),
+                                // #medical_info
+                                myShowcase(
+                                  context: context,
+                                  key: bloc.keyMedicalInfo,
+                                  title: 'show_medical_info_title'.tr(),
+                                  description: 'show_medical_info_description'.tr(),
+                                  onTap: () => ShowCaseWidget.of(context).dismiss(),
+                                  child: MyProfileButton(
+                                    text:
+                                        mainBloc.userModel!.userDetailList.isNotEmpty ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
+                                    function: () => bloc.add(ProfileUpdateEvent(context: context)),
+                                    endElement: const Icon(Icons.health_and_safety, size: 24, color: AppColors.whiteConst),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+
+                                // #theme
+                                MyProfileButton(
+                                  text: 'theme'.tr(),
+                                  function: () => bloc.add(DarkModeEvent(darkMode: !bloc.darkMode)),
+                                  endElement: SizedBox(
+                                    height: 30,
+                                    child: ToggleButtons(
+                                      selectedColor: AppColors.whiteConst,
+                                      color: AppColors.purple,
+                                      fillColor: AppColors.purple,
+                                      splashColor: AppColors.purple,
+                                      borderColor: AppColors.purple,
+                                      borderWidth: 0.3,
+                                      borderRadius: BorderRadius.circular(6),
+                                      isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
+                                      onPressed: (i) => bloc.add(DarkModeEvent(darkMode: i == 1)),
+                                      children: const <Widget>[
+                                        Icon(CupertinoIcons.sun_max_fill, size: 20),
+                                        Icon(CupertinoIcons.moon_stars_fill, size: 20),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #theme
-                                  MyProfileButton(
-                                    text: 'sounds_and_vibration'.tr(),
-                                    function: () => bloc.add(SoundEvent(sound: !mainBloc.sound)),
-                                    endElement: SizedBox(
-                                      height: 30,
-                                      child: ToggleButtons(
-                                        selectedColor: AppColors.whiteConst,
-                                        color: AppColors.purple,
-                                        fillColor: AppColors.purple,
-                                        splashColor: AppColors.purple,
-                                        borderColor: AppColors.purple,
-                                        borderWidth: 0.3,
-                                        borderRadius: BorderRadius.circular(6),
-                                        isSelected: [!mainBloc.sound, mainBloc.sound],
-                                        onPressed: (i) => bloc.add(SoundEvent(sound: i == 1)),
-                                        children: const <Widget>[
-                                          Icon(Icons.music_off, size: 20),
-                                          Icon(Icons.music_note, size: 20),
-                                        ],
-                                      ),
+                                // #sound
+                                MyProfileButton(
+                                  text: 'sounds_and_vibration'.tr(),
+                                  function: () => bloc.add(SoundEvent(sound: !mainBloc.sound)),
+                                  endElement: SizedBox(
+                                    height: 30,
+                                    child: ToggleButtons(
+                                      selectedColor: AppColors.whiteConst,
+                                      color: AppColors.purple,
+                                      fillColor: AppColors.purple,
+                                      splashColor: AppColors.purple,
+                                      borderColor: AppColors.purple,
+                                      borderWidth: 0.3,
+                                      borderRadius: BorderRadius.circular(6),
+                                      isSelected: [!mainBloc.sound, mainBloc.sound],
+                                      onPressed: (i) => bloc.add(SoundEvent(sound: i == 1)),
+                                      children: const <Widget>[
+                                        Icon(Icons.music_off, size: 20),
+                                        Icon(Icons.music_note, size: 20),
+                                      ],
                                     ),
                                   ),
+                                ),
 
-                                  const SizedBox(height: 10),
+                                const SizedBox(height: 10),
 
-                                  // #language
-                                  MyProfileButton(
-                                    text: 'current_lang'.tr(),
-                                    function: () => bloc.add(LanguageEvent()),
-                                    endElement: Image(
-                                      image: AssetImage('assets/icons/ic_flag_${bloc.selectedLang.name}.png'),
-                                      width: 20,
-                                      height: 20,
-                                      fit: BoxFit.fill,
-                                    ),
+                                // #language
+                                MyProfileButton(
+                                  text: 'current_lang'.tr(),
+                                  function: () => bloc.add(LanguageEvent()),
+                                  endElement: Image(
+                                    image: AssetImage('assets/icons/ic_flag_${bloc.selectedLang.name}.png'),
+                                    width: 20,
+                                    height: 20,
+                                    fit: BoxFit.fill,
                                   ),
-                                  const SizedBox(height: 10),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #sign_out
-                                  MyProfileButton(
-                                    text: 'sign_out'.tr(),
-                                    function: () => bloc.add(SignOutEvent()),
-                                    endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.red),
-                                  ),
-                                  const SizedBox(height: 10),
+                                // #sign_out
+                                MyProfileButton(
+                                  text: 'sign_out'.tr(),
+                                  function: () => bloc.add(SignOutEvent()),
+                                  endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.red),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #delete_account
-                                  MyProfileButton(
-                                    text: 'delete_account'.tr(),
-                                    function: () => bloc.add(DeleteAccountEvent()),
-                                    endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.red),
-                                  ),
-                                  const SizedBox(height: 10),
+                                // #delete_account
+                                MyProfileButton(
+                                  text: 'delete_account'.tr(),
+                                  function: () => bloc.add(DeleteAccountEvent()),
+                                  endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.red),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #tutorial
-                                  MyProfileButton(
-                                    text: 'tutorial'.tr(),
-                                    function: () => bloc.add(TutorialEvent()),
-                                    endElement: const Icon(CupertinoIcons.book, size: 24, color: AppColors.whiteConst),
-                                  ),
-                                  const SizedBox(height: 10),
+                                // #tutorial
+                                MyProfileButton(
+                                  text: 'tutorial'.tr(),
+                                  function: () => bloc.add(TutorialEvent()),
+                                  endElement: const Icon(CupertinoIcons.book, size: 24, color: AppColors.whiteConst),
+                                ),
+                                const SizedBox(height: 10),
 
-                                  // #info
-                                  MyProfileButton(
-                                    text: 'info'.tr(),
-                                    function: () => bloc.add(InfoEvent()),
-                                    endElement: const Icon(CupertinoIcons.info, size: 24, color: AppColors.whiteConst),
-                                  ),
-                                ],
-                              ),
+                                // #info
+                                MyProfileButton(
+                                  text: 'info'.tr(),
+                                  function: () => bloc.add(InfoEvent()),
+                                  endElement: const Icon(CupertinoIcons.info, size: 24, color: AppColors.whiteConst),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      }
-                    ),
+                        ),
+                      );
+                    }),
 
                     // #choose_language_screen
                     if (state is ProfileLangState)
@@ -241,10 +240,10 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(DoneEvent(context: context)),
                         // #languages
                         child: SizedBox(
-                          height: 175,
+                          height: 300,
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 3,
+                            itemCount: 5,
                             padding: EdgeInsets.zero,
                             itemBuilder: (c, index) {
                               return RadioListTile(
@@ -263,7 +262,10 @@ class ProfilePage extends StatelessWidget {
                                     height: 24,
                                     fit: BoxFit.fill,
                                   ),
-                                  title: Text('button_$index'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
+                                  title: Text(
+                                    'button_$index'.tr(language: bloc.selectedLang),
+                                    style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst),
+                                  ),
                                   selected: bloc.lang[index] == bloc.selectedLang,
                                   value: bloc.lang[index],
                                   groupValue: bloc.selectedLang,
@@ -299,7 +301,8 @@ class ProfilePage extends StatelessWidget {
                         functionDone: () => bloc.add(ConfirmEvent(context: context, delete: true)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text('confirm_delete_account'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
+                          child: Text('confirm_delete_account'.tr(),
+                              style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
 

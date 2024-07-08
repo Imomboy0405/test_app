@@ -10,9 +10,11 @@ const Map<String, String> uzUZ = {
   'and': ' va ',
   'policy': 'Maxfiylik siyosati',
   'choose_lang': 'Tilni tanlang',
-  'button_0': 'O\'zbek (Lotin)',
-  'button_1': 'Pусский',
-  'button_2': 'English (USA)',
+  'button_0': 'Oʻzbek (Lotin)',
+  'button_1': 'Rus',
+  'button_2': 'Ingliz (AQSH)',
+  'button_3': 'Qoraqalpoq',
+  'button_4': 'Oʻzbek (Kirill)',
   'skip': 'O\'tkazish',
 
   /// SignInPage

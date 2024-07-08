@@ -1,9 +1,11 @@
 import 'db_service.dart';
 import 'locals/en_us.dart';
 import 'locals/ru_ru.dart';
+import 'locals/uz_kr.dart';
 import 'locals/uz_uz.dart';
+import 'locals/uz_qr.dart';
 
-enum Language { en, ru, uz }
+enum Language { en, ru, uz, kr, qr }
 
 abstract class LangService {
   static Language _language = Language.uz;
@@ -29,6 +31,10 @@ abstract class LangService {
         return Language.en;
       case "ru":
         return Language.ru;
+      case "qr":
+        return Language.qr;
+      case "kr":
+        return Language.kr;
       default:
         return Language.uz;
     }
@@ -44,6 +50,10 @@ extension Translation on String {
         return ruRU[this] ?? 'RU_NULL';
       case Language.uz:
         return uzUZ[this] ?? 'UZ_NULL';
+      case Language.kr:
+        return uzKR[this] ?? 'KR_NULL';
+      case Language.qr:
+        return uzQR[this] ?? 'QR_NULL';
     }
   }
 }

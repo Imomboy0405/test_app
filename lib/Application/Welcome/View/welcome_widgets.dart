@@ -17,6 +17,8 @@ class MyFlagButton extends StatelessWidget {
     Language.uz,
     Language.ru,
     Language.en,
+    Language.qr,
+    Language.kr,
   ];
 
   const MyFlagButton({
@@ -40,9 +42,9 @@ class MyFlagButton extends StatelessWidget {
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
                 return DraggableScrollableSheet(
-                  initialChildSize: 0.5,
-                  minChildSize: 0.47,
-                  maxChildSize: 0.5,
+                  initialChildSize: 0.7,
+                  minChildSize: 0.67,
+                  maxChildSize: 0.7,
                   expand: true,
                   builder: (BuildContext cont, ScrollController scrollController) {
                     return Container(
@@ -51,7 +53,7 @@ class MyFlagButton extends StatelessWidget {
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
                       child: ListView.builder(
                         controller: scrollController,
-                        itemCount: 4,
+                        itemCount: 6,
                         itemBuilder: (c, index) {
                           return index == 0
                               ? Padding(
