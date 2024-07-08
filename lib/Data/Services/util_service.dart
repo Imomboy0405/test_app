@@ -1,7 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:vibration/vibration.dart';
 
 class Utils {
@@ -10,14 +12,16 @@ class Utils {
     required BuildContext context,
     bool errorState = false,
   }) async {
-    final player = AudioPlayer();
-    if (errorState) {
-      player.play(AssetSource('sounds/sound_error.wav'));
-    } else {
-      player.play(AssetSource('sounds/sound_success.wav'));
-    }
-    if (await Vibration.hasVibrator() ?? false) {
-    Vibration.vibrate(duration: 300, amplitude: 64);
+    if (locator<MainBloc>().sound) {
+      final player = AudioPlayer();
+      if (errorState) {
+        player.play(AssetSource('sounds/sound_error.wav'));
+      } else {
+        player.play(AssetSource('sounds/sound_success.wav'));
+      }
+      if (await Vibration.hasVibrator() ?? false) {
+        Vibration.vibrate(duration: 300, amplitude: 64);
+      }
     }
     if (context.mounted) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
