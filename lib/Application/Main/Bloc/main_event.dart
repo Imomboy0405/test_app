@@ -38,6 +38,15 @@ class MainThemeEvent extends MainEvent {
   List<Object?> get props => [];
 }
 
+class MainSoundEvent extends MainEvent {
+  final bool sound;
+
+  MainSoundEvent({required this.sound});
+
+  @override
+  List<Object?> get props => [sound];
+}
+
 class MainExitEvent extends MainEvent {
 
   @override

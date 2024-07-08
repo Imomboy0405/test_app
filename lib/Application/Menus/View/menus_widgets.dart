@@ -166,7 +166,6 @@ class MyProfileScreen extends StatelessWidget {
     this.functionDone,
     required this.child,
     this.doneButton = false,
-    this.red = false,
   });
 
   final String textTitle;
@@ -176,7 +175,6 @@ class MyProfileScreen extends StatelessWidget {
   final Function? functionDone;
   final Widget child;
   final bool doneButton;
-  final bool red;
 
   @override
   Widget build(BuildContext context) {
@@ -220,80 +218,27 @@ class MyProfileScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: doneButton ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                 children: [
-                  red
-                      ? Flexible(
-                          child: SingleButton(
-                            onPressed: () => functionCancel(),
-                            red: true,
-                            text: textCancel,
-                          ),
-                        )
-                      : SelectButton(
-                          context: context,
-                          text: textCancel,
-                          function: () => functionCancel(),
-                          select: false,
-                        ),
+                  SelectButton(
+                    context: context,
+                    text: textCancel,
+                    function: () => functionCancel(),
+                    select: false,
+                  ),
                   const SizedBox(width: 15),
                   if (doneButton)
-                    red
-                        ? Flexible(
-                            child: SingleButton(
-                              onPressed: () => functionDone!(),
-                              red: true,
-                              redDone: true,
-                              text: textDone!,
-                            ),
-                          )
-                        : SelectButton(
-                            context: context,
-                            text: textDone!,
-                            function: () => functionDone!(),
-                            select: true,
-                            selectFunctionOn: true,
-                          ),
+                    SelectButton(
+                      context: context,
+                      text: textDone!,
+                      function: () => functionDone!(),
+                      select: true,
+                      selectFunctionOn: true,
+                    ),
                 ],
               ),
             ],
           ),
         ),
       ],
-    );
-  }
-}
-
-class SingleButton extends StatelessWidget {
-  final Function onPressed;
-  final String text;
-  final bool red;
-  final bool redDone;
-
-  const SingleButton({
-    super.key,
-    required this.onPressed,
-    required this.text,
-    this.red = false,
-    this.redDone = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      onPressed: () => onPressed(),
-      height: 40,
-      minWidth: double.infinity,
-      elevation: 0,
-      color: redDone
-          ? AppColors.red
-          : red
-              ? AppColors.transparentRed
-              : AppColors.blue,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      child: Text(
-        text,
-        style: red && !redDone ? AppTextStyles.style23_2(context) : AppTextStyles.style23_1(context).copyWith(color: Colors.white),
-        textAlign: TextAlign.center,
-      ),
     );
   }
 }
@@ -357,7 +302,7 @@ class MyProfileButton extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: MaterialButton(
           onPressed: () => function(),
-          height: text == null ? 188 : 44,
+          height: text == null ? MediaQuery.of(context).size.width * 0.46 : MediaQuery.of(context).size.width * 0.115,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: AppColors.purpleLight,
           splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,

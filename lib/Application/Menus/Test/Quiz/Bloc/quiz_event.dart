@@ -27,11 +27,12 @@ class SelectVariantEvent extends QuizEvent {
 
 class NextButtonEvent extends QuizEvent {
   final BuildContext context;
+  final bool selectVariant;
 
-  const NextButtonEvent({required this.context});
+  const NextButtonEvent({required this.context, this.selectVariant = false});
 
   @override
-  List<Object?> get props => [context];
+  List<Object?> get props => [context, selectVariant];
 }
 
 class MiniButtonEvent extends QuizEvent {

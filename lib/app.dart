@@ -51,7 +51,7 @@ class TestApp extends StatelessWidget {
       ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: AppColors.purpleAccent),
-        canvasColor: AppColors.transparentGray,
+        canvasColor: AppColors.transparentPurple,
       ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(

@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -149,6 +150,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Icon(Icons.woman, color: AppColors.purple),
   ];
 
+  final player = AudioPlayer();
+
   ChatBloc()
       : super(ChatInitialState(
             showEmojis: false,
@@ -284,12 +287,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> receiveMessage(ChatReceiveMessageEvent event, Emitter<ChatState> emit) async {
-    await for (var event in messagesRef.onChildAdded) {
+     await for (var event in messagesRef.onChildAdded) {
       if (event.snapshot.value is Map) {
         final newMsg = MessageModel.fromJson(Map<String, dynamic>.from(event.snapshot.value as Map));
         messages ??= [];
         if (!messages!.contains(newMsg)) {
           messages!.add(newMsg);
+          if (mainBloc.sound) {
+            player.play(AssetSource('sounds/sound_chat.mp3'));
+          }
           if (!isClosed) {
             emitComfort(emit);
           }
@@ -311,6 +317,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       controller.clear();
 
       await messagesRef.push().set(msgModel.toJson());
+      if (mainBloc.sound) {
+        player.play(AssetSource('sounds/sound_button.wav'));
+      }
+
       if (!isClosed) {
         emitComfort(emit);
       }

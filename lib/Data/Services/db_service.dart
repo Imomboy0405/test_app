@@ -5,7 +5,7 @@ import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/chat_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
-enum StorageKey { lang, theme, user, chat, test, showCase }
+enum StorageKey { lang, theme, user, chat, test, showCase, sound }
 
 class DBService {
 
@@ -17,6 +17,11 @@ class DBService {
   static Future<bool> saveTheme(String theme) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.setString(StorageKey.theme.name, theme);
+  }
+
+  static Future<bool> saveSound(String sound) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    return preferences.setString(StorageKey.sound.name, sound);
   }
 
   static Future<bool> saveUser(UserModel user) async {

@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
+import 'package:vibration/vibration.dart';
 
 part 'quiz_event.dart';
 part 'quiz_state.dart';
@@ -102,15 +104,24 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   void selectVariant(SelectVariantEvent event, Emitter<QuizState> emit) async {
     if (selectedValue != event.value) {
       if (selectedValue == 0) {
+        if (mainBloc.sound) {
+          final player = AudioPlayer();
+          await player.play(AssetSource('sounds/sound_button.wav'));
+          if (await Vibration.hasVibrator() ?? false) {
+            Vibration.vibrate(duration: 1, amplitude: 1);
+          }
+        }
         selectedValue = event.value;
         answers[currentQuiz - 1] = selectedValue;
         percent = answers.where((answer) => answer != 0).length * 100 ~/ answers.length;
         updateAnimate();
         emitInitial(emit);
         if (percent != 100) {
-          await Future.delayed(const Duration(milliseconds: 350));
+          opacityAnime = 0;
+          oldQuiz = currentQuiz;
+          await Future.delayed(const Duration(milliseconds: 300));
           if (event.context.mounted) {
-            add(NextButtonEvent(context: event.context));
+            add(NextButtonEvent(context: event.context, selectVariant: true));
           }
         }
       } else {
@@ -173,7 +184,9 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
       }
       opacityAnime = 0;
       emitInitial(emit);
-      await Future.delayed(const Duration(milliseconds: 300));
+      if (!event.selectVariant) {
+        await Future.delayed(const Duration(milliseconds: 300));
+      }
       opacityAnime = 1;
       emitInitial(emit);
     } else {
@@ -196,7 +209,15 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           DBService.saveTest(mainBloc.resultTests);
         }
         emit(const QuizFinishState(confetti: false));
+
         if (confetti == null) {
+          if (mainBloc.sound) {
+            final player = AudioPlayer();
+            await player.play(AssetSource('sounds/sound_confetti.wav'));
+            if (await Vibration.hasVibrator() ?? false) {
+              Vibration.vibrate(duration: 500, amplitude: 64);
+            }
+          }
           await Future.delayed(const Duration(milliseconds: 350), () {
             confetti = true;
           }).whenComplete(() => emit(QuizFinishState(confetti: confetti!)));

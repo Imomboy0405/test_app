@@ -39,8 +39,8 @@ class SignUpPage extends StatelessWidget {
                     )
                   ],
 
-                  // #IBilling
-                  title: Text('IBilling', style: AppTextStyles.style0_1(context)),
+                  // #test_app
+                  title: Text('Test App', style: AppTextStyles.style0_1(context)),
                   leadingWidth: 60,
                 ),
                 body: SingleChildScrollView(

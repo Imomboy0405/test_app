@@ -5,7 +5,6 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'r_t_d_b_service.dart';
-import 'db_service.dart';
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
@@ -29,15 +28,14 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
-  static Future<String?> signInWithEmail(String email, String password) async {
+  static Future<Object?> signInWithEmail(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       UserModel? userModel = await RTDBService.loadUser(_auth.currentUser!.uid);
-      await DBService.saveUser(userModel!);
-      return null;
+      return userModel;
     } catch (e) {
       return e.toString();
     }

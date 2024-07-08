@@ -39,8 +39,8 @@ class SignInPage extends StatelessWidget {
                     ),
                   ],
 
-                  // #IBilling
-                  title: Text('IBilling', style: AppTextStyles.style0_1(context)),
+                  // #test_app
+                  title: Text('Test App', style: AppTextStyles.style0_1(context)),
                   leadingWidth: 60,
                 ),
 
@@ -74,7 +74,7 @@ class SignInPage extends StatelessWidget {
                             icon: Icons.mail,
                             hintTxt: 'aaabbbccc@dddd.eee',
                             labelTxt: 'email_address'.tr(),
-                            snackBarTxt: 'snackBar'.tr(),
+                            snackBarTxt: 'fill_email'.tr(),
                             onSubmitted: () => bloc.add(OnSubmittedEvent()),
                             onTap: () => bloc.add(SignInChangeEvent()),
                             onChanged: () => bloc.add(SignInChangeEvent()),
@@ -94,7 +94,7 @@ class SignInPage extends StatelessWidget {
                             icon: Icons.lock,
                             hintTxt: '123abc',
                             labelTxt: 'password'.tr(),
-                            snackBarTxt: 'snackBar'.tr(),
+                            snackBarTxt: 'fill_password'.tr(),
                             obscure: bloc.obscure,
                             onChanged: () => bloc.add(SignInChangeEvent()),
                             onSubmitted: () => bloc.add(OnSubmittedEvent(password: true)),

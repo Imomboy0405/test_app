@@ -385,14 +385,14 @@ class MyButton extends StatelessWidget {
           }
         }
       },
-      color: enable ? AppColors.purple : AppColors.transparentPurple,
+      color: AppColors.purple,
       minWidth: double.infinity,
-      height: 48,
+      height: MediaQuery.of(context).size.width * 0.123,
       elevation: 0,
       highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.transparentBlack : AppColors.pink,
       splashColor: AppColors.pink,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      child: Text(text, style: enable ? AppTextStyles.style4(context).copyWith(color: Colors.white) : AppTextStyles.style5(context)),
+      child: Text(text, style: AppTextStyles.style4(context).copyWith(color: Colors.white)),
     );
   }
 }

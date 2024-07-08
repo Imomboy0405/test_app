@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
@@ -46,6 +47,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   final keyMedicalInfo = GlobalKey(debugLabel: 'showMedicalInfo');
 
+  final player = AudioPlayer();
+
   ProfileBloc({required this.mainBloc}) : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
     on<ProfileUpdateEvent>(pressProfileUpdate);
@@ -54,6 +57,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<CancelEvent>(pressCancel);
     on<DoneEvent>(pressDone);
     on<DarkModeEvent>(pressDarkMode);
+    on<SoundEvent>(pressSound);
     on<SignOutEvent>(pressSignOut);
     on<DeleteAccountEvent>(pressDeleteAccount);
     on<ConfirmEvent>(pressConfirm);
@@ -95,6 +99,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void pressSelectLanguage(ConfirmLanguageEvent event, Emitter<ProfileState> emit) {
     selectedLang = event.lang;
+    if (mainBloc.sound) {
+      player.play(AssetSource('sounds/sound_button.wav'));
+    }
     emit(ProfileLangState(lang: selectedLang));
   }
 
@@ -113,7 +120,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> pressDarkMode(DarkModeEvent event, Emitter<ProfileState> emit) async {
     darkMode = event.darkMode;
     await ThemeService.theme(darkMode ? ThemeMode.dark : ThemeMode.light);
+    if (mainBloc.sound) {
+      player.play(AssetSource('sounds/sound_button.wav'));
+    }
     mainBloc.add(MainThemeEvent());
+    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+  }
+
+  void pressSound(SoundEvent event, Emitter<ProfileState> emit) {
+    if (event.sound) {
+      player.play(AssetSource('sounds/sound_button.wav'));
+    }
+    mainBloc.add(MainSoundEvent(sound: event.sound));
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
   }
 
@@ -154,7 +172,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     locator.registerSingleton<MainBloc>(MainBloc());
     locator.registerSingleton<ProfileBloc>(ProfileBloc(mainBloc: locator<MainBloc>()));
-    locator.registerSingleton<HomeBloc>(HomeBloc());
+    locator.registerSingleton<HomeBloc>(HomeBloc(mainBloc: locator<MainBloc>()));
     locator.registerSingleton<ChatBloc>(ChatBloc());
   }
 
@@ -205,7 +223,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         event.context.read<ProfileDetailBloc>().add(DetailLoadingEvent());
         await RTDBService.storeUser(userModel!);
-        await DBService.saveUser(userModel!);
+        if (mainBloc.rememberMe) {
+          await DBService.saveUser(userModel!);
+        }
         mainBloc.userModel = userModel;
         if (event.context.mounted) {
           currentTab = 0;

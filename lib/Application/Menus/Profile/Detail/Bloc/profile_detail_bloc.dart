@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,8 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   final keyBMI = GlobalKey(debugLabel: 'showBMi');
   bool showSaveButton = false;
   final keySaveButton = GlobalKey(debugLabel: 'showSave');
+
+  final player = AudioPlayer();
 
   ProfileDetailBloc({required this.profileBloc})
       : super(ProfileDetailInitialState(
@@ -108,6 +111,10 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   }
 
   void updateDetail(UpdateDetailPageEvent event, Emitter<ProfileDetailState> emit) {
+    if (profileBloc.mainBloc.sound) {
+      player.play(AssetSource('sounds/sound_button.wav'));
+    }
+
     if (event.bmi) {
       if (event.bmiHeight) {
         profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value =

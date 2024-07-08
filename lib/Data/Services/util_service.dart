@@ -1,14 +1,27 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:vibration/vibration.dart';
 
 class Utils {
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> mySnackBar({
+  static Future<Object> mySnackBar({
     required String txt,
     required BuildContext context,
     bool errorState = false,
-  }) {
-    return ScaffoldMessenger.of(context).showSnackBar(
+  }) async {
+    final player = AudioPlayer();
+    if (errorState) {
+      player.play(AssetSource('sounds/sound_error.wav'));
+    } else {
+      player.play(AssetSource('sounds/sound_success.wav'));
+    }
+    if (await Vibration.hasVibrator() ?? false) {
+    Vibration.vibrate(duration: 300, amplitude: 64);
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: AppColors.transparent,
         elevation: 0,
@@ -17,6 +30,7 @@ class Utils {
           constraints: const BoxConstraints(
             minHeight: 44,
           ),
+          padding: const EdgeInsets.all(5),
           margin: const EdgeInsets.only(bottom: 80),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: errorState ? AppColors.red : AppColors.pink, borderRadius: BorderRadius.circular(6)),
@@ -24,5 +38,7 @@ class Utils {
         ),
       ),
     );
+    }
+    return const SizedBox.shrink();
   }
 }

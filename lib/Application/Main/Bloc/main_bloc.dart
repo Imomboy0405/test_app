@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
+import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart' as theme;
 import 'package:test_app/Data/Services/lang_service.dart';
 
@@ -12,8 +13,10 @@ part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   bool darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
+  bool sound = true;
   Language language = LangService.getLanguage;
   ShowCaseModel showCaseModel = ShowCaseModel();
+  bool rememberMe = true;
 
   int currentScreen = 1;
   int oldScreen = 1;
@@ -50,6 +53,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     screen: 1,
     lang: LangService.getLanguage,
     darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
+    sound: true,
     resultTests: List.filled(3, -1),
   )) {
     on<MainScrollMenuEvent>(scrollMenu);
@@ -57,6 +61,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainHideBottomNavigationBarEvent>(hideBottomNavigationBar);
     on<MainLanguageEvent>(languageUpdate);
     on<MainThemeEvent>(themeUpdate);
+    on<MainSoundEvent>(soundUpdate);
     on<MainExitEvent>(pressExit);
     on<MainCancelEvent>(pressCancel);
     on<MainDoneEvent>(pressDone);
@@ -67,6 +72,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       screen: currentScreen,
       lang: language,
       darkMode: darkMode,
+      sound: sound,
       resultTests: resultTests,
     ));
   }
@@ -129,6 +135,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   void themeUpdate(MainThemeEvent event, Emitter<MainState> emit) {
     darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
+    emitComfort(emit);
+  }
+
+  void soundUpdate(MainSoundEvent event, Emitter<MainState> emit) async {
+    sound = event.sound;
+    await DBService.saveSound(sound.toString());
     emitComfort(emit);
   }
 

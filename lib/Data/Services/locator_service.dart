@@ -12,5 +12,5 @@ Future<void> setupLocator() async {
   locator.registerSingleton<ProfileBloc>(ProfileBloc(mainBloc: locator<MainBloc>()));
   locator.registerSingleton<ChatBloc>(ChatBloc());
   locator.registerSingleton<TestDetailBloc>(TestDetailBloc(mainBloc: locator<MainBloc>()));
-  locator.registerSingleton<HomeBloc>(HomeBloc());
+  locator.registerSingleton<HomeBloc>(HomeBloc(mainBloc: locator<MainBloc>()));
 }

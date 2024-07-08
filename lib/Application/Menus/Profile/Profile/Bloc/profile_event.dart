@@ -53,6 +53,15 @@ class DarkModeEvent extends ProfileEvent {
   List<Object?> get props => [darkMode];
 }
 
+class SoundEvent extends ProfileEvent {
+  final bool sound;
+
+  SoundEvent({required this.sound});
+
+  @override
+  List<Object?> get props => [sound];
+}
+
 class SignOutEvent extends ProfileEvent {
   @override
   List<Object?> get props => [];

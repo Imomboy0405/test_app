@@ -11,7 +11,6 @@ import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
-import 'package:test_app/Data/Services/locator_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -20,7 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   CarouselController carouselController = CarouselController();
   int currentPage = 0;
   int newPage = 0;
-  MainBloc mainBloc = locator<MainBloc>();
+  MainBloc mainBloc;
   bool first = true;
   double opacityAnime = 1;
   String fullName = '';
@@ -29,7 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final keyCarousel = GlobalKey(debugLabel: 'showCarousel');
 
 
-  HomeBloc() : super(HomeLoadingState()) {
+  HomeBloc({required this.mainBloc}) : super(HomeLoadingState()) {
     on<HomeScrollCardEvent>(scrollCard);
     on<HomeInitialDataEvent>(initialData);
     on<HomeShowCaseEvent>(showCase);
@@ -56,7 +55,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (first) {
       emit(HomeLoadingState());
       first = false;
-      mainBloc = locator<MainBloc>();
       if (mainBloc.userModel == null) {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);
@@ -72,6 +70,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       json = await DBService.loadData(StorageKey.showCase);
       if (json != null) {
         mainBloc.showCaseModel = showCaseModelFromJson(json);
+      }
+
+      json = null;
+      json = await DBService.loadData(StorageKey.sound);
+      if (json != null) {
+        mainBloc.sound = json == 'true';
       }
 
       if (articles.isEmpty) {

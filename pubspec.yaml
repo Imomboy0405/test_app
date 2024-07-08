@@ -15,6 +15,7 @@ dependencies:
 
   # icons
   cupertino_icons: ^1.0.8
+
   # state management
   flutter_bloc: ^8.1.6
 
@@ -38,7 +39,6 @@ dependencies:
   get_it: ^7.7.0
 
   # ui component
-  url_launcher: ^6.3.0
   avatar_glow: ^3.0.1
   carousel_slider: ^4.2.1
   flutter_svg: ^2.0.10+1
@@ -47,6 +47,11 @@ dependencies:
   animated_text_kit: ^4.2.2
   shimmer: ^3.0.0
   showcaseview: ^3.0.0
+  audioplayers: ^6.0.0
+  vibration: ^1.9.0
+
+  # web
+  url_launcher: ^6.3.0
 
   # json
   json_annotation: ^4.9.0
@@ -70,6 +75,7 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/animations/
+    - assets/sounds/
 
   fonts:
     - family: Poppins
