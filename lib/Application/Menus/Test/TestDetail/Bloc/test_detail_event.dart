@@ -12,10 +12,10 @@ class StartTestEvent extends TestDetailEvent {
   List<Object?> get props => [ context];
 }
 
-class ShowCaseEvent extends TestDetailEvent {
+class TestDetailShowCaseEvent extends TestDetailEvent {
   final BuildContext context;
 
-  const ShowCaseEvent({required this.context});
+  const TestDetailShowCaseEvent({required this.context});
 
   @override
   List<Object?> get props => [context];

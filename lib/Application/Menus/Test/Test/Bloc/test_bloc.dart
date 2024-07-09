@@ -11,12 +11,13 @@ part 'test_state.dart';
 
 class TestBloc extends Bloc<TestEvent, TestState> {
   MainBloc mainBloc;
-
+  int asset = 0;
   List<String> question = [
     '20',
     '20',
     '20',
   ];
+  bool animation = true;
 
   final keyTest = GlobalKey(debugLabel: 'showTest');
 
@@ -33,6 +34,26 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   }
 
   void pressEnterTest(EnterTestEvent event, Emitter<TestState> emit) {
-    Navigator.pushNamed(event.context, TestDetailPage.id, arguments: event.index);
+    asset = event.index;
+    Navigator.push(
+      event.context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const TestDetailPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var begin = const Offset(0, .7);
+            var end = Offset.zero;
+            var curve = Curves.easeIn;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
+              ),
+            );
+          },
+        ),
+    );
   }
 }

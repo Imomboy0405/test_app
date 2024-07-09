@@ -14,7 +14,6 @@ class EnterTestEvent extends TestEvent {
   List<Object?> get props => [index, context];
 }
 
-
 class ShowCaseEvent extends TestEvent {
   final BuildContext context;
 

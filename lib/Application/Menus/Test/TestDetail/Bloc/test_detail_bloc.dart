@@ -18,10 +18,10 @@ class TestDetailBloc extends Bloc<TestDetailEvent, TestDetailState> {
 
   TestDetailBloc({required this.mainBloc}) : super(TestDetailInitialState()) {
     on<StartTestEvent>(startTest);
-    on<ShowCaseEvent>(showCase);
+    on<TestDetailShowCaseEvent>(showCase);
   }
 
-  Future<void> showCase(ShowCaseEvent event, Emitter<TestDetailState> emit) async {
+  Future<void> showCase(TestDetailShowCaseEvent event, Emitter<TestDetailState> emit) async {
     controller.jumpTo(controller.position.maxScrollExtent);
     WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(event.context).startShowCase([keyTestDetail]));
     emit(TestDetailInitialState());

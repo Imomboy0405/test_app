@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/Bloc/quiz_bloc.dart';
@@ -259,17 +260,23 @@ class QuizPage extends StatelessWidget {
 
                             // #variants
                             for (int i = 1; i <= 4; i++)
-                              MyQuizButton(
-                                text: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].title,
-                                value: i,
-                                groupValue: bloc.selectedValue,
-                                onChanged: (int? value) => bloc.add(SelectVariantEvent(
-                                  value: value!,
-                                  ball: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value,
-                                  context: context,
-                                )),
-                                ball: bloc.result != -1 ? bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value.toString() : null,
-                                selected: bloc.answers[bloc.currentQuiz - 1] != 0 && bloc.answers[bloc.currentQuiz - 1] != i,
+                              Builder(
+                                builder: (context) {
+                                  return MyQuizButton(
+                                    key: Key('${bloc.currentQuiz}'),
+                                    animeRight: bloc.currentQuiz > bloc.oldQuiz,
+                                    text: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].title,
+                                    value: i,
+                                    groupValue: bloc.selectedValue,
+                                    onChanged: (int? value) => bloc.add(SelectVariantEvent(
+                                      value: value!,
+                                      ball: bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value,
+                                      context: context,
+                                    )),
+                                    ball: bloc.result != -1 ? bloc.quizModels[bloc.currentQuiz - 1].answers[i - 1].value.toString() : null,
+                                    selected: bloc.answers[bloc.currentQuiz - 1] != 0 && bloc.answers[bloc.currentQuiz - 1] != i,
+                                  );
+                                }
                               ),
                           ],
                         ),
@@ -396,6 +403,7 @@ class MyQuizButton extends StatelessWidget {
   final ValueChanged<int?> onChanged;
   final String? ball;
   final bool selected;
+  final bool animeRight;
 
   const MyQuizButton({
     super.key,
@@ -405,53 +413,69 @@ class MyQuizButton extends StatelessWidget {
     required this.onChanged,
     required this.ball,
     required this.selected,
+    required this.animeRight,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Container(
-        height: 55,
-        decoration: BoxDecoration(
-          color: groupValue == value ? AppColors.pink : AppColors.transparentBlack,
-          borderRadius: BorderRadius.circular(16),
-          border: groupValue == value ? null : Border.all(color: AppColors.black),
-          boxShadow: [
-            BoxShadow(color: AppColors.pink.withOpacity(0.3), blurRadius: 5, spreadRadius: 2, offset: const Offset(0, 2)),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: MaterialButton(
-            splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
-            highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
-            onPressed: () => ball != null ? null : onChanged(value),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Text(
-                    '${ball != null ? "$ball ${'ball'.tr()}. " : ''}$text',
-                    maxLines: 2,
-                    style: groupValue == value ? AppTextStyles.style18(context) : AppTextStyles.style18_0(context),
+    return AnimationConfiguration.staggeredList(
+      delay: const Duration(milliseconds: 100),
+      position: value,
+      child: SlideAnimation(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastEaseInToSlowEaseOut,
+        horizontalOffset: MediaQuery.of(context).size.width / (animeRight ? 2 : -2),
+        verticalOffset: 0.0,
+        child: FlipAnimation(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastEaseInToSlowEaseOut,
+          flipAxis: FlipAxis.y,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Container(
+              height: 55,
+              decoration: BoxDecoration(
+                color: groupValue == value ? AppColors.pink : AppColors.transparentBlack,
+                borderRadius: BorderRadius.circular(16),
+                border: groupValue == value ? null : Border.all(color: AppColors.black),
+                boxShadow: [
+                  BoxShadow(color: AppColors.pink.withOpacity(0.3), blurRadius: 5, spreadRadius: 2, offset: const Offset(0, 2)),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: MaterialButton(
+                  splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+                  highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+                  onPressed: () => ball != null ? null : onChanged(value),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          '${ball != null ? "$ball ${'ball'.tr()}. " : ''}$text',
+                          maxLines: 2,
+                          style: groupValue == value ? AppTextStyles.style18(context) : AppTextStyles.style18_0(context),
+                        ),
+                      ),
+                      Radio<int>(
+                        value: value,
+                        groupValue: groupValue,
+                        onChanged: (v) => ball != null ? null : onChanged(v),
+                        fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+                          if (selected) {
+                            return AppColors.transparent;
+                          } else if (states.contains(WidgetState.selected)) {
+                            return AppColors.black;
+                          } else {
+                            return AppColors.purple;
+                          }
+                        }),
+                      ),
+                    ],
                   ),
                 ),
-                Radio<int>(
-                  value: value,
-                  groupValue: groupValue,
-                  onChanged: (v) => ball != null ? null : onChanged(v),
-                  fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-                    if (selected) {
-                      return AppColors.transparent;
-                    } else if (states.contains(WidgetState.selected)) {
-                      return AppColors.black;
-                    } else {
-                      return AppColors.purple;
-                    }
-                  }),
-                ),
-              ],
+              ),
             ),
           ),
         ),

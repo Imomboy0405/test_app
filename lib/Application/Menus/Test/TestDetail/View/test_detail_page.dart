@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:test_app/Application/Menus/Test/Test/Bloc/test_bloc.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/Bloc/test_detail_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
@@ -18,10 +19,7 @@ class TestDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TestDetailBloc bloc = locator<TestDetailBloc>();
-    bloc.asset = ModalRoute
-        .of(context)!
-        .settings
-        .arguments as int;
+    bloc.asset = locator<TestBloc>().asset;
     return BlocBuilder<TestDetailBloc, TestDetailState>(
       bloc: bloc,
       builder: (context, state) {
@@ -83,7 +81,7 @@ class TestDetailPage extends StatelessWidget {
                   ShowCaseWidget(
                     builder: (showCaseContext) {
                       if (!bloc.mainBloc.showCaseModel.testDetail) {
-                        bloc.add(ShowCaseEvent(context: showCaseContext));
+                        bloc.add(TestDetailShowCaseEvent(context: showCaseContext));
                       }
                       return myShowcase(
                         context: showCaseContext,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
@@ -12,6 +13,8 @@ class MyTestCard extends StatelessWidget {
   final String content;
   final String question;
   final String result;
+  final int position;
+  final bool animation;
   final void Function() enterTest;
 
   const MyTestCard({
@@ -22,10 +25,35 @@ class MyTestCard extends StatelessWidget {
     required this.question,
     required this.result,
     required this.enterTest,
+    required this.position,
+    required this.animation,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (animation) {
+      return AnimationConfiguration.staggeredList(
+        delay: const Duration(milliseconds: 50),
+        position: position,
+        child: SlideAnimation(
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.fastEaseInToSlowEaseOut,
+          horizontalOffset: 0,
+          verticalOffset: 300.0,
+          child: FlipAnimation(
+            duration: const Duration(milliseconds: 1500),
+            curve: Curves.fastEaseInToSlowEaseOut,
+            flipAxis: FlipAxis.y,
+            child: buildCard(context),
+          ),
+        ),
+      );
+    } else {
+      return buildCard(context);
+    }
+  }
+
+  Padding buildCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: ClipRRect(
@@ -115,7 +143,7 @@ class MyTestCard extends StatelessWidget {
                 // #test_button
                 MyButton(
                   enable: true,
-                  text:'enter_test'.tr(),
+                  text: 'enter_test'.tr(),
                   function: () => enterTest(),
                 ),
               ],
