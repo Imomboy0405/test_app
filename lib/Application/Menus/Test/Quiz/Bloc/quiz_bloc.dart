@@ -108,7 +108,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           final player = AudioPlayer();
           await player.play(AssetSource('sounds/sound_button.wav'));
           if (await Vibration.hasVibrator() ?? false) {
-            Vibration.vibrate(duration: 1, amplitude: 1);
+            Vibration.vibrate(duration: 50, amplitude: 32);
           }
         }
         selectedValue = event.value;

@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
@@ -19,6 +20,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   MainBloc mainBloc = locator<MainBloc>();
   DatabaseReference messagesRef = FirebaseDatabase.instance.ref();
   TextEditingController controller = TextEditingController();
+  ScrollController scrollController = ScrollController();
   List<MessageModel>? messages;
   bool showEmojis = false;
   bool showKeyboard = false;
@@ -320,6 +322,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (mainBloc.sound) {
         player.play(AssetSource('sounds/sound_button.wav'));
       }
+      scrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
 
       if (!isClosed) {
         emitComfort(emit);

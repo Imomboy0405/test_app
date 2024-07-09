@@ -36,6 +36,7 @@ class ChatDetailPage extends StatelessWidget {
               bloc.messages != null
                   ? Expanded(
                       child: ListView.builder(
+                        controller: bloc.scrollController,
                         reverse: true,
                         shrinkWrap: true,
                         itemCount: bloc.messages!.length,
@@ -188,6 +189,7 @@ class ChatTextField extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 5),
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: AppColors.purple),
+            color: AppColors.black
           ),
           child: Row(
             children: [

@@ -24,9 +24,12 @@ class Utils {
       }
     }
     if (context.mounted) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height - 120),
+        dismissDirection: DismissDirection.horizontal,
         backgroundColor: AppColors.transparent,
         elevation: 0,
         content: Container(
@@ -35,7 +38,6 @@ class Utils {
             minHeight: 44,
           ),
           padding: const EdgeInsets.all(5),
-          margin: const EdgeInsets.only(bottom: 80),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: errorState ? AppColors.red : AppColors.pink, borderRadius: BorderRadius.circular(6)),
           child: Text(txt, style: AppTextStyles.style13(context).copyWith(color: Colors.white), textAlign: TextAlign.center),

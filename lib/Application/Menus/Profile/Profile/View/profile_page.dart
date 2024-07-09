@@ -5,6 +5,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Profile/Bloc/profile_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
+import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
@@ -332,6 +333,10 @@ class ProfilePage extends StatelessWidget {
                           child: Text('info_text'.tr(), style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst)),
                         ),
                       ),
+
+                    // #loading_screen
+                    if (state is ProfileLoadingState)
+                      myIsLoading(context),
                   ],
                 );
               });
