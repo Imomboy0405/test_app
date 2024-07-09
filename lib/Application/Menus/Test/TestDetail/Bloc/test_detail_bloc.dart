@@ -23,7 +23,12 @@ class TestDetailBloc extends Bloc<TestDetailEvent, TestDetailState> {
 
   Future<void> showCase(TestDetailShowCaseEvent event, Emitter<TestDetailState> emit) async {
     controller.jumpTo(controller.position.maxScrollExtent);
-    WidgetsBinding.instance.addPostFrameCallback((_) => ShowCaseWidget.of(event.context).startShowCase([keyTestDetail]));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 1200));
+      if (event.context.mounted) {
+        ShowCaseWidget.of(event.context).startShowCase([keyTestDetail]);
+      }
+    });
     emit(TestDetailInitialState());
     mainBloc.showCaseModel.testDetail = true;
     await DBService.saveShowCase(mainBloc.showCaseModel);

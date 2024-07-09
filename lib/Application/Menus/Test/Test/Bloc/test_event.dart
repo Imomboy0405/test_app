@@ -22,3 +22,8 @@ class ShowCaseEvent extends TestEvent {
   @override
   List<Object?> get props => [context];
 }
+
+class ShowCaseTapEvent extends TestEvent {
+  @override
+  List<Object?> get props => [];
+}

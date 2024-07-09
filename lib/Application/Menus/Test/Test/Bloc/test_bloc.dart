@@ -24,13 +24,23 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   TestBloc({required this.mainBloc}) : super(TestInitialState()) {
     on<EnterTestEvent>(pressEnterTest);
     on<ShowCaseEvent>(showCase);
+    on<ShowCaseTapEvent>(tapShowCase);
+  }
+
+  Future<void> tapShowCase(ShowCaseTapEvent event, Emitter<TestState> emit) async {
+    mainBloc.showCaseModel.test = true;
+    await DBService.saveShowCase(mainBloc.showCaseModel);
+    emit(TestInitialState());
   }
 
   Future<void> showCase(ShowCaseEvent event, Emitter<TestState> emit) async {
-    ShowCaseWidget.of(event.context).startShowCase([keyTest]);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (event.context.mounted) {
+        ShowCaseWidget.of(event.context).startShowCase([keyTest]);
+      }
+    });
     emit(TestInitialState());
-    mainBloc.showCaseModel.test = true;
-    await DBService.saveShowCase(mainBloc.showCaseModel);
   }
 
   void pressEnterTest(EnterTestEvent event, Emitter<TestState> emit) {

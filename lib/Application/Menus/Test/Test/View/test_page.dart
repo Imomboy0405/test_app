@@ -32,10 +32,7 @@ class TestPage extends StatelessWidget {
               backgroundColor: AppColors.transparent,
               appBar: MyAppBar(titleText: 'test'.tr()),
               body: Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height - 170,
+                height: MediaQuery.of(context).size.height - 170,
                 color: AppColors.transparent,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -44,9 +41,10 @@ class TestPage extends StatelessWidget {
                     child: Column(
                       children: [0, 1, 2].map((i) {
                         return Builder(builder: (context) {
-                          if (!mainBloc.showCaseModel.test && mainBloc.controller.page == 2 && i == 0) {
-                            return ShowCaseWidget(
-                                builder: (showCaseContext) {
+                          if (!mainBloc.showCaseModel.test) {
+                            if (mainBloc.controller.page == 2) {
+                              if (i == 0) {
+                                return ShowCaseWidget(builder: (showCaseContext) {
                                   if (!mainBloc.showCaseModel.test && mainBloc.controller.page == 2) {
                                     bloc.add(ShowCaseEvent(context: showCaseContext));
                                   }
@@ -55,6 +53,7 @@ class TestPage extends StatelessWidget {
                                     context: showCaseContext,
                                     title: 'show_test_title'.tr(),
                                     description: 'show_test_description'.tr(),
+                                    onTap: () => bloc.add(ShowCaseTapEvent()),
                                     child: MyTestCard(
                                       animation: false,
                                       position: 0,
@@ -66,19 +65,32 @@ class TestPage extends StatelessWidget {
                                       enterTest: () => bloc.add(EnterTestEvent(context: context, index: i)),
                                     ),
                                   );
-                                }
-                            );
+                                });
+                              } else {
+                                return MyTestCard(
+                                  animation: false,
+                                  position: i,
+                                  imgAsset: 'assets/images/img_test_$i.png',
+                                  title: 'test_detail_title_$i'.tr(),
+                                  content: 'test_detail_info_$i'.tr(),
+                                  question: bloc.question[i],
+                                  result: mainBloc.resultTests[i] != -1 ? '${mainBloc.resultTests[i]}' : 'not_worked'.tr(),
+                                  enterTest: () => bloc.add(EnterTestEvent(context: context, index: i)),
+                                );
+                              }
+                            }
+                            return const SizedBox.shrink();
                           } else {
                             return MyTestCard(
                               animation: bloc.animation,
-                            position: i,
-                            imgAsset: 'assets/images/img_test_$i.png',
-                            title: 'test_detail_title_$i'.tr(),
-                            content: 'test_detail_info_$i'.tr(),
-                            question: bloc.question[i],
-                            result: mainBloc.resultTests[i] != -1 ? '${mainBloc.resultTests[i]}' : 'not_worked'.tr(),
-                            enterTest: () => bloc.add(EnterTestEvent(context: context, index: i)),
-                          );
+                              position: i,
+                              imgAsset: 'assets/images/img_test_$i.png',
+                              title: 'test_detail_title_$i'.tr(),
+                              content: 'test_detail_info_$i'.tr(),
+                              question: bloc.question[i],
+                              result: mainBloc.resultTests[i] != -1 ? '${mainBloc.resultTests[i]}' : 'not_worked'.tr(),
+                              enterTest: () => bloc.add(EnterTestEvent(context: context, index: i)),
+                            );
                           }
                         });
                       }).toList(),

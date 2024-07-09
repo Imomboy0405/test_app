@@ -49,13 +49,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   UserModel? userModel;
 
-  MainBloc() : super(MainInitialState(
-    screen: 1,
-    lang: LangService.getLanguage,
-    darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
-    sound: true,
-    resultTests: List.filled(3, -1),
-  )) {
+  MainBloc()
+      : super(MainInitialState(
+          screen: 1,
+          lang: LangService.getLanguage,
+          darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
+          sound: true,
+          resultTests: List.filled(3, -1),
+        )) {
     on<MainScrollMenuEvent>(scrollMenu);
     on<MainMenuButtonEvent>(pressMenuButton);
     on<MainHideBottomNavigationBarEvent>(hideBottomNavigationBar);
@@ -84,9 +85,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       controller.jumpToPage(1);
     }
 
-    if ((!menuButtonPressed) &&
-        controller.page! - controller.page!.truncate() < 0.2
-        || controller.page! - controller.page!.truncate() > 0.8){
+    if ((!menuButtonPressed) && controller.page! - controller.page!.truncate() < 0.2 ||
+        controller.page! - controller.page!.truncate() > 0.8) {
       currentScreen = controller.page!.round();
     }
 
@@ -98,23 +98,26 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   Future<void> pressMenuButton(MainMenuButtonEvent event, Emitter<MainState> emit) async {
     menuButtonPressed = true;
-    if(oldScreen < event.index + 1) {
+
+    if (oldScreen < event.index + 1) {
       currentScreen = event.index + 1;
-      await controller.animateToPage(
-          currentScreen,
-          duration: Duration(milliseconds: (currentScreen - oldScreen)  * 50 + 150),
-          curve: Curves.linear);
+      if ((event.index + 1 - oldScreen) > 1) {
+        controller.jumpToPage(currentScreen);
+      } else {
+        await controller.animateToPage(currentScreen, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+      }
+      emitComfort(emit);
+    } else if (event.index + 1 < oldScreen) {
+      currentScreen = event.index + 1;
+      if ((oldScreen - (event.index + 1)) > 1) {
+        controller.jumpToPage(currentScreen);
+      } else {
+        await controller.animateToPage(currentScreen, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+        currentScreen--;
+      }
       emitComfort(emit);
     }
-    else if(event.index + 1 < oldScreen) {
-      currentScreen = event.index + 1;
-      await controller.animateToPage(
-          currentScreen,
-          duration: Duration(milliseconds: (oldScreen - currentScreen)  * 50 + 150),
-          curve: Curves.linear);
-      currentScreen--;
-      emitComfort(emit);
-    }
+
     oldScreen = currentScreen;
     menuButtonPressed = false;
   }
