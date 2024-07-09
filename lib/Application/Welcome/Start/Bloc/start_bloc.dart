@@ -41,7 +41,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     on<UpdateAnimateEvent>(updateAnimate);
   }
 
-  void listenPageScroll() async {
+  void listenPageScroll() {
     screen = controller.page!.roundToDouble();
     if (oldScreen != screen && !pressNext) {
       oldScreen = screen;
@@ -49,13 +49,14 @@ class StartBloc extends Bloc<StartEvent, StartState> {
     }
   }
 
-  void updateAnimate(UpdateAnimateEvent event, Emitter<StartState> emit) async {
-    left = first ? 40 : 75;
-    top = first ? 10 : 50;
-    left1 = first ? 100 : 10;
-    top1 = first ? 80 : 10;
-    left2 = first ? 250 : 70;
-    top2 = first ? 15 : 300;
+  Future<void> updateAnimate(UpdateAnimateEvent event, Emitter<StartState> emit) async {
+    pressNext = true;
+    left = screen != 1 ? 40 : 75;
+    top = screen != 1 ? 10 : 50;
+    left1 = screen != 1 ? 100 : 10;
+    top1 = screen != 1 ? 80 : 10;
+    left2 = screen != 1 ? 250 : 70;
+    top2 = screen != 1 ? 15 : 300;
     first = !first;
     if (screen == 2) {
       next = true;
@@ -64,6 +65,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       login = false;
     }
     emit(StartInitialState(left: left, top: top, first: first, loginHeight: loginHeight));
+    await Future.delayed(const Duration(seconds: 1));
     pressNext = false;
   }
 
@@ -80,6 +82,7 @@ class StartBloc extends Bloc<StartEvent, StartState> {
   }
 
   void pressNextButton(NextEvent event, Emitter<StartState> emit) {
+    if (pressNext) return;
     screen = controller.page!;
     if (screen.truncate() != 2) {
       pressNext = true;

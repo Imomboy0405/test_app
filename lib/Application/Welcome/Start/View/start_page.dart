@@ -141,7 +141,7 @@ class StartPage extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    const SizedBox(width: 30),
+                                    const SizedBox(width: 10),
                                     SizedBox(
                                       height: 25,
                                       width: 50,

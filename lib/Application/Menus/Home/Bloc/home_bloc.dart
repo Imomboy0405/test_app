@@ -21,6 +21,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   int newPage = 0;
   MainBloc mainBloc;
   bool first = true;
+  bool helloAnime = true;
   double opacityAnime = 1;
   String fullName = '';
   List<ArticleModel> articles = [];

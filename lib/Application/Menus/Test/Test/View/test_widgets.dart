@@ -36,13 +36,13 @@ class MyTestCard extends StatelessWidget {
         delay: const Duration(milliseconds: 50),
         position: position,
         child: SlideAnimation(
-          duration: const Duration(milliseconds: 1000),
-          curve: Curves.fastEaseInToSlowEaseOut,
+          duration: const Duration(milliseconds: 750),
+          curve: Curves.linear,
           horizontalOffset: 0,
-          verticalOffset: 300.0,
+          verticalOffset: 200.0,
           child: FlipAnimation(
-            duration: const Duration(milliseconds: 1500),
-            curve: Curves.fastEaseInToSlowEaseOut,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.linear,
             flipAxis: FlipAxis.y,
             child: buildCard(context),
           ),
@@ -62,7 +62,7 @@ class MyTestCard extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            height: MediaQuery.of(context).size.width * .57,
+            height: MediaQuery.of(context).size.width * .58,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: AppColors.black.withOpacity(.2),

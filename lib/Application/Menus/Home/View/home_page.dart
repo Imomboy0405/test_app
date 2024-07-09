@@ -26,6 +26,9 @@ class HomePage extends StatelessWidget {
       bloc: bloc,
       builder: (context, state) {
         bloc.add(HomeInitialDataEvent());
+        if (bloc.helloAnime) {
+          WidgetsBinding.instance.addPostFrameCallback((_) => Future.delayed(const Duration(seconds: 1), () => bloc.helloAnime = false));
+        }
         if (state is HomeLoadingState) {
           return Scaffold(
             backgroundColor: AppColors.transparent,
@@ -43,7 +46,7 @@ class HomePage extends StatelessWidget {
             });
             return Scaffold(
               backgroundColor: AppColors.transparent,
-              appBar: MyAppBar(animatedHellos: true, titleText: (locator<MainBloc>().userModel?.fullName ?? '')),
+              appBar: MyAppBar(animatedHellos: bloc.helloAnime, titleText: (locator<MainBloc>().userModel?.fullName ?? '')),
               body: Padding(
                 padding: const EdgeInsets.only(bottom: 83),
                 child: SingleChildScrollView(

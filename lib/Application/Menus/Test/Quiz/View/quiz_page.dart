@@ -419,16 +419,16 @@ class MyQuizButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimationConfiguration.staggeredList(
-      delay: const Duration(milliseconds: 100),
+      delay: const Duration(milliseconds: 50),
       position: value,
       child: SlideAnimation(
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.fastEaseInToSlowEaseOut,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
         horizontalOffset: MediaQuery.of(context).size.width / (animeRight ? 2 : -2),
         verticalOffset: 0.0,
         child: FlipAnimation(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.fastEaseInToSlowEaseOut,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
           flipAxis: FlipAxis.y,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
