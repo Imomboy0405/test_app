@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_svg/svg.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -8,6 +9,7 @@ import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
@@ -22,67 +24,22 @@ class MyBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(bottom: 12),
-      height: 83,
-      decoration: BoxDecoration(
-        color: AppColors.purpleLight,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.transparentBlack,
-            spreadRadius: 3,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: ListView.builder(
-        itemCount: 4,
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * .01),
-        itemBuilder: (context, index) => SizedBox(
-          width: screenWidth * .245,
-          child: MaterialButton(
-            onPressed: () => bloc.add(MainMenuButtonEvent(index: index)),
-            splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.transparentPurple,
-            highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.transparentPurple,
-            padding: const EdgeInsets.only(top: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // #menu_icon
-                Image(
-                  image: index + 1 == bloc.currentScreen
-                      ? ThemeService.getTheme == ThemeMode.light
-                          ? bloc.listOfMenuIcons[index + 4]
-                          : bloc.listOfMenuIconsDarkMode[index + 4]
-                      : ThemeService.getTheme == ThemeMode.light
-                          ? bloc.listOfMenuIcons[index]
-                          : bloc.listOfMenuIconsDarkMode[index],
-                  height: index == 0 && !(index + 1 == bloc.currentScreen) ? 59 : 50,
-                  width: index == 0 && !(index + 1 == bloc.currentScreen) ? 59 : 50,
-                ),
-                // #shadow
-                if (index + 1 == bloc.currentScreen && bloc.currentScreen != 1)
-                  Container(
-                    width: 65,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.purple.withOpacity(.5),
-                          spreadRadius: -8,
-                          blurRadius: 12,
-                          offset: const Offset(0, 12),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+    return CurvedNavigationBar(
+      index: bloc.currentScreen - 1 > 0 ? bloc.currentScreen - 1 < 4 ? bloc.currentScreen - 1 : 3 : 0,
+      height: 75,
+      backgroundColor: AppColors.black,
+      color: AppColors.pink,
+      buttonBackgroundColor: AppColors.pink,
+      animationDuration: const Duration(milliseconds: 350),
+      onTap: (index) => bloc.add(MainMenuButtonEvent(index: index)),
+        items: [
+          for (int index = 0; index <= 3; index++)
+            SvgPicture.asset(
+              bloc.listOfMenuIcon[index],
+              height: bloc.currentScreen == index + 1 ? 36 : 30,
+              width: bloc.currentScreen == index + 1 ? 36 : 30,
+            )
+        ]);
   }
 }
 
@@ -201,7 +158,7 @@ class MyProfileScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.fromLTRB(24, 18, 24, 20),
           decoration: BoxDecoration(
-            color: AppColors.purpleLight,
+            color: AppColors.pink.withOpacity(.6),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -267,7 +224,7 @@ class SelectButton extends StatelessWidget {
               ? function()
               : () {}
           : function(),
-      color: select ? AppColors.purple : AppColors.purpleLight,
+      color: select ? AppColors.purple : AppColors.purpleAccent,
       splashColor: AppColors.pink,
       elevation: 0,
       highlightColor: AppColors.pink,
@@ -301,10 +258,11 @@ class MyProfileButton extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
         child: MaterialButton(
+          elevation: 0,
           onPressed: () => function(),
           height: text == null ? MediaQuery.of(context).size.width * 0.46 : MediaQuery.of(context).size.width * 0.115,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: AppColors.purpleLight,
+          color: AppColors.pink.withOpacity(.6),
           splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
           highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -323,11 +281,12 @@ class MyProfileButton extends StatelessWidget {
   }
 }
 
-Padding myBackground(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 100.0),
-    child: Opacity(
-      opacity: 0.4,
+Opacity myBackground(BuildContext context, MainState state) {
+  return Opacity(
+    opacity: ThemeService.getTheme == ThemeMode.light ? 1 : .7,
+    child: Container(
+      color: state is MainHideBottomNavigationBarState && state.hideAll ? AppColors.black : AppColors.transparent,
+      padding: const EdgeInsets.only(top: 100.0),
       child: SvgPicture.asset(
         'assets/images/img_stethoscope.svg',
         height: MediaQuery.of(context).size.height,
@@ -386,7 +345,7 @@ class MyCard extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: AppColors.transparentBlack,
+            color: locator<MainBloc>().darkMode ? AppColors.transparentPurple : AppColors.transparentBlack,
             blurRadius: 50,
             spreadRadius: 75,
           ),

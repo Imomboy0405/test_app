@@ -46,7 +46,7 @@ class ProfilePage extends StatelessWidget {
                         backgroundColor: AppColors.transparent,
                         appBar: MyAppBar(titleText: 'profile'.tr()),
                         body: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 83),
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 75),
                           child: SingleChildScrollView(
                             physics: const BouncingScrollPhysics(),
                             child: Column(
@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
                                 const SizedBox(height: 10),
                                 MyProfileButton(
                                   endElement: SizedBox(
-                                    height: 178,
+                                    height: MediaQuery.of(context).size.width * .46,
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,13 +64,13 @@ class ProfilePage extends StatelessWidget {
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Icon(Icons.account_circle_rounded, color: AppColors.purple, size: 48),
+                                            const Icon(CupertinoIcons.profile_circled, color: AppColors.whiteConst, size: 48),
                                             const SizedBox(width: 10),
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                                Text(bloc.fullName, style: AppTextStyles.style3(context)),
-                                                Text('test_app_user'.tr(), style: AppTextStyles.style23_0(context)),
+                                                Text(bloc.fullName, style: AppTextStyles.style3(context).copyWith(color: AppColors.whiteConst)),
+                                                Text('test_app_user'.tr(), style: AppTextStyles.style19(context)),
                                               ],
                                             ),
                                           ],
@@ -79,20 +79,20 @@ class ProfilePage extends StatelessWidget {
                                         // #date_of_sign_up
                                         Row(
                                           children: [
-                                            Text("${'date_sign'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            Text("${'date_sign'.tr()}:", style: AppTextStyles.style19(context)),
                                             const SizedBox(width: 10),
-                                            Text(bloc.dateSign, style: AppTextStyles.style23(context)),
+                                            Text(bloc.dateSign, style: AppTextStyles.style19(context)),
                                           ],
                                         ),
 
                                         // #phone_number
                                         Row(
                                           children: [
-                                            Text("${'phone_num'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            Text("${'phone_num'.tr()}:", style: AppTextStyles.style19(context)),
                                             const SizedBox(width: 10),
                                             Flexible(
                                               child: Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
-                                                  style: AppTextStyles.style23(context)),
+                                                  style: AppTextStyles.style19(context)),
                                             ),
                                           ],
                                         ),
@@ -100,10 +100,10 @@ class ProfilePage extends StatelessWidget {
                                         // #email
                                         Row(
                                           children: [
-                                            Text("${'email'.tr()}:", style: AppTextStyles.style23_0(context)),
+                                            Text("${'email'.tr()}:", style: AppTextStyles.style19(context)),
                                             const SizedBox(width: 10),
                                             Text(bloc.email == null ? 'email_not_set'.tr() : bloc.email!,
-                                                style: AppTextStyles.style23(context)),
+                                                style: AppTextStyles.style19(context)),
                                           ],
                                         ),
                                       ],
@@ -137,10 +137,10 @@ class ProfilePage extends StatelessWidget {
                                     height: 30,
                                     child: ToggleButtons(
                                       selectedColor: AppColors.whiteConst,
-                                      color: AppColors.purple,
+                                      color: AppColors.whiteConst,
                                       fillColor: AppColors.purple,
                                       splashColor: AppColors.purple,
-                                      borderColor: AppColors.purple,
+                                      borderColor: AppColors.whiteConst,
                                       borderWidth: 0.3,
                                       borderRadius: BorderRadius.circular(6),
                                       isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
@@ -162,10 +162,10 @@ class ProfilePage extends StatelessWidget {
                                     height: 30,
                                     child: ToggleButtons(
                                       selectedColor: AppColors.whiteConst,
-                                      color: AppColors.purple,
+                                      color: AppColors.whiteConst,
                                       fillColor: AppColors.purple,
                                       splashColor: AppColors.purple,
-                                      borderColor: AppColors.purple,
+                                      borderColor: AppColors.whiteConst,
                                       borderWidth: 0.3,
                                       borderRadius: BorderRadius.circular(6),
                                       isSelected: [!mainBloc.sound, mainBloc.sound],

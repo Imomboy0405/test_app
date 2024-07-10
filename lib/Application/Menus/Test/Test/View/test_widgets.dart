@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
@@ -65,15 +66,8 @@ class MyTestCard extends StatelessWidget {
             height: MediaQuery.of(context).size.width * .58,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.black.withOpacity(.2),
+              color: AppColors.pink.withOpacity(.6),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.purpleAccent.withOpacity(0.4),
-                  blurRadius: 7,
-                  spreadRadius: 5,
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -102,7 +96,7 @@ class MyTestCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
 
-                      // #title
+                      // #title_content
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,26 +105,27 @@ class MyTestCard extends StatelessWidget {
                             // #title
                             Text(
                               title,
-                              style: AppTextStyles.style3(context),
+                              style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                             // #content
                             Text(
                               content,
-                              style: AppTextStyles.style9(context),
+                              style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
                             // #number_of_question
+
                             iconText(
                               color: AppColors.red,
-                              text: Text('${'number_of_question'.tr()}: $question', style: AppTextStyles.style23_2(context)),
+                              text: Text('${'number_of_question'.tr()}: $question', style: AppTextStyles.style19(context)),
                             ),
                             // #result
                             iconText(
                               color: AppColors.green,
-                              text: Text('${'result'.tr()}: $result', style: AppTextStyles.style23_3(context)),
+                              text: Text('${'result'.tr()}: $result', style: AppTextStyles.style19(context)),
                             ),
                           ],
                         ),
@@ -158,15 +153,7 @@ class MyTestCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          height: 22,
-          width: 22,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.transparentBlack,
-          ),
-          child: Icon(color == AppColors.red ? Icons.question_mark : Icons.check_circle, color: color, size: 18),
-        ),
+        Icon(color == AppColors.red ? CupertinoIcons.question_circle_fill : CupertinoIcons.checkmark_circle_fill, color: color, size: 20),
         const SizedBox(width: 5),
         Flexible(child: text),
       ],

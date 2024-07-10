@@ -27,7 +27,7 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         bloc.add(HomeInitialDataEvent());
         if (bloc.helloAnime) {
-          WidgetsBinding.instance.addPostFrameCallback((_) => Future.delayed(const Duration(seconds: 1), () => bloc.helloAnime = false));
+          WidgetsBinding.instance.addPostFrameCallback((_) => Future.delayed(const Duration(seconds: 7), () => bloc.helloAnime = false));
         }
         if (state is HomeLoadingState) {
           return Scaffold(
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
               backgroundColor: AppColors.transparent,
               appBar: MyAppBar(animatedHellos: bloc.helloAnime, titleText: (locator<MainBloc>().userModel?.fullName ?? '')),
               body: Padding(
-                padding: const EdgeInsets.only(bottom: 83),
+                padding: const EdgeInsets.only(bottom: 75),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
@@ -134,14 +134,14 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     child: Text(
                                                       article.title,
-                                                      style: AppTextStyles.style4_1(context),
+                                                      style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 3,
                                                     ),
                                                   ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(right: 8.0),
-                                                    child: Divider(color: AppColors.black),
+                                                  const Padding(
+                                                    padding: EdgeInsets.only(right: 8.0),
+                                                    child: Divider(),
                                                   ),
                                                   // #card_info_text
                                                   ConstrainedBox(
@@ -152,7 +152,7 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     child: Text(
                                                       article.content[0].content.trim(),
-                                                      style: AppTextStyles.style8(context),
+                                                      style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 3,
                                                     ),
@@ -183,7 +183,7 @@ class HomePage extends StatelessWidget {
                                 height: MediaQuery.of(context).size.width * 0.607,
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                  color: AppColors.transparentPurple.withOpacity(.2),
+                                  color: AppColors.pink.withOpacity(.5),
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Column(
@@ -199,7 +199,7 @@ class HomePage extends StatelessWidget {
                                               bloc.articles[bloc.currentPage].content[0].content,
                                               textStyle: AppTextStyles.style26(context).copyWith(
                                                 fontSize: 18,
-                                                color: AppColors.pink,
+                                                color: AppColors.whiteConst,
                                                 fontWeight: FontWeight.w600,
                                               ),
                                               textAlign: TextAlign.justify,
@@ -237,7 +237,7 @@ class HomePage extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                               decoration: BoxDecoration(
-                                color: AppColors.transparentPurple,
+                                color: AppColors.pink.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: ListView.builder(
@@ -252,6 +252,7 @@ class HomePage extends StatelessWidget {
                                   return Text(
                                     content.content,
                                     style: AppTextStyles.style26(context).copyWith(
+                                      color: AppColors.whiteConst,
                                       fontSize: content.large ? 18 : null,
                                       fontWeight: content.bold ? FontWeight.w600 : null,
                                       fontStyle: content.italic ? FontStyle.italic : null,

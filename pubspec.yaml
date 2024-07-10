@@ -50,6 +50,7 @@ dependencies:
   audioplayers: ^6.0.0
   vibration: ^1.9.0
   flutter_staggered_animations: ^1.1.1
+  curved_navigation_bar: ^1.0.6
 
   # web
   url_launcher: ^6.3.0

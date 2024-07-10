@@ -22,9 +22,12 @@ class MainMenuButtonEvent extends MainEvent {
 }
 
 class MainHideBottomNavigationBarEvent extends MainEvent {
+  final bool hideAll;
+
+  MainHideBottomNavigationBarEvent({this.hideAll = false});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [hideAll];
 }
 
 class MainLanguageEvent extends MainEvent {

@@ -23,7 +23,7 @@ class ChatDetailPage extends StatelessWidget {
           bloc.add(ChatInitialEvent());
         }
         return Scaffold(
-          backgroundColor: AppColors.black,
+          backgroundColor: bloc.mainBloc.userModel!.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2' ? AppColors.black : AppColors.transparent,
           resizeToAvoidBottomInset: true,
           appBar: bloc.users.isEmpty
               ? null
@@ -111,7 +111,7 @@ class ChatDetailPage extends StatelessWidget {
                 pressSendButton: () => bloc.add(ChatSendButtonEvent()),
                 onTap: () => (),
               ),
-              if (bloc.focus && bloc.user == null) const SizedBox(height: 83),
+              if (bloc.focus && bloc.user == null) const SizedBox(height: 90),
             ],
           ),
         );

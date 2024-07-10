@@ -36,7 +36,7 @@ class TestDetailPage extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.purpleAccent.withOpacity(0.4),
+                      color: AppColors.pink.withOpacity(0.6),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.all(5),
@@ -49,7 +49,7 @@ class TestDetailPage extends StatelessWidget {
                             animatedTexts: [
                               TyperAnimatedText(
                                 'test_detail_title_${bloc.asset}'.tr(),
-                                textStyle: AppTextStyles.style18_0(context),
+                                textStyle: AppTextStyles.style18(context).copyWith(color: AppColors.whiteConst),
                                 textAlign: TextAlign.center,
                               ),
                             ]

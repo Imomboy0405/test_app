@@ -23,6 +23,10 @@ class MainInitialState extends MainState {
 }
 
 class MainHideBottomNavigationBarState extends MainState {
+  final bool hideAll;
+
+  MainHideBottomNavigationBarState({this.hideAll = false});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [hideAll];
 }

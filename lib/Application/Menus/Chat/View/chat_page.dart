@@ -33,7 +33,7 @@ class ChatPage extends StatelessWidget {
           appBar: MyAppBar(titleText: 'chat'.tr()),
           body: bloc.mainBloc.userModel!.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2'
               ? bloc.users.isNotEmpty ? Container(
-                  height: MediaQuery.of(context).size.height - 170,
+                  height: MediaQuery.of(context).size.height - 162,
                   color: AppColors.transparent,
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
@@ -41,7 +41,7 @@ class ChatPage extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           key: key,
@@ -54,15 +54,8 @@ class ChatPage extends StatelessWidget {
                                 height: 96,
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                  color: AppColors.black.withOpacity(.2),
+                                  color: AppColors.pink.withOpacity(.6),
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: AppColors.purpleAccent.withOpacity(0.4),
-                                      blurRadius: 7,
-                                      spreadRadius: 5,
-                                    ),
-                                  ],
                                 ),
                                 child: Row(
                                   children: [
@@ -79,9 +72,9 @@ class ChatPage extends StatelessWidget {
                                             color: AppColors.transparentPurple.withOpacity(.2),
                                             borderRadius: BorderRadius.circular(33),
                                           ),
-                                          child: Icon(
+                                          child: const Icon(
                                             CupertinoIcons.profile_circled,
-                                            color: AppColors.purple,
+                                            color: AppColors.whiteConst,
                                             size: 60,
                                           ),
                                         ),
@@ -98,7 +91,7 @@ class ChatPage extends StatelessWidget {
                                           // #full_name
                                           Text(
                                             bloc.users[index].fullName!,
-                                            style: AppTextStyles.style3(context),
+                                            style: AppTextStyles.style3(context).copyWith(color: AppColors.whiteConst),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                           ),
@@ -106,7 +99,7 @@ class ChatPage extends StatelessWidget {
                                           // #email_id
                                           Text(
                                             '${'email'.tr()}: ${bloc.users[index].email!}\n${'id'.tr()}: ${bloc.users[index].uId!}',
-                                            style: AppTextStyles.style9(context),
+                                            style: AppTextStyles.style9(context).copyWith(color: AppColors.whiteConst),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 3,
                                           ),

@@ -37,39 +37,34 @@ class MainPage extends StatelessWidget {
           child: Scaffold(
             backgroundColor: AppColors.black,
             resizeToAvoidBottomInset: true,
+            // bottomNavigationBar: MyBottomNavigationBar(bloc: bloc, screenWidth: screenWidth,),
             body: Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                myBackground(context),
+                MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
 
-                SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
+                myBackground(context, state),
 
-                      PageView(
-                        physics: state is MainInitialState
-                            ? const BouncingScrollPhysics()
-                            : const NeverScrollableScrollPhysics(),
-                        controller: bloc.controller,
-                        pageSnapping: true,
-                        children: const [
-                          ProfilePage(),
-                          HomePage(),
-                          TestPage(),
-                          ChatPage(),
-                          ProfilePage(),
-                          HomePage(),
-                        ],
-                      ),
 
-                      if(state is! MainHideBottomNavigationBarState)
-                        MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
-
-                    ],
-                  ),
+                PageView(
+                  physics: state is MainInitialState
+                      ? const BouncingScrollPhysics()
+                      : const NeverScrollableScrollPhysics(),
+                  controller: bloc.controller,
+                  pageSnapping: true,
+                  children: const [
+                    ProfilePage(),
+                    HomePage(),
+                    TestPage(),
+                    ChatPage(),
+                    ProfilePage(),
+                    HomePage(),
+                  ],
                 ),
+
+                if(state is! MainHideBottomNavigationBarState)
+                  MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
+
 
                 if (bloc.exitState)
                   MyProfileScreen(

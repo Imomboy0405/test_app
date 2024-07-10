@@ -1,7 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
@@ -217,7 +216,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     if (keyboardHeight > 0) {
       if (user == null) {
-        mainBloc.add(MainHideBottomNavigationBarEvent());
+        mainBloc.add(MainHideBottomNavigationBarEvent(hideAll: true));
       }
       focus = false;
     } else if (keyboardHeight == 0) {

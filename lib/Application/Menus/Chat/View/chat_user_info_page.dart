@@ -40,12 +40,12 @@ class ChatUserInfoPage extends StatelessWidget {
                       height: 65,
                       width: 65,
                       decoration: BoxDecoration(
-                        color: AppColors.transparentPurple.withOpacity(.2),
+                        color: AppColors.purpleAccent,
                         borderRadius: BorderRadius.circular(33),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         CupertinoIcons.profile_circled,
-                        color: AppColors.purple,
+                        color: AppColors.whiteConst,
                         size: 60,
                       ),
                     ),

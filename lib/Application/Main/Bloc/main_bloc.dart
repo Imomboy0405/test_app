@@ -33,6 +33,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     const AssetImage('assets/icons/ic_menu_chat.png'),
     const AssetImage('assets/icons/ic_menu_profile.png'),
   ];
+  final List<String> listOfMenuIcon = [
+    'assets/icons/ic_menu_home.svg',
+    'assets/icons/ic_menu_test.svg',
+    'assets/icons/ic_menu_chat.svg',
+    'assets/icons/ic_menu_profile.svg',
+  ];
   final List<AssetImage> listOfMenuIconsDarkMode = [
     const AssetImage('assets/icons/ic_menu_home_outlined_dark_mode.png'),
     const AssetImage('assets/icons/ic_menu_test_outlined_dark_mode.png'),
@@ -98,26 +104,29 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   Future<void> pressMenuButton(MainMenuButtonEvent event, Emitter<MainState> emit) async {
     menuButtonPressed = true;
+    emitComfort(emit);
 
     if (oldScreen < event.index + 1) {
       currentScreen = event.index + 1;
+      emitComfort(emit);
+
       if ((event.index + 1 - oldScreen) > 1) {
         controller.jumpToPage(currentScreen);
       } else {
         await controller.animateToPage(currentScreen, duration: const Duration(milliseconds: 200), curve: Curves.linear);
       }
-      emitComfort(emit);
+
     } else if (event.index + 1 < oldScreen) {
       currentScreen = event.index + 1;
+      emitComfort(emit);
+
       if ((oldScreen - (event.index + 1)) > 1) {
         controller.jumpToPage(currentScreen);
       } else {
         await controller.animateToPage(currentScreen, duration: const Duration(milliseconds: 200), curve: Curves.linear);
         currentScreen--;
       }
-      emitComfort(emit);
     }
-
     oldScreen = currentScreen;
     menuButtonPressed = false;
   }
@@ -128,7 +137,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   }
 
   void hideBottomNavigationBar(MainHideBottomNavigationBarEvent event, Emitter<MainState> emit) {
-    emit(MainHideBottomNavigationBarState());
+    emit(MainHideBottomNavigationBarState(hideAll: event.hideAll));
   }
 
   void languageUpdate(MainLanguageEvent event, Emitter<MainState> emit) {
