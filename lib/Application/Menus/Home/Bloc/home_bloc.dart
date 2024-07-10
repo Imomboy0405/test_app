@@ -11,6 +11,7 @@ import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/theme_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -56,6 +57,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (first) {
       emit(HomeLoadingState());
       first = false;
+      mainBloc.darkMode = ThemeService.getTheme == ThemeMode.dark;
       if (mainBloc.userModel == null) {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);

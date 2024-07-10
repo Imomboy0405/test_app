@@ -23,32 +23,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   double keyboardHeight = 0;
   List<int> resultTests = List.filled(3, -1);
   bool menuButtonPressed = false;
-  final List<AssetImage> listOfMenuIcons = [
-    const AssetImage('assets/icons/ic_menu_home_outlined.png'),
-    const AssetImage('assets/icons/ic_menu_test_outlined.png'),
-    const AssetImage('assets/icons/ic_menu_chat_outlined.png'),
-    const AssetImage('assets/icons/ic_menu_profile_outlined.png'),
-    const AssetImage('assets/icons/ic_menu_home.png'),
-    const AssetImage('assets/icons/ic_menu_test.png'),
-    const AssetImage('assets/icons/ic_menu_chat.png'),
-    const AssetImage('assets/icons/ic_menu_profile.png'),
-  ];
+
   final List<String> listOfMenuIcon = [
     'assets/icons/ic_menu_home.svg',
     'assets/icons/ic_menu_test.svg',
     'assets/icons/ic_menu_chat.svg',
     'assets/icons/ic_menu_profile.svg',
   ];
-  final List<AssetImage> listOfMenuIconsDarkMode = [
-    const AssetImage('assets/icons/ic_menu_home_outlined_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_test_outlined_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_chat_outlined_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_profile_outlined_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_home_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_test_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_chat_dark_mode.png'),
-    const AssetImage('assets/icons/ic_menu_profile_dark_mode.png'),
-  ];
+
   bool exitState = false;
 
   PageController controller = PageController(keepPage: true, initialPage: 1);

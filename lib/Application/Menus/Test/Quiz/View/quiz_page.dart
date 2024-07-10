@@ -3,6 +3,7 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/Bloc/quiz_bloc.dart';
@@ -292,25 +293,25 @@ class QuizPage extends StatelessWidget {
                               children: [
                                 quizPageMiniButton(
                                   context: context,
-                                  assetIcon: 'assets/icons/ic_menu_home.png',
+                                  assetIcon: 'assets/icons/ic_menu_home.svg',
                                   text: 'return_home'.tr(),
                                   onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.home, context: context)),
                                 ),
                                 quizPageMiniButton(
                                   context: context,
-                                  assetIcon: 'assets/icons/ic_eye.png',
+                                  assetIcon: 'assets/icons/ic_eye.svg',
                                   text: 'view_answers'.tr(),
                                   onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.view, context: context)),
                                 ),
                                 quizPageMiniButton(
                                   context: context,
-                                  assetIcon: 'assets/icons/ic_play_again.png',
+                                  assetIcon: 'assets/icons/ic_play_again.svg',
                                   text: 'play_again'.tr(),
                                   onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.again, context: context)),
                                 ),
                                 quizPageMiniButton(
                                   context: context,
-                                  assetIcon: 'assets/icons/ic_menu_chat.png',
+                                  assetIcon: 'assets/icons/ic_menu_chat.svg',
                                   text: 'share_chat'.tr(),
                                   onPressed: () => bloc.add(MiniButtonEvent(miniButton: MiniButton.chat, context: context)),
                                 ),
@@ -374,10 +375,15 @@ class QuizPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // #icon
-          Image(
-            image: AssetImage(assetIcon),
-            height: 50,
-            width: 50,
+          Container(
+            height: 55,
+            width: 55,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.purple,
+              shape: BoxShape.circle,
+            ),
+            child: SvgPicture.asset(assetIcon),
           ),
           // #text
           SizedBox(
