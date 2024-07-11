@@ -27,7 +27,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   double opacityAnime = 1;
   String fullName = '';
   List<ArticleModel> articles = [];
-
+  List<String> category =[
+    'dental',
+    'heart',
+    'eye',
+    'body',
+  ];
   final keyCarousel = GlobalKey(debugLabel: 'showCarousel');
 
 

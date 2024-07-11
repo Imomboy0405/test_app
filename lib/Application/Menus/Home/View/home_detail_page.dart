@@ -46,6 +46,7 @@ class HomeDetailPage extends StatelessWidget {
                                   bloc.articles[bloc.currentPage].content[0].content,
                                   textStyle: AppTextStyles.style18(context).copyWith(
                                     fontWeight: FontWeight.w600,
+                                    color: AppColors.whiteConst
                                   ),
                                   textAlign: TextAlign.justify,
                                 )

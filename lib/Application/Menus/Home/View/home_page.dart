@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
@@ -211,6 +212,7 @@ class HomePage extends StatelessWidget {
                                                     bloc.articles[bloc.currentPage].content[0].content,
                                                     textStyle: AppTextStyles.style18(context).copyWith(
                                                       fontWeight: FontWeight.w600,
+                                                      color: AppColors.whiteConst,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -263,35 +265,38 @@ class HomePage extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 24,
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: AppColors.pink.withOpacity(0.6),
+                                color: AppColors.pink.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // #category
                                   Padding(
                                     padding: const EdgeInsets.all(5),
-                                    child: // #top_doctors
+                                    child:
                                     Text('Category', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
                                   ),
 
                                   // #categoryies
                                   Flexible(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Row(children: List.generate(5, (int i) =>
-                                          Container(
-                                            margin: const EdgeInsets.all(5),
-                                            height: MediaQuery.of(context).size.width * .2,
-                                            width: MediaQuery.of(context).size.width * .2,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.transparentBlack,
-                                              borderRadius: BorderRadius.circular(10)
-                                            ),
-                                            child: Image.asset('assets/icons/ic_flag_uz.png'),
-                                          ),
-                                      ),
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: List.generate(4, (int i) =>
+                                        CupertinoButton(
+                                          padding: EdgeInsets.zero,
+                                          onPressed: () {
+                                            // todo
+                                          },
+                                          child: Stack(
+                                            alignment: const Alignment(0, .8),
+                                            children: [
+                                              SvgPicture.asset('assets/images/img_category_$i.svg'),
+                                              Text(bloc.category[i], style: AppTextStyles.style8(context)),
+                                          ],
+                                                                                ),
+                                        ),
+                                    ),
                                     ),
                                   ),
                                 ],
@@ -312,7 +317,7 @@ class HomePage extends StatelessWidget {
                               height: MediaQuery.of(context).size.width * .875,
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: AppColors.pink.withOpacity(0.6),
+                                color: AppColors.pink.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -382,13 +387,14 @@ class MyDoctorButton extends StatelessWidget {
     return Padding(
       padding: i != 0 ? const EdgeInsets.only(top: 10) : EdgeInsets.zero,
       child: MaterialButton(
+        elevation: 4,
+        color: AppColors.black,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         padding: EdgeInsets.zero,
-        splashColor: AppColors.pink,
         onPressed: () => onPressed(),
         child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.black.withOpacity(.7),
               borderRadius: BorderRadius.circular(10),
             ),
             child: SizedBox(
