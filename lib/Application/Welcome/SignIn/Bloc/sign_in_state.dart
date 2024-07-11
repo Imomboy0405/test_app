@@ -19,7 +19,7 @@ class SignInEnterState extends SignInState {
   final bool rememberMe;
   final bool emailSuffix;
   final bool passwordSuffix;
-  final bool passwordObscure;
+  final bool passwordEye;
 
   SignInEnterState({
     required this.passwordSuffix,
@@ -28,7 +28,7 @@ class SignInEnterState extends SignInState {
     required this.focusPassword,
     required this.obscure,
     required this.rememberMe,
-    required this.passwordObscure,
+    required this.passwordEye,
   });
 
   @override
@@ -39,7 +39,7 @@ class SignInEnterState extends SignInState {
         focusPassword,
         obscure,
         rememberMe,
-        passwordObscure,
+        passwordEye,
       ];
 }
 

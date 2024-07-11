@@ -172,7 +172,7 @@ class StartPage extends StatelessWidget {
                                     padding: const EdgeInsets.only(left: 20, right: 45),
                                     child: Text(
                                       'skip'.tr(),
-                                      style: AppTextStyles.style4(context).copyWith(color: Colors.white),
+                                      style: AppTextStyles.style4(context),
                                       overflow: TextOverflow.clip,
                                       maxLines: 1,
                                     ),

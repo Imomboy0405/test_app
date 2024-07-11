@@ -11,10 +11,10 @@ const Map<String, String> uzUZ = {
   'policy': 'Maxfiylik siyosati',
   'choose_lang': 'Tilni tanlang',
   'button_0': 'Oʻzbek (Lotin)',
-  'button_1': 'Rus',
-  'button_2': 'Ingliz (AQSH)',
-  'button_3': 'Qoraqalpoq',
-  'button_4': 'Oʻzbek (Kirill)',
+  'button_1': 'Русский',
+  'button_2': 'English (USA)',
+  'button_3': 'Қарақалпақ',
+  'button_4': 'Ўзбек (Кирилл)',
   'skip': 'O\'tkazish',
 
   /// SignInPage
@@ -185,6 +185,7 @@ const Map<String, String> uzUZ = {
   'show_BMI_description': 'Bo\'yingiz, vazningiz va boshqa ma\'lumotlarni slayderlarni surish orqali o\'rnating',
   'show_save_button_title': 'Saqlash tugmasini bosing',
   'show_save_button_description': 'Barcha m\'lumotlarni to\'ldirgach tibbiy ma\'lumotingizni saqlashni unutmang',
+  'more_read': 'Ko\'proq o\'qish...',
 
   /// TestPage
   'test': 'Test ishlaymiz 🙆‍♀️',

@@ -23,6 +23,8 @@ class SignUpEnterState extends SignUpState {
   final bool suffixFullName;
   final bool suffixPassword;
   final bool suffixRePassword;
+  final bool passwordEye;
+  final bool rePasswordEye;
 
   SignUpEnterState({
     required this.focusEmail,
@@ -35,6 +37,8 @@ class SignUpEnterState extends SignUpState {
     required this.suffixFullName,
     required this.suffixPassword,
     required this.suffixRePassword,
+    required this.passwordEye,
+    required this.rePasswordEye,
   });
 
   @override
@@ -49,6 +53,8 @@ class SignUpEnterState extends SignUpState {
         suffixFullName,
         suffixPassword,
         suffixRePassword,
+        passwordEye,
+        rePasswordEye,
       ];
 }
 

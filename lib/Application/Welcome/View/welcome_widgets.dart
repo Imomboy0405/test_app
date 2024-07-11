@@ -64,7 +64,7 @@ class MyFlagButton extends StatelessWidget {
                                   ),
                                 )
                               : RadioListTile(
-                                  activeColor: AppColors.black,
+                                  fillColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) => AppColors.whiteConst),
                                   controlAffinity: ListTileControlAffinity.trailing,
                                   secondary: Image(
                                     image: AssetImage('assets/icons/ic_flag_${lang[index - 1].name}.png'),
@@ -189,7 +189,7 @@ TextButton myTextButton({
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      overlayColor: WidgetStateProperty.all(AppColors.transparentPurple),
+      overlayColor: WidgetStateProperty.all(AppColors.pink.withOpacity(.6)),
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -280,7 +280,7 @@ class MyTextField extends StatelessWidget {
                         : suffixIc
                             ? AppColors.green
                             : focus.hasFocus
-                                ? AppColors.black
+                                ? AppColors.whiteConst
                                 : AppColors.purple,
                   ),
                 ),
@@ -310,7 +310,7 @@ class MyTextField extends StatelessWidget {
                               : suffixIc
                                   ? AppColors.green
                                   : focus.hasFocus
-                                      ? AppColors.black
+                                      ? AppColors.whiteConst
                                       : AppColors.purple,
                         ),
                       )
@@ -332,11 +332,11 @@ class MyTextField extends StatelessWidget {
           hintText: hintTxt,
           hintStyle: AppTextStyles.style6(context),
           labelStyle: errorState ? AppTextStyles.style3_1(context) : AppTextStyles.style3(context),
-          border: myInputBorder(color1: AppColors.black),
+          border: myInputBorder(color1: AppColors.whiteConst),
           enabledBorder: suffixIc
               ? myInputBorder(color1: AppColors.green)
               : myInputBorder(
-                  color1: AppColors.black,
+                  color1: AppColors.whiteConst,
                   color2: AppColors.purple,
                   itsColor1: focus.hasFocus,
                 ),
@@ -344,7 +344,7 @@ class MyTextField extends StatelessWidget {
           errorBorder: myInputBorder(color1: AppColors.red),
           focusedBorder: myInputBorder(
             color1: AppColors.green,
-            color2: AppColors.black,
+            color2: AppColors.whiteConst,
             itsColor1: suffixIc && !errorState,
           ),
         ),
@@ -390,11 +390,11 @@ class MyButton extends StatelessWidget {
       color: AppColors.purple,
       minWidth: double.infinity,
       height: MediaQuery.of(context).size.width * 0.123,
-      elevation: 0,
+      elevation: 4,
       highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.transparentBlack : AppColors.pink,
       splashColor: AppColors.pink,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      child: Text(text, style: AppTextStyles.style4(context).copyWith(color: Colors.white)),
+      child: Text(text, style: AppTextStyles.style4(context)),
     );
   }
 }

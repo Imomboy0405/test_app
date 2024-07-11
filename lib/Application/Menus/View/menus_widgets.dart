@@ -281,16 +281,13 @@ class MyProfileButton extends StatelessWidget {
   }
 }
 
-Opacity myBackground(BuildContext context, MainState state) {
-  return Opacity(
-    opacity: ThemeService.getTheme == ThemeMode.light ? 1 : .7,
-    child: Container(
-      color: state is MainHideBottomNavigationBarState && state.hideAll ? AppColors.black : AppColors.transparent,
-      padding: const EdgeInsets.only(top: 100.0),
-      child: SvgPicture.asset(
-        'assets/images/img_stethoscope.svg',
-        height: MediaQuery.of(context).size.height,
-      ),
+Container myBackground(BuildContext context, MainState state) {
+  return Container(
+    color: state is MainHideBottomNavigationBarState && state.hideAll ? AppColors.black : AppColors.transparent,
+    padding: const EdgeInsets.only(top: 100.0),
+    child: SvgPicture.asset(
+      'assets/images/img_stethoscope.svg',
+      height: MediaQuery.of(context).size.height,
     ),
   );
 }

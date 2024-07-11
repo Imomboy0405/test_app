@@ -86,7 +86,12 @@ class SignUpConfirmEvent extends SignUpEvent {
 }
 
 class SignUpCancelEvent extends SignUpEvent {
+  final BuildContext context;
+
+
+  SignUpCancelEvent({required this.context});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [context];
 }
 

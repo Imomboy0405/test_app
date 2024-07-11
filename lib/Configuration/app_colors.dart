@@ -25,6 +25,8 @@ abstract class AppColors {
 
   static Color get darkPink => ThemeService.getTheme == ThemeMode.dark ? _darkPink : _purpleAccentDarkMode;
 
+  static Color get pinkWhite => ThemeService.getTheme == ThemeMode.dark ? white : pink;
+
   static const transparent = Color(0x00000000);
 
   static const red = Color(0xffff0000);

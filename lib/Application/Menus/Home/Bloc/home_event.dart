@@ -26,3 +26,12 @@ class HomeShowCaseEvent extends HomeEvent {
   @override
   List<Object?> get props => [context];
 }
+
+class HomePressArticleEvent extends HomeEvent {
+  final BuildContext context;
+
+  const HomePressArticleEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
+}

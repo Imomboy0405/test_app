@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +36,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   TextEditingController rePasswordController = TextEditingController();
   TextEditingController fullNameController = TextEditingController();
 
+  Timer? emailVerificationTimer;
+
   SignUpBloc()
       : super(SignUpEnterState(
           obscurePassword: true,
@@ -46,6 +50,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           suffixFullName: false,
           suffixPassword: false,
           suffixRePassword: false,
+          passwordEye: false,
+          rePasswordEye: false,
         )) {
     on<SignUpChangeEvent>(change);
     on<OnSubmittedEvent>(onSubmitted);
@@ -56,7 +62,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<GoogleEvent>(pressGoogle);
     on<SignInEvent>(pressSignIn);
     on<SelectLanguageEvent>(pressLanguageButton);
-    on<SignUpConfirmEvent>(pressConfirm);
     on<SignUpCancelEvent>(pressCancel);
   }
 
@@ -72,55 +77,19 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       suffixRePassword: rePasswordSuffix,
       obscurePassword: obscurePassword,
       obscureRePassword: obscureRePassword,
+      passwordEye: passwordController.text.isNotEmpty,
+      rePasswordEye: rePasswordController.text.isNotEmpty,
     ));
   }
 
   Future<void> pressCancel(SignUpCancelEvent event, Emitter<SignUpState> emit) async {
     emit(SignUpLoadingState());
-
-    await FirebaseAuth.instance.currentUser!.delete();
-
-    enterStateEmit(emit);
-  }
-
-  Future<void> pressConfirm(SignUpConfirmEvent event, Emitter<SignUpState> emit) async {
-    bool verifyDone = false;
-    emit(SignUpLoadingState());
-
-    verifyDone = await AuthService.verifyEmailLink();
-    if (verifyDone) {
-      UserModel userModel = UserModel(
-        fullName: fullNameController.text.trim(),
-        password: passwordController.text.trim(),
-        email: emailController.text.trim(),
-        uId: FirebaseAuth.instance.currentUser!.uid,
-        createdTime: DateTime.now().toString().substring(0, 10),
-        loginType: 'email',
-        userDetailList: [],
-      );
-      try {
-        await RTDBService.storeUser(userModel);
-        DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
-        final msgModel = MessageModel(
-          msg: 'welcome_user'.tr() + userModel.fullName!,
-          typeUser: true,
-          dateTime: DateTime.now().toString().substring(11, 16),
-          id: DateTime.now().toString(),
-        );
-        await messagesRef.push().set(msgModel.toJson());
-        if (event.context.mounted) {
-          Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
-          Navigator.pushReplacementNamed(event.context, SignInPage.id);
-        }
-      } catch (e) {
-        if (event.context.mounted) {
-          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
-        }
-      }
-    } else {
-      if (event.context.mounted) {
-        Utils.mySnackBar(txt: 'email_not_verified'.tr(), context: event.context, errorState: true);
-      }
+    emailVerificationTimer!.cancel();
+    await FirebaseAuth.instance.currentUser!.delete().whenComplete(() {
+      emit(SignUpErrorState(obscurePassword: obscurePassword, obscureRePassword: obscureRePassword));
+    });
+    if (event.context.mounted) {
+      Utils.mySnackBar(txt: 'email_not_verified'.tr(), context: event.context, errorState: true);
     }
   }
 
@@ -166,7 +135,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     if (googleOrFacebook) {
       UserModel userModel = UserModel(
         fullName: fullNameController.text.trim(),
-        password: passwordController.text.trim(),
+        password: '',
         email: emailController.text.trim(),
         uId: FirebaseAuth.instance.currentUser!.uid,
         createdTime: DateTime.now().toString().substring(0, 10),
@@ -202,6 +171,49 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         await AuthService.createUser(emailController.text.trim(), passwordController.text.trim());
         await AuthService.verifyEmail(emailController.text.trim());
         emit(SignUpVerifyState());
+
+        bool verifyDone = false;
+
+        int secondsElapsed= 0;
+        emailVerificationTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
+          secondsElapsed++;
+          verifyDone = await AuthService.verifyEmailLink();
+          if (verifyDone) {
+            timer.cancel();
+            UserModel userModel = UserModel(
+              fullName: fullNameController.text.trim(),
+              password: passwordController.text.trim(),
+              email: emailController.text.trim(),
+              uId: FirebaseAuth.instance.currentUser!.uid,
+              createdTime: DateTime.now().toString().substring(0, 10),
+              loginType: 'email',
+              userDetailList: [],
+            );
+            try {
+              await RTDBService.storeUser(userModel);
+              DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
+              final msgModel = MessageModel(
+                msg: 'welcome_user'.tr() + userModel.fullName!,
+                typeUser: true,
+                dateTime: DateTime.now().toString().substring(11, 16),
+                id: DateTime.now().toString(),
+              );
+              await messagesRef.push().set(msgModel.toJson());
+              if (event.context.mounted) {
+                Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
+                Navigator.pushReplacementNamed(event.context, SignInPage.id);
+              }
+            } catch (e) {
+              if (event.context.mounted) {
+                Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+              }
+            }
+          } else if (secondsElapsed >= 60) {
+            if (event.context.mounted) {
+              add(SignUpCancelEvent(context: event.context));
+            }
+          }
+        });
       } catch (e) {
         if (LogicService.parseError(e.toString()) == 'email-already-in-use') {
           if (event.context.mounted) {
@@ -291,28 +303,28 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (uId != null) {
       googleOrFacebook = true;
-      if (email != null) {
-        emailController.text = email;
-      } else {
-        emailController.text = '';
-      }
+      UserModel? userModel = await RTDBService.loadUser(FirebaseAuth.instance.currentUser!.uid);
+      if (userModel == null) {
+        if (email != null) {
+          emailController.text = email;
+        } else {
+          emailController.text = 'null';
+        }
       emailSuffix = true;
       await Future.delayed(const Duration(milliseconds: 30));
       if (fullName != null) {
         fullNameController.text = fullName;
-        fullNameSuffix = true;
-        if (!passwordSuffix && context.mounted) {
-          Utils.mySnackBar(txt: 'enter_password'.tr(), context: context, errorState: true);
-          focusPassword.requestFocus();
-        } else if (!rePasswordSuffix && context.mounted) {
-          Utils.mySnackBar(txt: 'enter_re_password'.tr(), context: context, errorState: true);
-          focusRePassword.requestFocus();
-        }
       } else {
-        if (!fullNameSuffix && context.mounted) {
-          Utils.mySnackBar(txt: 'enter_fullName'.tr(), context: context, errorState: true);
+        fullNameController.text = 'null';
+      }
+      fullNameSuffix = true;
+      if (context.mounted) {
+        add(SignUpButtonEvent(context: context));
+      }
+    } else {
+        if (context.mounted) {
+          Utils.mySnackBar(txt: 'email_already_in_use'.tr(), context: context, errorState: true);
         }
-        focusFullName.requestFocus();
       }
     } else {
       if (context.mounted) {

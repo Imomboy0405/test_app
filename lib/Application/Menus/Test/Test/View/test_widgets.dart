@@ -112,7 +112,7 @@ class MyTestCard extends StatelessWidget {
                             // #content
                             Text(
                               content,
-                              style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
+                              style: AppTextStyles.style8(context),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),

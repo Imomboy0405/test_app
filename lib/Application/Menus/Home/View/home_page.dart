@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -10,7 +11,6 @@ import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
-import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 
@@ -107,6 +107,7 @@ class HomePage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
+
                                     // #card
                                     Stack(
                                       alignment: Alignment.bottomLeft,
@@ -152,7 +153,7 @@ class HomePage extends StatelessWidget {
                                                     ),
                                                     child: Text(
                                                       article.content[0].content.trim(),
-                                                      style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
+                                                      style: AppTextStyles.style8(context),
                                                       overflow: TextOverflow.ellipsis,
                                                       maxLines: 3,
                                                     ),
@@ -174,97 +175,186 @@ class HomePage extends StatelessWidget {
 
                       // #animated_text_image
                       Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: MaterialButton(
+                              padding: EdgeInsets.zero,
+                              splashColor: AppColors.pink,
+                              highlightColor: AppColors.pink,
+                              onPressed: () => bloc.add(HomePressArticleEvent(context: context)),
+                              child: Container(
+                                  height: MediaQuery.of(context).size.width * 0.4,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.pink.withOpacity(.5),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Row(
+                                    children: [
+
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const SizedBox.shrink(),
+                                          // #text
+                                          Builder(builder: (context) {
+                                            return SizedBox(
+                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              child: AnimatedTextKit(
+                                                totalRepeatCount: 1,
+                                                key: Key(bloc.articles[bloc.currentPage].content[0].content),
+                                                animatedTexts: [
+                                                  TyperAnimatedText(
+                                                    bloc.articles[bloc.currentPage].content[0].content,
+                                                    textStyle: AppTextStyles.style18(context).copyWith(
+                                                      fontWeight: FontWeight.w600,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }),
+
+                                          // #read_more_text
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width * 0.4,
+                                            child: Text('more_read'.tr(), style: AppTextStyles.style8(context), textAlign: TextAlign.center,),
+                                          ),
+                                        ],
+                                      ),
+
+                                      // #image
+                                      AnimatedOpacity(
+                                        opacity: bloc.opacityAnime,
+                                        duration: const Duration(milliseconds: 300),
+                                        child: Hero(
+                                          tag: bloc.articles[bloc.currentPage].content[0].content,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.asset(
+                                              width: MediaQuery.of(context).size.width * 0.5,
+                                              height: MediaQuery.of(context).size.width * 0.37,
+                                              'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // #category
+                      Padding(
                         padding: const EdgeInsets.all(12),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                             child: Container(
-                                height: MediaQuery.of(context).size.width * 0.607,
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  color: AppColors.pink.withOpacity(.5),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Builder(builder: (context) {
-                                      return SizedBox(
-                                        height: 26,
-                                        child: AnimatedTextKit(
-                                          totalRepeatCount: 1,
-                                          key: Key(bloc.articles[bloc.currentPage].content[0].content),
-                                          animatedTexts: [
-                                            TyperAnimatedText(
-                                              bloc.articles[bloc.currentPage].content[0].content,
-                                              textStyle: AppTextStyles.style26(context).copyWith(
-                                                fontSize: 18,
-                                                color: AppColors.whiteConst,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              textAlign: TextAlign.justify,
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                                    AnimatedOpacity(
-                                      opacity: bloc.opacityAnime,
-                                      duration: const Duration(milliseconds: 300),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset(
-                                          width: MediaQuery.of(context).size.width - 22,
-                                          height: MediaQuery.of(context).size.width * 0.51,
-                                          'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
-                                          fit: BoxFit.cover,
-                                        ),
+                              height: MediaQuery.of(context).size.width * .34,
+                              width: MediaQuery.of(context).size.width - 24,
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: AppColors.pink.withOpacity(0.6),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: // #top_doctors
+                                    Text('Category', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
+                                  ),
+
+                                  // #categoryies
+                                  Flexible(
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(children: List.generate(5, (int i) =>
+                                          Container(
+                                            margin: const EdgeInsets.all(5),
+                                            height: MediaQuery.of(context).size.width * .2,
+                                            width: MediaQuery.of(context).size.width * .2,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.transparentBlack,
+                                              borderRadius: BorderRadius.circular(10)
+                                            ),
+                                            child: Image.asset('assets/icons/ic_flag_uz.png'),
+                                          ),
+                                      ),
                                       ),
                                     ),
-                                  ],
-                                )),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
 
-                      // #content_texts
+                      // #top_doctors
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                             child: Container(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                              height: MediaQuery.of(context).size.width * .875,
+                              padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: AppColors.pink.withOpacity(0.5),
+                                color: AppColors.pink.withOpacity(0.6),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: bloc.articles[bloc.currentPage].content.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  Content content = bloc.articles[bloc.currentPage].content[index];
-                                  if (index == 0) return const SizedBox.shrink();
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // #top_doctors
+                                        Text('Top Doctors', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
 
-                                  // #content_text
-                                  return Text(
-                                    content.content,
-                                    style: AppTextStyles.style26(context).copyWith(
-                                      color: AppColors.whiteConst,
-                                      fontSize: content.large ? 18 : null,
-                                      fontWeight: content.bold ? FontWeight.w600 : null,
-                                      fontStyle: content.italic ? FontStyle.italic : null,
+                                        // #see_all_button
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            //todo
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(horizontal: 7),
+                                            visualDensity: VisualDensity.compact,
+                                            backgroundColor: AppColors.black,
+                                          ),
+                                          child: Text('See all', style: AppTextStyles.style7(context).copyWith(color: AppColors.pink)),
+                                        ),
+                                      ],
                                     ),
-                                    textAlign: TextAlign.justify,
-                                  );
-                                },
+                                  ),
+
+                                  // #doctor_cards
+                                  Flexible(
+                                    child: SingleChildScrollView(
+                                      child: Column(children: List.generate(5, (int i) => MyDoctorButton(i: i, onPressed: () {})),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -273,6 +363,101 @@ class HomePage extends StatelessWidget {
           });
         }
       },
+    );
+  }
+}
+
+class MyDoctorButton extends StatelessWidget {
+  final int i;
+  final void Function() onPressed;
+
+  const MyDoctorButton({
+    super.key,
+    required this.i,
+    required this.onPressed(),
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: i != 0 ? const EdgeInsets.only(top: 10) : EdgeInsets.zero,
+      child: MaterialButton(
+        padding: EdgeInsets.zero,
+        splashColor: AppColors.pink,
+        onPressed: () => onPressed(),
+        child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.black.withOpacity(.7),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.width * .3,
+              child: Row(
+                children: [
+                  // #doctor_image
+                  Container(
+                    decoration:
+                        BoxDecoration(color: AppColors.pink, borderRadius: BorderRadius.circular(10)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(
+                        'assets/images/img_doctor_$i.png',
+                        width: MediaQuery.of(context).size.width * .28,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+
+                  // #info_texts
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Doctor full name',
+                          style: AppTextStyles.style4_1(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('Doctor position', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('🕙 10:30 - 18:30', style: AppTextStyles.style8(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('Fee: 120 000 so\'m', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
+                    ],
+                  ),
+                  const Spacer(),
+
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      // #star_ball
+                      Row(
+                        children: [
+                          Icon(CupertinoIcons.star_circle_fill,
+                              color: AppColors.pink, size: MediaQuery.of(context).size.width * .055),
+                          Text('4.8',
+                              style: AppTextStyles.style4(context).copyWith(color: AppColors.pink)),
+                        ],
+                      ),
+
+                      // #next
+                      Container(
+                        height: MediaQuery.of(context).size.width * .1,
+                        width: MediaQuery.of(context).size.width * .12,
+                        decoration: BoxDecoration(
+                          color: AppColors.pink,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward,
+                          color: AppColors.whiteConst,
+                          size: 28,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )),
+      ),
     );
   }
 }

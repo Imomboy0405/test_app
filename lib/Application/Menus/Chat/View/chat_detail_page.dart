@@ -70,12 +70,12 @@ class ChatDetailPage extends StatelessWidget {
                                     // #massage_text
                                     Text(
                                       bloc.messages![bloc.messages!.length - index - 1].msg,
-                                      style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
+                                      style: AppTextStyles.style8(context),
                                     ),
                                     // #date_time
                                     Text(
                                       bloc.messages![bloc.messages!.length - index - 1].dateTime,
-                                      style: AppTextStyles.style8(context).copyWith(color: AppColors.whiteConst),
+                                      style: AppTextStyles.style8(context),
                                     ),
                                   ],
                                 ),

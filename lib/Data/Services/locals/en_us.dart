@@ -10,11 +10,11 @@ const Map<String, String> enUS = {
   'and': ' and ',
   'policy': 'Privacy policy',
   'choose_lang': 'Choose language',
-  'button_0': 'Uzbek (Latin)',
-  'button_1': 'Russian',
+  'button_0': 'Oʻzbek (Lotin)',
+  'button_1': 'Русский',
   'button_2': 'English (USA)',
-  'button_3': 'Karakalpak',
-  'button_4': 'Uzbek (Cyrillic)',
+  'button_3': 'Қарақалпақ',
+  'button_4': 'Ўзбек (Кирилл)',
   'skip': 'Skip',
 
   /// SignInPage
@@ -186,6 +186,7 @@ const Map<String, String> enUS = {
   'show_BMI_description': 'Set your height, weight and other data by moving the sliders',
   'show_save_button_title': 'Click the "Save" button',
   'show_save_button_description': 'Don\'t forget to save your medical information after filling in all the data',
+  'more_read': 'Read more...',
 
   /// TestPage
   'test': 'Taking the test 🙆‍♀️',

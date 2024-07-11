@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
+import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
 import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
@@ -34,6 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeScrollCardEvent>(scrollCard);
     on<HomeInitialDataEvent>(initialData);
     on<HomeShowCaseEvent>(showCase);
+    on<HomePressArticleEvent>(pushDetail);
   }
 
   void emitInitial(Emitter<HomeState> emit) {
@@ -99,5 +101,28 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     newPage = currentPage;
     opacityAnime = 1;
     emitInitial(emit);
+  }
+
+  void pushDetail(HomePressArticleEvent event, Emitter<HomeState> emit) {
+    Navigator.push(
+      event.context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const HomeDetailPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(0, .7);
+          var end = Offset.zero;
+          var curve = Curves.easeIn;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
   }
 }

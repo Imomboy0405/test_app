@@ -15,7 +15,7 @@ abstract class AppTextStyles {
   static TextStyle style1(BuildContext context) => _baseStyle(context, AppColors.purple, 22, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - black, size - 14, font - Poppins
-  static TextStyle style2(BuildContext context) => _baseStyle(context, AppColors.black, 14, FontWeight.normal, 'Poppins');
+  static TextStyle style2(BuildContext context) => _baseStyle(context, AppColors.whiteConst, 14, FontWeight.normal, 'Poppins');
 
   /// Example text style: color - purple, size - 18, weight - bold, font - Poppins
   static TextStyle style3(BuildContext context) => _baseStyle(context, AppColors.purple, 18, FontWeight.bold, 'Poppins');
@@ -26,8 +26,8 @@ abstract class AppTextStyles {
   /// Example text style: color - red, size - 18, weight - bold, font - Poppins
   static TextStyle style3_1(BuildContext context) => _baseStyle(context, AppColors.red, 18, FontWeight.bold, 'Poppins');
 
-  /// Example text style: color - black, size - 18, weight - w500, font - Poppins
-  static TextStyle style4(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.w500, 'Poppins');
+  /// Example text style: color - whiteConst, size - 18, weight - w500, font - Poppins
+  static TextStyle style4(BuildContext context) => _baseStyle(context, AppColors.whiteConst, 18, FontWeight.w500, 'Poppins');
 
   /// Example text style: color - black, size - 18, weight - bold, font - Poppins
   static TextStyle style4_1(BuildContext context) => _baseStyle(context, AppColors.black, 18, FontWeight.bold, 'Poppins');
@@ -47,8 +47,8 @@ abstract class AppTextStyles {
   /// Example text style: color - red, size - 18, font - Poppins
   static TextStyle style7_1(BuildContext context) => _baseStyle(context, AppColors.red, 18, FontWeight.normal, 'Poppins');
 
-  /// Example text style: color - black, size - 14, font - Poppins
-  static TextStyle style8(BuildContext context) => _baseStyle(context, AppColors.black, 14, FontWeight.normal, 'Poppins');
+  /// Example text style: color - whiteConst, size - 14, font - Poppins
+  static TextStyle style8(BuildContext context) => _baseStyle(context, AppColors.whiteConst, 14, FontWeight.normal, 'Poppins');
 
   /// Example text style: color - purple, size - 14, weight - bold, font - Poppins
   static TextStyle style9(BuildContext context) => _baseStyle(context, AppColors.purple, 14, FontWeight.bold, 'Poppins');
@@ -57,7 +57,7 @@ abstract class AppTextStyles {
   static TextStyle style10(BuildContext context) => _baseStyle(context, AppColors.pink, 22, FontWeight.normal, 'Poppins');
 
   /// Example text style: color - black, size - 24, weight - bold, font - Poppins
-  static TextStyle style11(BuildContext context) => _baseStyle(context, AppColors.black, 24, FontWeight.bold, 'Poppins');
+  static TextStyle style11(BuildContext context) => _baseStyle(context, AppColors.whiteConst, 24, FontWeight.bold, 'Poppins');
 
   /// Example text style: color - black, size - 30, weight - bold, font - Poppins
   static TextStyle style12(BuildContext context) => _baseStyle(context, AppColors.black, 30, FontWeight.bold, 'Poppins');

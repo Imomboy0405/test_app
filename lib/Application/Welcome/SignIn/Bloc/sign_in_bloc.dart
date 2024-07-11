@@ -1,11 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Welcome/SignUp/View/sign_up_page.dart';
+import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/auth_service.dart';
 import 'package:test_app/Data/Services/db_service.dart';
@@ -38,7 +40,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           focusPassword: false,
           passwordSuffix: false,
           emailSuffix: false,
-          passwordObscure: false,
+          passwordEye: false,
         )) {
     on<FlagEvent>(pressFlagButton);
     on<SelectLanguageEvent>(pressLanguageButton);
@@ -62,7 +64,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       focusPassword: focusPassword.hasFocus,
       obscure: obscure,
       rememberMe: rememberMe,
-      passwordObscure: passwordController.text.isNotEmpty,
+      passwordEye: passwordController.text.isNotEmpty,
     ));
   }
 
@@ -217,9 +219,44 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           Navigator.pushReplacementNamed(context, MainPage.id);
         }
       } else {
-        FirebaseAuth.instance.currentUser!.delete();
-        if (context.mounted) {
-          Utils.mySnackBar(txt: 'email_not'.tr(), context: context, errorState: true);
+        try {
+          userModel = UserModel(
+            uId: uId,
+            email: userCredential.user?.email,
+            fullName: userCredential.user?.displayName,
+            password: '',
+            createdTime: DateTime.now().toString().substring(0, 10),
+            loginType: 'googleOrFacebook',
+            userDetailList: [],
+          );
+          await RTDBService.storeUser(userModel);
+          DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
+          final msgModel = MessageModel(
+            msg: 'welcome_user'.tr() + userModel.fullName!,
+            typeUser: true,
+            dateTime: DateTime.now().toString().substring(11, 16),
+            id: DateTime.now().toString(),
+          );
+          await messagesRef.push().set(msgModel.toJson());
+          if (context.mounted) {
+            Utils.mySnackBar(txt: 'account_created'.tr(), context: context);
+          }
+
+          locator<MainBloc>().userModel = userModel;
+          if (rememberMe) {
+            await DBService.saveUser(userModel);
+            locator<MainBloc>().rememberMe = true;
+          } else {
+            locator<MainBloc>().rememberMe = false;
+          }
+          if (context.mounted) {
+            Utils.mySnackBar(txt: 'welcome_user'.tr() + userModel.fullName!, context: context);
+            Navigator.pushReplacementNamed(context, MainPage.id);
+          }
+        } catch (e) {
+          if (context.mounted) {
+            Utils.mySnackBar(txt: e.toString(), context: context, errorState: true);
+          }
         }
       }
     } else {

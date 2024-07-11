@@ -177,7 +177,6 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-
                                 const SizedBox(height: 10),
 
                                 // #language
@@ -197,7 +196,7 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'sign_out'.tr(),
                                   function: () => bloc.add(SignOutEvent()),
-                                  endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.red),
+                                  endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.whiteConst),
                                 ),
                                 const SizedBox(height: 10),
 
@@ -205,9 +204,10 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'delete_account'.tr(),
                                   function: () => bloc.add(DeleteAccountEvent()),
-                                  endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.red),
+                                  endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.whiteConst),
                                 ),
                                 const SizedBox(height: 10),
+
 
                                 // #tutorial
                                 MyProfileButton(
@@ -264,7 +264,7 @@ class ProfilePage extends StatelessWidget {
                                     fit: BoxFit.fill,
                                   ),
                                   title: Text(
-                                    'button_$index'.tr(language: bloc.selectedLang),
+                                    'button_$index'.tr(),
                                     style: AppTextStyles.style13(context).copyWith(color: AppColors.whiteConst),
                                   ),
                                   selected: bloc.lang[index] == bloc.selectedLang,

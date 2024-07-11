@@ -125,7 +125,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           }
         }
       } else {
-        Utils.mySnackBar(txt: 'marked_answer'.tr(), context: event.context, errorState: true);
+        Utils.mySnackBar(txt: 'marked_answer'.tr(), context: event.context, errorState: true, bottom: false);
       }
     }
   }

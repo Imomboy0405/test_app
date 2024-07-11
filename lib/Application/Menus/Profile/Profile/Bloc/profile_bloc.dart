@@ -226,7 +226,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             }
           }
           if (!checked) {
-            Utils.mySnackBar(txt: 'unselected'.tr() + userDetail.title!.tr(), context: event.context, errorState: true);
+            Utils.mySnackBar(txt: 'unselected'.tr() + userDetail.title!.tr(), context: event.context, errorState: true, bottom: false);
             currentTab = 3;
             DefaultTabController.of(event.context).animateTo(3);
             await Future.delayed(const Duration(milliseconds: 300));
@@ -253,13 +253,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         if (event.context.mounted) {
           currentTab = 0;
           Navigator.pop(event.context);
-          Utils.mySnackBar(txt: 'update_profile_success'.tr(), context: event.context);
+          Utils.mySnackBar(txt: 'update_profile_success'.tr(), context: event.context, bottom: false);
         }
         emit(ProfileInitialState(darkMode: darkMode, email: email, phone: phoneNumber));
       } catch (e) {
         if (event.context.mounted) {
           Navigator.pop(event.context);
-          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
+          Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true, bottom: false);
         }
       }
     }
