@@ -9,6 +9,7 @@ final class HomeInitialState extends HomeState {
   final int newPage;
   final String fullName;
   final double opacityAnime;
+  final double scaleAnime;
   final List<ArticleModel> articles;
 
   const HomeInitialState({
@@ -16,11 +17,12 @@ final class HomeInitialState extends HomeState {
     required this.currentPage,
     required this.articles,
     required this.opacityAnime,
+    required this.scaleAnime,
     required this.newPage,
   });
 
   @override
-  List<Object> get props => [currentPage, fullName, articles, opacityAnime, newPage];
+  List<Object> get props => [currentPage, fullName, articles, opacityAnime, newPage, scaleAnime];
 }
 
 final class HomeLoadingState extends HomeState {

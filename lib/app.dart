@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
+import 'package:test_app/Application/Menus/Home/View/home_doctor_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_page.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_page.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/View/quiz_page.dart';
@@ -79,7 +80,8 @@ class TestApp extends StatelessWidget {
         QuizPage.id: (context) => const QuizPage(),
         ChatDetailPage.id: (context) => const ChatDetailPage(),
         ChatUserInfoPage.id: (context) => const ChatUserInfoPage(),
-        HomeDetailPage.id: (context) => const HomeDetailPage( ),
+        HomeDetailPage.id: (context) => const HomeDetailPage(),
+        HomeDoctorPage.id: (context) => const HomeDoctorPage(),
       },
     );
   }

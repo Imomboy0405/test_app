@@ -9,6 +9,8 @@ abstract class AppColors {
 
   static Color get purple => ThemeService.getTheme == ThemeMode.dark ? _purple : _purpleLight;
 
+  static Color get whitePurple => ThemeService.getTheme == ThemeMode.dark ? _purpleLight : _white;
+
   static Color get transparentPurple => ThemeService.getTheme == ThemeMode.dark ? _transparentBlue : _transparentBlueLight;
 
   static Color get darkGrey => ThemeService.getTheme == ThemeMode.dark ? _darkGrey : _transparentBlueLight;

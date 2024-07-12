@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_controller.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
+import 'package:test_app/Application/Menus/Home/View/home_doctor_page.dart';
 import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
@@ -25,15 +27,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   bool first = true;
   bool helloAnime = true;
   double opacityAnime = 1;
+  double scaleAnime = 1;
   String fullName = '';
   List<ArticleModel> articles = [];
   List<String> category =[
-    'dental',
-    'heart',
-    'eye',
-    'body',
+    "what_is_menopause",
+    "symptoms_and_signs_of_menopause",
+    "menopause_hormonal_changes",
+    "emotional_and_psychological_aspects_of_menopause",
+    "bone_health_and_osteoporosis",
+    "cardiovascular_health",
+    "sleep_problems",
+    "changes_in_weight_and_metabolism",
+    "skin_and_hair_problems",
+    "treatment_and_therapy_of_menopause",
+    "hormone_replacement_therapy_hrt",
+    "alternative_and_natural_treatments",
+    "nutrition_and_diet_during_menopause",
+    "physical_activity_and_exercise",
+    "sexual_health",
+    "psychological_support_and_counseling",
+    "menopause_and_work",
+    "support_from_family_and_friends",
+    "menopause_and_common_myths",
   ];
   final keyCarousel = GlobalKey(debugLabel: 'showCarousel');
+  int doctorNumber = 0;
+  Timer? timer;
 
 
   HomeBloc({required this.mainBloc}) : super(HomeLoadingState()) {
@@ -41,6 +61,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeInitialDataEvent>(initialData);
     on<HomeShowCaseEvent>(showCase);
     on<HomePressArticleEvent>(pushDetail);
+    on<HomePressDoctorEvent>(pushDoctorInfo);
+    on<HomeScaleAnimationEvent>(scaleAnimation);
+    on<HomePopDoctorPageEvent>(backHome);
   }
 
   void emitInitial(Emitter<HomeState> emit) {
@@ -50,6 +73,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       articles: articles,
       opacityAnime: opacityAnime,
       newPage: newPage,
+      scaleAnime: scaleAnime,
     ));
   }
 
@@ -60,7 +84,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await DBService.saveShowCase(mainBloc.showCaseModel);
   }
 
-  void initialData(HomeInitialDataEvent event, Emitter<HomeState> emit) async {
+  Future<void> initialData(HomeInitialDataEvent event, Emitter<HomeState> emit) async {
     if (first) {
       emit(HomeLoadingState());
       first = false;
@@ -95,7 +119,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  void scrollCard(HomeScrollCardEvent event, Emitter<HomeState> emit) async {
+  Future<void> scrollCard(HomeScrollCardEvent event, Emitter<HomeState> emit) async {
     opacityAnime = 0;
     emitInitial(emit);
     if (event.page != currentPage) {
@@ -129,5 +153,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         },
       ),
     );
+  }
+
+  Future<void> pushDoctorInfo(HomePressDoctorEvent event, Emitter<HomeState> emit) async {
+    doctorNumber = event.index;
+    if (timer != null) timer!.cancel();
+    timer = Timer.periodic(const Duration(milliseconds: 2700), (timer) async {
+      add(HomeScaleAnimationEvent());
+    });
+    Navigator.push(
+      event.context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const HomeDoctorPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          var begin = const Offset(0, .7);
+          var end = Offset.zero;
+          var curve = Curves.easeIn;
+
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+    await Future.delayed(const Duration(milliseconds: 1));
+    add(HomeScaleAnimationEvent());
+  }
+
+  void scaleAnimation(HomeScaleAnimationEvent event, Emitter<HomeState> emit) {
+    scaleAnime = scaleAnime == 1 ? .7 : 1;
+    emitInitial(emit);
+  }
+
+  void backHome(HomePopDoctorPageEvent event, Emitter<HomeState> emit) {
+    timer?.cancel();
   }
 }

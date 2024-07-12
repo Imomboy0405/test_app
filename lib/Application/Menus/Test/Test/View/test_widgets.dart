@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';

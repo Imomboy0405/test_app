@@ -7,7 +7,6 @@ import 'package:test_app/Application/Welcome/Start/Bloc/start_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
 
 class MyFlagButton extends StatelessWidget {
@@ -102,12 +101,14 @@ class MyCircleGlassContainer extends StatelessWidget {
   final bool childPos;
   final bool isStartPage;
   final bool transparent;
+  final bool shadow;
 
   const MyCircleGlassContainer({
     this.mini = false,
     this.childPos = false,
     this.isStartPage = true,
     this.transparent = false,
+    this.shadow = false,
     super.key,
   });
 
@@ -123,39 +124,51 @@ class MyCircleGlassContainer extends StatelessWidget {
         : buildGlassContainer(null);
   }
 
-  ClipRRect buildGlassContainer(StartBloc? bloc) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(130),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-        child: Container(
-          height: mini ? 70 : bloc == null ? 170 : 250,
-          width: mini ? 70 : bloc == null ? 170 : 250,
-          decoration: BoxDecoration(
-            color: transparent ? AppColors.transparent : AppColors.transparentBlack,
-            borderRadius: BorderRadius.circular(150),
-            border: Border.all(color: AppColors.black, width: 2),
+  Widget buildGlassContainer(StartBloc? bloc) {
+    return Container(
+      decoration: shadow ? BoxDecoration(
+        borderRadius: BorderRadius.circular(30),
+          boxShadow: const [
+            BoxShadow(
+                color: AppColors.pink,
+                spreadRadius: 0,
+                blurRadius: 15,
+            ),
+          ]
+      ) : null,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(130),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Container(
+            height: mini ? 70 : bloc == null ? 170 : 250,
+            width: mini ? 70 : bloc == null ? 170 : 250,
+            decoration: BoxDecoration(
+              color: transparent ? AppColors.transparent : AppColors.transparentBlack,
+              borderRadius: BorderRadius.circular(150),
+              border: Border.all(color: AppColors.black, width: 2),
+            ),
+            alignment: childPos
+                ? bloc!.left == 41
+                    ? Alignment.bottomLeft
+                    : bloc.left == 40
+                        ? Alignment.bottomRight
+                        : Alignment.topLeft
+                : null,
+            padding: const EdgeInsets.all(30),
+            child: childPos
+                ? Image(
+                    image: AssetImage('assets/images/img_${bloc!.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
+                    height: 100,
+                    width: 100,
+                    color: bloc.left == 41
+                        ? AppColors.blue
+                        : bloc.left == 40
+                            ? AppColors.red
+                            : AppColors.green,
+                  )
+                : null,
           ),
-          alignment: childPos
-              ? bloc!.left == 41
-                  ? Alignment.bottomLeft
-                  : bloc.left == 40
-                      ? Alignment.bottomRight
-                      : Alignment.topLeft
-              : null,
-          padding: const EdgeInsets.all(30),
-          child: childPos
-              ? Image(
-                  image: AssetImage('assets/images/img_${bloc!.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
-                  height: 100,
-                  width: 100,
-                  color: bloc.left == 41
-                      ? AppColors.blue
-                      : bloc.left == 40
-                          ? AppColors.red
-                          : AppColors.green,
-                )
-              : null,
         ),
       ),
     );
@@ -387,13 +400,13 @@ class MyButton extends StatelessWidget {
           }
         }
       },
-      color: AppColors.purple,
+      color: AppColors.pink,
       minWidth: double.infinity,
       height: MediaQuery.of(context).size.width * 0.123,
       elevation: 4,
-      highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.transparentBlack : AppColors.pink,
-      splashColor: AppColors.pink,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      highlightColor: AppColors.whiteConst.withOpacity(.5),
+      splashColor: AppColors.whiteConst.withOpacity(.5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: const BorderSide(color: AppColors.whiteConst)),
       child: Text(text, style: AppTextStyles.style4(context)),
     );
   }

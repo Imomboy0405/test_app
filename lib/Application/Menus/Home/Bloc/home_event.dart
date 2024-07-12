@@ -35,3 +35,24 @@ class HomePressArticleEvent extends HomeEvent {
   @override
   List<Object?> get props => [context];
 }
+
+class HomePressDoctorEvent extends HomeEvent {
+  final BuildContext context;
+  final int index;
+
+  const HomePressDoctorEvent({required this.context, required this.index});
+
+  @override
+  List<Object?> get props => [context, index];
+}
+
+class HomeScaleAnimationEvent extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
+class HomePopDoctorPageEvent extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+

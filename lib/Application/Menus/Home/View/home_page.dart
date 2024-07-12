@@ -4,7 +4,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
@@ -45,6 +44,7 @@ class HomePage extends StatelessWidget {
                 }
               }
             });
+            double width = MediaQuery.of(context).size.width;
             return Scaffold(
               backgroundColor: AppColors.transparent,
               appBar: MyAppBar(animatedHellos: bloc.helloAnime, titleText: (locator<MainBloc>().userModel?.fullName ?? '')),
@@ -65,6 +65,8 @@ class HomePage extends StatelessWidget {
                         child: CarouselSlider(
                           carouselController: bloc.carouselController,
                           options: CarouselOptions(
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 6),
                             initialPage: bloc.currentPage,
                             height: 218.0,
                             enlargeCenterPage: true,
@@ -87,7 +89,7 @@ class HomePage extends StatelessWidget {
                                           alignment: Alignment.topCenter,
                                           children: [
                                             Container(
-                                              width: MediaQuery.of(context).size.width - 80,
+                                              width: width - 80,
                                               margin: const EdgeInsets.only(top: 160),
                                               height: 50,
                                               decoration: BoxDecoration(
@@ -96,7 +98,7 @@ class HomePage extends StatelessWidget {
                                               ),
                                             ),
                                             Container(
-                                              width: MediaQuery.of(context).size.width - 120,
+                                              width: width - 120,
                                               margin: const EdgeInsets.only(top: 158),
                                               height: 60,
                                               decoration: BoxDecoration(
@@ -187,7 +189,7 @@ class HomePage extends StatelessWidget {
                               highlightColor: AppColors.pink,
                               onPressed: () => bloc.add(HomePressArticleEvent(context: context)),
                               child: Container(
-                                  height: MediaQuery.of(context).size.width * 0.4,
+                                  height: width * 0.4,
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                     color: AppColors.pink.withOpacity(.5),
@@ -195,15 +197,15 @@ class HomePage extends StatelessWidget {
                                   ),
                                   child: Row(
                                     children: [
-
+                                      // #text
                                       Column(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           const SizedBox.shrink(),
-                                          // #text
+                                          // #title_text
                                           Builder(builder: (context) {
                                             return SizedBox(
-                                              width: MediaQuery.of(context).size.width * 0.4,
+                                              width: width * 0.4,
                                               child: AnimatedTextKit(
                                                 totalRepeatCount: 1,
                                                 key: Key(bloc.articles[bloc.currentPage].content[0].content),
@@ -223,8 +225,12 @@ class HomePage extends StatelessWidget {
 
                                           // #read_more_text
                                           SizedBox(
-                                            width: MediaQuery.of(context).size.width * 0.4,
-                                            child: Text('more_read'.tr(), style: AppTextStyles.style8(context), textAlign: TextAlign.center,),
+                                            width: width * 0.4,
+                                            child: Text(
+                                              'more_read'.tr(),
+                                              style: AppTextStyles.style8(context),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -238,8 +244,8 @@ class HomePage extends StatelessWidget {
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(10),
                                             child: Image.asset(
-                                              width: MediaQuery.of(context).size.width * 0.5,
-                                              height: MediaQuery.of(context).size.width * 0.37,
+                                              width: width * 0.5,
+                                              height: width * 0.37,
                                               'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
                                               fit: BoxFit.cover,
                                             ),
@@ -261,8 +267,8 @@ class HomePage extends StatelessWidget {
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                             child: Container(
-                              height: MediaQuery.of(context).size.width * .34,
-                              width: MediaQuery.of(context).size.width - 24,
+                              height: width * .47,
+                              width: width - 24,
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 color: AppColors.pink.withOpacity(0.5),
@@ -271,32 +277,74 @@ class HomePage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // #category
+                                  // #category_text
                                   Padding(
                                     padding: const EdgeInsets.all(5),
-                                    child:
-                                    Text('Category', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
+                                    child: Text('category'.tr(), style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
                                   ),
 
                                   // #categoryies
                                   Flexible(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: List.generate(4, (int i) =>
-                                        CupertinoButton(
-                                          padding: EdgeInsets.zero,
-                                          onPressed: () {
-                                            // todo
-                                          },
-                                          child: Stack(
-                                            alignment: const Alignment(0, .8),
-                                            children: [
-                                              SvgPicture.asset('assets/images/img_category_$i.svg'),
-                                              Text(bloc.category[i], style: AppTextStyles.style8(context)),
-                                          ],
-                                                                                ),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: List.generate(
+                                          bloc.category.length,
+                                          (int i) => CupertinoButton(
+                                            padding: EdgeInsets.zero,
+                                            onPressed: () {
+                                              // todo
+                                            },
+                                            child: Container(
+                                              height: width * .4,
+                                              width: width * .23,
+                                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                                              child: Stack(
+                                                children: [
+                                                  // #category_image
+                                                  Container(
+                                                    height: width * .23,
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    padding: const EdgeInsets.all(5),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.black,
+                                                      borderRadius: BorderRadius.circular(100),
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                          color: AppColors.pink,
+                                                          spreadRadius: 0,
+                                                          blurRadius: 7,
+                                                        )
+                                                      ]
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius.circular(100),
+                                                      child: Image.asset(
+                                                        'assets/images/img_category_$i.png',
+                                                        height: width * .23,
+                                                        width: width * .23,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+
+                                                  // #category_text
+                                                  Container(
+                                                    margin: EdgeInsets.only(top: width * .245),
+                                                    child: Text(
+                                                      bloc.category[i].tr(),
+                                                      style: AppTextStyles.style8(context),
+                                                      maxLines: 2,
+                                                      textAlign: TextAlign.center,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                    ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -314,7 +362,7 @@ class HomePage extends StatelessWidget {
                           child: BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                             child: Container(
-                              height: MediaQuery.of(context).size.width * .875,
+                              height: width * .875,
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                 color: AppColors.pink.withOpacity(0.5),
@@ -329,7 +377,7 @@ class HomePage extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         // #top_doctors
-                                        Text('Top Doctors', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
+                                        Text('top_doctors'.tr(), style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
 
                                         // #see_all_button
                                         ElevatedButton(
@@ -341,7 +389,7 @@ class HomePage extends StatelessWidget {
                                             visualDensity: VisualDensity.compact,
                                             backgroundColor: AppColors.black,
                                           ),
-                                          child: Text('See all', style: AppTextStyles.style7(context).copyWith(color: AppColors.pink)),
+                                          child: Text('see_all'.tr(), style: AppTextStyles.style7(context).copyWith(color: AppColors.pink)),
                                         ),
                                       ],
                                     ),
@@ -350,7 +398,15 @@ class HomePage extends StatelessWidget {
                                   // #doctor_cards
                                   Flexible(
                                     child: SingleChildScrollView(
-                                      child: Column(children: List.generate(5, (int i) => MyDoctorButton(i: i, onPressed: () {})),
+                                      physics: const PageScrollPhysics(),
+                                      child: Column(
+                                        children: List.generate(
+                                          5,
+                                          (int i) => MyDoctorButton(
+                                            i: i,
+                                            onPressed: () => bloc.add(HomePressDoctorEvent(context: context, index: i)),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -403,14 +459,16 @@ class MyDoctorButton extends StatelessWidget {
                 children: [
                   // #doctor_image
                   Container(
-                    decoration:
-                        BoxDecoration(color: AppColors.pink, borderRadius: BorderRadius.circular(10)),
+                    decoration: BoxDecoration(color: AppColors.purpleLight.withOpacity(.3), borderRadius: BorderRadius.circular(10)),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.asset(
-                        'assets/images/img_doctor_$i.png',
-                        width: MediaQuery.of(context).size.width * .28,
-                        fit: BoxFit.contain,
+                      child: Hero(
+                        tag: '$i',
+                        child: Image.asset(
+                          'assets/images/img_doctor_$i.png',
+                          width: MediaQuery.of(context).size.width * .28,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
@@ -421,8 +479,7 @@ class MyDoctorButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Doctor full name',
-                          style: AppTextStyles.style4_1(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('Doctor full name', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.pinkWhite)),
                       Text('Doctor position', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
                       Text('🕙 10:30 - 18:30', style: AppTextStyles.style8(context).copyWith(color: AppColors.pinkWhite)),
                       Text('Fee: 120 000 so\'m', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
@@ -437,10 +494,8 @@ class MyDoctorButton extends StatelessWidget {
                       // #star_ball
                       Row(
                         children: [
-                          Icon(CupertinoIcons.star_circle_fill,
-                              color: AppColors.pink, size: MediaQuery.of(context).size.width * .055),
-                          Text('4.8',
-                              style: AppTextStyles.style4(context).copyWith(color: AppColors.pink)),
+                          Icon(CupertinoIcons.star_circle_fill, color: AppColors.pink, size: MediaQuery.of(context).size.width * .055),
+                          Text('4.8', style: AppTextStyles.style4(context).copyWith(color: AppColors.pink)),
                         ],
                       ),
 

@@ -79,7 +79,8 @@ const Map<String, String> uzUZ = {
   'tutorial': 'Foydalanishni qo\'llanmasi',
   'tutorial_text': 'Ilovadan foydalanish qo\'llanmasini qaytadan namoyish qilishni tasdiqlang',
   'info': 'Ilova haqida ma\'lumot',
-  'info_text': 'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
+  'info_text':
+      'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
   'email_not_set': 'E-pochta o\'rnatilmagan',
   'phone_not_set': 'Telefon raqami o\'rnatilmagan',
   'update_profile_success': 'Tibbiy m\'lumotlar muvofaqqiyatli yangilandi',
@@ -186,6 +187,28 @@ const Map<String, String> uzUZ = {
   'show_save_button_title': 'Saqlash tugmasini bosing',
   'show_save_button_description': 'Barcha m\'lumotlarni to\'ldirgach tibbiy ma\'lumotingizni saqlashni unutmang',
   'more_read': 'Ko\'proq o\'qish...',
+  "what_is_menopause": "Что такое менопауза?",
+  "symptoms_and_signs_of_menopause": "Симптомыи признаки менопаузы",
+  "menopause_hormonal_changes": "Гормональные изменения",
+  "emotional_and_psychological_aspects_of_menopause": "Эмоциональные и психологические аспекты менопаузы",
+  "bone_health_and_osteoporosis": "Здоровье костей и остеопороз",
+  "cardiovascular_health": "Сердечно-сосудистое здоровье",
+  "sleep_problems": "Проблемы со сном",
+  "changes_in_weight_and_metabolism": "Изменения в весе и метаболизме",
+  "skin_and_hair_problems": "Проблемы с кожей и волосами",
+  "treatment_and_therapy_of_menopause": "Лечение и терапия менопаузы",
+  "hormone_replacement_therapy_hrt": "Гормонозаместительная терапия (ГЗТ)",
+  "alternative_and_natural_treatments": "Альтернативные и натуральные методы лечения",
+  "nutrition_and_diet_during_menopause": "Питание и диета применопаузе",
+  "physical_activity_and_exercise": "Физическая активность и упражнения",
+  "sexual_health": "Сексуальное здоровье",
+  "psychological_support_and_counseling": "Психологическая поддержка и консультирование",
+  "menopause_and_work": "Менопауза и работа",
+  "support_from_family_and_friends": "Поддержка от семьи и друзей",
+  "menopause_and_common_myths": "Менопауза и общие мифы",
+  'category': 'Kategoriya',
+  'top_doctors': 'Eng yaxshi shifokorlar',
+  'see_all': 'Barchasi',
 
   /// TestPage
   'test': 'Test ishlaymiz 🙆‍♀️',
@@ -199,7 +222,8 @@ const Map<String, String> uzUZ = {
 
   /// TestDetailPage
   'show_test_detail_title': 'Testni boshlash uchun bosing',
-  'show_test_detail_description': 'Test boshlashda avval test haqida batafsil tanishib chiqqach, testni ishlashni hohlasangiz tugmani bosing',
+  'show_test_detail_description':
+      'Test boshlashda avval test haqida batafsil tanishib chiqqach, testni ishlashni hohlasangiz tugmani bosing',
   'test_detail_title_0': 'ШКАЛА ГРИНА',
   'test_detail_info_0': 'Тестирование по шкале Грина – это эффективный инструмент для оценки тяжести климактерического синдрома, который '
       'происходит из-за общего старения организма и постепенного снижения или резкого прекращения гормональной функции яичников. Обычно он '
