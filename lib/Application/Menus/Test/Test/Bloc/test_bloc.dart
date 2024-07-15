@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/View/test_detail_page.dart';
+import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 
 part 'test_event.dart';
@@ -45,25 +46,6 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
   void pressEnterTest(EnterTestEvent event, Emitter<TestState> emit) {
     asset = event.index;
-    Navigator.push(
-      event.context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const TestDetailPage(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            var begin = const Offset(0, .7);
-            var end = Offset.zero;
-            var curve = Curves.easeIn;
-
-            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: FadeTransition(
-                opacity: animation,
-                child: child,
-              ),
-            );
-          },
-        ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const TestDetailPage(), offset: const Offset(0, .7));
   }
 }

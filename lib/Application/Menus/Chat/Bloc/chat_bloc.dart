@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_detail_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_user_info_page.dart';
+import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
@@ -241,49 +242,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     messages = null;
     initial = true;
     shimmer = true;
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const ChatDetailPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0, -1);
-          const end = Offset.zero;
-          const curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const ChatDetailPage(), offset: const Offset(0, -1));
     emitComfort(emit);
   }
 
   void pushUserInfo(ChatPushInfoEvent event, Emitter<ChatState> emit) {
     user = event.userModel;
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const ChatUserInfoPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(0, 1);
-          const end = Offset.zero;
-          const curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const ChatUserInfoPage(), offset: const Offset(0, 1));
     emitComfort(emit);
   }
 

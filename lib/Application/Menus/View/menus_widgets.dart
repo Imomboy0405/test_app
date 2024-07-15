@@ -285,9 +285,12 @@ Container myBackground(BuildContext context, MainState state) {
   return Container(
     color: state is MainHideBottomNavigationBarState && state.hideAll ? AppColors.black : AppColors.transparent,
     padding: const EdgeInsets.only(top: 100.0),
-    child: SvgPicture.asset(
-      'assets/images/img_stethoscope.svg',
-      height: MediaQuery.of(context).size.height,
+    child: Opacity(
+      opacity: .6,
+      child: SvgPicture.asset(
+        'assets/images/img_stethoscope.svg',
+        height: MediaQuery.of(context).size.height,
+      ),
     ),
   );
 }
@@ -375,5 +378,28 @@ Showcase myShowcase({
     onTargetClick: () => onTap != null ? onTap() : (),
     disposeOnTap: true,
     child: child,
+  );
+}
+
+Future<dynamic> myAnimatedPush({required BuildContext context, required Widget pushPage, required Offset offset}) {
+  return Navigator.push(
+    context,
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => pushPage,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = offset;
+        var end = Offset.zero;
+        var curve = Curves.easeIn;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+    ),
   );
 }

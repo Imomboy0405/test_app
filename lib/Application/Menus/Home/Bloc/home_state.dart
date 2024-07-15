@@ -29,3 +29,8 @@ final class HomeLoadingState extends HomeState {
   @override
   List<Object> get props => [];
 }
+
+final class HomeCategoryState extends HomeState {
+  @override
+  List<Object> get props => [];
+}

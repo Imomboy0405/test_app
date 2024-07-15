@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +8,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_doctor_page.dart';
+import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
@@ -26,9 +26,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   MainBloc mainBloc;
   bool first = true;
   bool helloAnime = true;
+  bool autoPlayCarousel = true;
   double opacityAnime = 1;
   double scaleAnime = 1;
   String fullName = '';
+  String selectedCategory = '';
+  int selectedCategoryImage = 0;
   List<ArticleModel> articles = [];
   List<String> category =[
     "what_is_menopause",
@@ -51,6 +54,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     "support_from_family_and_friends",
     "menopause_and_common_myths",
   ];
+
   final keyCarousel = GlobalKey(debugLabel: 'showCarousel');
   int doctorNumber = 0;
   Timer? timer;
@@ -64,6 +68,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomePressDoctorEvent>(pushDoctorInfo);
     on<HomeScaleAnimationEvent>(scaleAnimation);
     on<HomePopDoctorPageEvent>(backHome);
+    on<HomeCategoryEvent>(pressCategory);
+    on<HomeCancelEvent>(pressCancel);
   }
 
   void emitInitial(Emitter<HomeState> emit) {
@@ -133,26 +139,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void pushDetail(HomePressArticleEvent event, Emitter<HomeState> emit) {
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const HomeDetailPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = const Offset(0, .7);
-          var end = Offset.zero;
-          var curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const HomeDetailPage(), offset: const Offset(0, .7));
   }
 
   Future<void> pushDoctorInfo(HomePressDoctorEvent event, Emitter<HomeState> emit) async {
@@ -161,26 +148,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     timer = Timer.periodic(const Duration(milliseconds: 2700), (timer) async {
       add(HomeScaleAnimationEvent());
     });
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const HomeDoctorPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = const Offset(0, .7);
-          var end = Offset.zero;
-          var curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const HomeDoctorPage(), offset: const Offset(1, 0));
     await Future.delayed(const Duration(milliseconds: 1));
     add(HomeScaleAnimationEvent());
   }
@@ -192,5 +160,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void backHome(HomePopDoctorPageEvent event, Emitter<HomeState> emit) {
     timer?.cancel();
+  }
+
+  void pressCategory(HomeCategoryEvent event, Emitter<HomeState> emit) {
+    autoPlayCarousel = false;
+    selectedCategory = event.selectedCategory;
+    selectedCategoryImage = event.selectedCategoryImage;
+    emit(HomeCategoryState());
+  }
+
+  void pressCancel(HomeCancelEvent event, Emitter<HomeState> emit) {
+    autoPlayCarousel = true;
+    emitInitial(emit);
   }
 }

@@ -9,6 +9,7 @@ import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/Bloc/profile_detail_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_page.dart';
+import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
@@ -92,27 +93,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   void pressProfileUpdate(ProfileUpdateEvent event, Emitter<ProfileState> emit) {
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const ProfileDetailPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          var begin = const Offset(0, .7);
-          var end = Offset.zero;
-          var curve = Curves.easeIn;
-
-          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-          return SlideTransition(
-            position: animation.drive(tween),
-            child: FadeTransition(
-              opacity: animation,
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
-    // Navigator.pushNamed(event.context, '/profile_detail_page');
+    myAnimatedPush(context: event.context, pushPage: const ProfileDetailPage(), offset: const Offset(0, .7));
   }
 
   void pressLanguage(LanguageEvent event, Emitter<ProfileState> emit) {

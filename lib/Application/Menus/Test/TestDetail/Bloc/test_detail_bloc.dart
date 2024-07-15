@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Test/Quiz/View/quiz_page.dart';
+import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 
 part 'test_detail_event.dart';
@@ -35,20 +36,6 @@ class TestDetailBloc extends Bloc<TestDetailEvent, TestDetailState> {
   }
 
   void startTest(StartTestEvent event, Emitter<TestDetailState> emit) {
-    Navigator.push(
-      event.context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const QuizPage(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: ScaleTransition(
-              scale: animation,
-              child: child,
-            ),
-          );
-        },
-      ),
-    );
+    myAnimatedPush(context: event.context, pushPage: const QuizPage(), offset: const Offset(-1, 0));
   }
 }

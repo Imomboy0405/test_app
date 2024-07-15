@@ -56,3 +56,18 @@ class HomePopDoctorPageEvent extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class HomeCategoryEvent extends HomeEvent {
+  final String selectedCategory;
+  final int selectedCategoryImage;
+
+  const HomeCategoryEvent({required this.selectedCategory, required this.selectedCategoryImage});
+
+  @override
+  List<Object?> get props => [selectedCategory, selectedCategoryImage];
+}
+
+class HomeCancelEvent extends HomeEvent {
+  @override
+  List<Object?> get props => [];
+}
+
