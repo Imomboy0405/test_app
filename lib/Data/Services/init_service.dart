@@ -9,6 +9,6 @@ class Init {
   static Future<void> _loading() async {
     await LangService.currentLanguage();
     await ThemeService.currentTheme();
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
   }
 }

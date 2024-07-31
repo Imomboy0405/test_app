@@ -120,11 +120,13 @@ class MyTestCard extends StatelessWidget {
                             iconText(
                               color: AppColors.red,
                               text: Text('${'number_of_question'.tr()}: $question', style: AppTextStyles.style19(context)),
+                              width: MediaQuery.of(context).size.width,
                             ),
                             // #result
                             iconText(
                               color: AppColors.green,
                               text: Text('${'result'.tr()}: $result', style: AppTextStyles.style19(context)),
+                              width: MediaQuery.of(context).size.width,
                             ),
                           ],
                         ),
@@ -148,11 +150,15 @@ class MyTestCard extends StatelessWidget {
     );
   }
 
-  Row iconText({required Color color, required Text text}) {
+  Row iconText({required Color color, required Text text, required double width}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(color == AppColors.red ? CupertinoIcons.question_circle_fill : CupertinoIcons.checkmark_circle_fill, color: color, size: 20),
+        Icon(
+          color == AppColors.red ? CupertinoIcons.question_circle_fill : CupertinoIcons.checkmark_circle_fill,
+          color: color,
+          size: width * .045,
+        ),
         const SizedBox(width: 5),
         Flexible(child: text),
       ],

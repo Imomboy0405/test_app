@@ -20,6 +20,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ProfileBloc bloc = locator<ProfileBloc>();
     final MainBloc mainBloc = locator<MainBloc>();
+    final double width = MediaQuery.of(context).size.width;
 
     return BlocBuilder<MainBloc, MainState>(
         bloc: mainBloc,
@@ -124,7 +125,7 @@ class ProfilePage extends StatelessWidget {
                                     text:
                                         mainBloc.userModel!.userDetailList.isNotEmpty ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
                                     function: () => bloc.add(ProfileUpdateEvent(context: context)),
-                                    endElement: const Icon(Icons.health_and_safety, size: 24, color: AppColors.whiteConst),
+                                    endElement: Icon(Icons.health_and_safety, size: width * .05, color: AppColors.whiteConst),
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -134,8 +135,12 @@ class ProfilePage extends StatelessWidget {
                                   text: 'theme'.tr(),
                                   function: () => bloc.add(DarkModeEvent(darkMode: !bloc.darkMode)),
                                   endElement: SizedBox(
-                                    height: 30,
+                                    height: width * .06,
                                     child: ToggleButtons(
+                                      constraints: BoxConstraints(
+                                        minWidth: width * .1,
+                                        minHeight: width * .06,
+                                      ),
                                       selectedColor: AppColors.whiteConst,
                                       color: AppColors.whiteConst,
                                       fillColor: AppColors.purple,
@@ -145,9 +150,9 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(6),
                                       isSelected: [!mainBloc.darkMode, mainBloc.darkMode],
                                       onPressed: (i) => bloc.add(DarkModeEvent(darkMode: i == 1)),
-                                      children: const <Widget>[
-                                        Icon(CupertinoIcons.sun_max_fill, size: 20),
-                                        Icon(CupertinoIcons.moon_stars_fill, size: 20),
+                                      children: <Widget>[
+                                        Icon(CupertinoIcons.sun_max_fill, size: width * .04),
+                                        Icon(CupertinoIcons.moon_stars_fill, size: width * .04),
                                       ],
                                     ),
                                   ),
@@ -159,8 +164,12 @@ class ProfilePage extends StatelessWidget {
                                   text: 'sounds_and_vibration'.tr(),
                                   function: () => bloc.add(SoundEvent(sound: !mainBloc.sound)),
                                   endElement: SizedBox(
-                                    height: 30,
+                                    height: width * .06,
                                     child: ToggleButtons(
+                                      constraints: BoxConstraints(
+                                        minWidth: width * .1,
+                                        minHeight: width * .06,
+                                      ),
                                       selectedColor: AppColors.whiteConst,
                                       color: AppColors.whiteConst,
                                       fillColor: AppColors.purple,
@@ -170,9 +179,9 @@ class ProfilePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(6),
                                       isSelected: [!mainBloc.sound, mainBloc.sound],
                                       onPressed: (i) => bloc.add(SoundEvent(sound: i == 1)),
-                                      children: const <Widget>[
-                                        Icon(Icons.music_off, size: 20),
-                                        Icon(Icons.music_note, size: 20),
+                                      children: <Widget>[
+                                        Icon(Icons.music_off, size: width * .04),
+                                        Icon(Icons.music_note, size: width * .04),
                                       ],
                                     ),
                                   ),
@@ -185,8 +194,8 @@ class ProfilePage extends StatelessWidget {
                                   function: () => bloc.add(LanguageEvent()),
                                   endElement: Image(
                                     image: AssetImage('assets/icons/ic_flag_${bloc.selectedLang.name}.png'),
-                                    width: 20,
-                                    height: 20,
+                                    width: width * .05,
+                                    height: width * .05,
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -196,7 +205,7 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'sign_out'.tr(),
                                   function: () => bloc.add(SignOutEvent()),
-                                  endElement: const Icon(CupertinoIcons.square_arrow_right, size: 24, color: AppColors.whiteConst),
+                                  endElement: Icon(CupertinoIcons.square_arrow_right, size: width * .05, color: AppColors.whiteConst),
                                 ),
                                 const SizedBox(height: 10),
 
@@ -204,7 +213,7 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'delete_account'.tr(),
                                   function: () => bloc.add(DeleteAccountEvent()),
-                                  endElement: const Icon(CupertinoIcons.delete, size: 24, color: AppColors.whiteConst),
+                                  endElement: Icon(CupertinoIcons.delete, size: width * .05, color: AppColors.whiteConst),
                                 ),
                                 const SizedBox(height: 10),
 
@@ -213,7 +222,7 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'tutorial'.tr(),
                                   function: () => bloc.add(TutorialEvent()),
-                                  endElement: const Icon(CupertinoIcons.book, size: 24, color: AppColors.whiteConst),
+                                  endElement: Icon(CupertinoIcons.book, size: width * .05, color: AppColors.whiteConst),
                                 ),
                                 const SizedBox(height: 10),
 
@@ -221,7 +230,7 @@ class ProfilePage extends StatelessWidget {
                                 MyProfileButton(
                                   text: 'info'.tr(),
                                   function: () => bloc.add(InfoEvent()),
-                                  endElement: const Icon(CupertinoIcons.info, size: 24, color: AppColors.whiteConst),
+                                  endElement: Icon(CupertinoIcons.info, size: width * .05, color: AppColors.whiteConst),
                                 ),
                               ],
                             ),

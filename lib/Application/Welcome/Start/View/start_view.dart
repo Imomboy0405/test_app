@@ -12,6 +12,7 @@ class StartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
     return BlocBuilder<StartBloc, StartState>(builder: (context, state) {
       return Scaffold(
         backgroundColor: AppColors.transparent,
@@ -22,10 +23,11 @@ class StartView extends StatelessWidget {
           children: [
             // #text
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: width * .9,
               child: Container(
-                width: 200,
-                margin: EdgeInsets.only(top: img == 1 ? 100 : img == 2 ? 130 : 80, left: img == 2 ? 110 : 65),
+                width: width * .5,
+                margin: EdgeInsets.only(top: img == 1 ? width * .24 : img == 2 ? width * .3 : width * .2,
+                    left: img == 2 ? width * .27 : width * .15),
                 child: Text(
                   'welcome_$img'.tr(),
                   textAlign: TextAlign.center,
@@ -35,7 +37,6 @@ class StartView extends StatelessWidget {
             ),
 
             Container(
-              height: MediaQuery.of(context).size.height * 0.15,
               padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
               child: Text(
                 'welcome_info'.tr(),

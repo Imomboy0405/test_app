@@ -22,6 +22,7 @@ class ProfileDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileBloc = locator<ProfileBloc>();
     final mainBloc = locator<MainBloc>();
+    final double width = MediaQuery.of(context).size.width;
     if (mainBloc.userModel!.userDetailList.isEmpty) {
       mainBloc.userModel!.userDetailList = profileBloc.profileDetailJsons
           .map((list) => list.map((v) => v['type'] == 'boolean' ? Entries.fromJson(v) : UserDetailModel.fromJson(v)).toList())
@@ -65,11 +66,26 @@ class ProfileDetailPage extends StatelessWidget {
                                   indicatorColor: AppColors.whiteConst,
                                   labelPadding: const EdgeInsets.symmetric(horizontal: 6),
                                   tabs: [
-                                    Tab(child: myTab(title: 'medical_history'.tr(), index: 0, currentIndex: profileBloc.currentTab)),
-                                    Tab(child: myTab(title: 'medications_taken'.tr(), index: 1, currentIndex: profileBloc.currentTab)),
-                                    Tab(child: myTab(title: 'surgical_interventions'.tr(), index: 2, currentIndex: profileBloc.currentTab)),
-                                    Tab(child: myTab(title: 'hereditary_factors'.tr(), index: 3, currentIndex: profileBloc.currentTab)),
-                                    Tab(child: myTab(title: 'anthropometry'.tr(), index: 4, currentIndex: profileBloc.currentTab)),
+                                    Tab(
+                                      height: width * .09,
+                                      child: myTab(title: 'medical_history'.tr(), index: 0, currentIndex: profileBloc.currentTab),
+                                    ),
+                                    Tab(
+                                      height: width * .09,
+                                      child: myTab(title: 'medications_taken'.tr(), index: 1, currentIndex: profileBloc.currentTab),
+                                    ),
+                                    Tab(
+                                      height: width * .09,
+                                      child: myTab(title: 'surgical_interventions'.tr(), index: 2, currentIndex: profileBloc.currentTab),
+                                    ),
+                                    Tab(
+                                      height: width * .09,
+                                      child: myTab(title: 'hereditary_factors'.tr(), index: 3, currentIndex: profileBloc.currentTab),
+                                    ),
+                                    Tab(
+                                      height: width * .09,
+                                      child: myTab(title: 'anthropometry'.tr(), index: 4, currentIndex: profileBloc.currentTab),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -86,28 +102,27 @@ class ProfileDetailPage extends StatelessWidget {
                                                   userDetailModels: profileBloc.userModel!.userDetailList[i], tabIndex: i, bloc: bloc),
                                               Padding(
                                                 padding: const EdgeInsets.all(15.0),
-                                                child: ShowCaseWidget(
-                                                  builder: (contextShowCase) {
-                                                    if (bloc.firstNextButton) {
-                                                      bloc.add(ShowCaseEvent(context: contextShowCase));
-                                                    }
-                                                    if (mainBloc.showCaseModel.profileDetail) {
-                                                      return MyButton(
-                                                        enable: true,
-                                                        function: () => profileBloc.add(NextEvent(index: i + 1, context: context)),
-                                                        text: i < 4 ? 'next'.tr() : 'save'.tr(),
-                                                      );
-                                                    }
-                                                    if (i != 0 && i != 4) {
-                                                      return MyButton(
-                                                        enable: true,
-                                                        function: () => profileBloc.add(NextEvent(index: i + 1, context: context)),
-                                                        text: i < 4 ? 'next'.tr() : 'save'.tr(),
-                                                      );
-                                                    }
+                                                child: ShowCaseWidget(builder: (contextShowCase) {
+                                                  if (bloc.firstNextButton) {
+                                                    bloc.add(ShowCaseEvent(context: contextShowCase));
+                                                  }
+                                                  if (mainBloc.showCaseModel.profileDetail) {
+                                                    return MyButton(
+                                                      enable: true,
+                                                      function: () => profileBloc.add(NextEvent(index: i + 1, context: context)),
+                                                      text: i < 4 ? 'next'.tr() : 'save'.tr(),
+                                                    );
+                                                  }
+                                                  if (i != 0 && i != 4) {
+                                                    return MyButton(
+                                                      enable: true,
+                                                      function: () => profileBloc.add(NextEvent(index: i + 1, context: context)),
+                                                      text: i < 4 ? 'next'.tr() : 'save'.tr(),
+                                                    );
+                                                  }
 
-                                                    if (i == 0) {
-                                                      return myShowcase(
+                                                  if (i == 0) {
+                                                    return myShowcase(
                                                       key: bloc.keyNextButton,
                                                       context: contextShowCase,
                                                       title: 'show_next_button_title'.tr(),
@@ -119,23 +134,22 @@ class ProfileDetailPage extends StatelessWidget {
                                                         text: 'next'.tr(),
                                                       ),
                                                     );
-                                                    }
-                                                    if (bloc.showSaveButton) {
-                                                      bloc.add(ShowCaseEvent(context: contextShowCase));
-                                                    }
-                                                    return myShowcase(
-                                                        key: bloc.keySaveButton,
-                                                        context: contextShowCase,
-                                                        title: 'show_save_button_title'.tr(),
-                                                    description: 'show_save_button_description'.tr(),
-                                                    onTap: () => bloc.add(ShowCaseEvent(context: context, tapSave: true)),
-                                                    child: MyButton(
-                                                    enable: true,
-                                                    function: () => profileBloc.add(NextEvent(index: 5, context: context)),
-                                                    text: 'save'.tr(),
-                                                    ));
                                                   }
-                                                ),
+                                                  if (bloc.showSaveButton) {
+                                                    bloc.add(ShowCaseEvent(context: contextShowCase));
+                                                  }
+                                                  return myShowcase(
+                                                      key: bloc.keySaveButton,
+                                                      context: contextShowCase,
+                                                      title: 'show_save_button_title'.tr(),
+                                                      description: 'show_save_button_description'.tr(),
+                                                      onTap: () => bloc.add(ShowCaseEvent(context: context, tapSave: true)),
+                                                      child: MyButton(
+                                                        enable: true,
+                                                        function: () => profileBloc.add(NextEvent(index: 5, context: context)),
+                                                        text: 'save'.tr(),
+                                                      ));
+                                                }),
                                               )
                                             ],
                                           ),
@@ -280,6 +294,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
                                     userDetailModelIndex: v.index,
                                     height: v.entries[0].value.toDouble(),
                                     weight: v.entries[1].value.toDouble(),
+                                    width: MediaQuery.of(context).size.width,
                                   )
                                 : Row(
                                     children: v.entries
@@ -292,6 +307,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
                                               tabIndex: tabIndex,
                                               userDetailModelIndex: v.index,
                                               entryIndex: entry.index,
+                                                  width: MediaQuery.of(context).size.width,
                                             )))
                                         .toList(),
                                   )
@@ -305,7 +321,9 @@ class ProfileDetailTabScreen extends StatelessWidget {
                                       tabIndex: tabIndex,
                                       userDetailModelIndex: v.index,
                                       entryIndex: 0,
-                                      bloodPressureIndex: 1),
+                                      bloodPressureIndex: 1,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
                                   anthropometry(
                                       entry: v.entries[0],
                                       context: context,
@@ -314,7 +332,9 @@ class ProfileDetailTabScreen extends StatelessWidget {
                                       tabIndex: tabIndex,
                                       userDetailModelIndex: v.index,
                                       entryIndex: 0,
-                                      bloodPressureIndex: 2),
+                                      bloodPressureIndex: 2,
+                                      width: MediaQuery.of(context).size.width,
+                                  ),
                                 ],
                               ))
                         .toList(),
@@ -342,6 +362,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
     required int tabIndex,
     required int userDetailModelIndex,
     required int entryIndex,
+    required double width,
     bool hereditaryFactors = false,
     int bloodPressureIndex = 0,
   }) {
@@ -358,8 +379,8 @@ class ProfileDetailTabScreen extends StatelessWidget {
                 : entry.value ?? 0,
             minValue: entry.min ?? 0,
             maxValue: entry.max ?? 50,
-            itemWidth: hereditaryFactors ? 50 : 100,
-            itemHeight: hereditaryFactors ? 40 : 50,
+            itemWidth: hereditaryFactors ? width * .1 : width * .25,
+            itemHeight: hereditaryFactors ? width * .08 : width * .1,
             onChanged: (value) {
               bloc.add(UpdateDetailPageEvent(
                 tabIndex: tabIndex,
@@ -408,149 +429,150 @@ class ProfileDetailTabScreen extends StatelessWidget {
     required double height,
     required double weight,
     required int userDetailModelIndex,
+    required double width,
   }) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
         activeTrackColor: AppColors.purple,
         inactiveTrackColor: AppColors.purpleAccent.withOpacity(.4),
         thumbColor: AppColors.purple,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8, pressedElevation: 0),
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: width * .02, pressedElevation: 0),
+        trackHeight: width * .01,
         overlayShape: const RoundSliderOverlayShape(overlayRadius: 0),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 140,
+            width: width * .3,
             child: Text(
               '${'height_cm'.tr()}: ${profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value ~/ 1} '
               '${'weight_kg'.tr()}: ${profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value ~/ 1}',
               style: AppTextStyles.style18_0(context),
             ),
           ),
-          ShowCaseWidget(
-            builder: (context) {
-              if (bloc.showBMI) {
-                bloc.add(ShowCaseEvent(context: context));
-              }
-              return myShowcase(
-                key: bloc.keyBMI,
-                context: context,
-                title: 'show_BMI_title'.tr(),
-                description: 'show_BMI_description'.tr(),
-                onTap: () => bloc.add(ShowCaseEvent(context: context, tapBMI: true)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
+          ShowCaseWidget(builder: (context) {
+            if (bloc.showBMI) {
+              bloc.add(ShowCaseEvent(context: context));
+            }
+            return myShowcase(
+              key: bloc.keyBMI,
+              context: context,
+              title: 'show_BMI_title'.tr(),
+              description: 'show_BMI_description'.tr(),
+              onTap: () => bloc.add(ShowCaseEvent(context: context, tapBMI: true)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: width * .5,
+                        child: Row(
+                          children: [
+                            RotatedBox(
+                              quarterTurns: -1,
+                              child: Slider(
+                                value: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value.toDouble(),
+                                min: 0,
+                                max: 200,
+                                onChanged: (value) {
+                                  bloc.add(UpdateDetailPageEvent(
+                                    tabIndex: tabIndex,
+                                    userDetailModelIndex: userDetailModelIndex,
+                                    entryIndex: 0,
+                                    value: value,
+                                    bmi: true,
+                                    bmiHeight: true,
+                                  ));
+                                },
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                scaleText(context, '200', true),
+                                SizedBox(height: width * .02),
+                                scaleText(context, '175', true),
+                                SizedBox(height: width * .02),
+                                scaleText(context, '150', true),
+                                SizedBox(height: width * .02),
+                                scaleText(context, '125', true),
+                                SizedBox(height: width * .02),
+                                scaleText(context, '100', true),
+                                SizedBox(height: width * .075),
+                                scaleText(context, '50', true),
+                                SizedBox(height: width * .07),
+                                scaleText(context, '0', true),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Image.asset(
+                        'assets/images/img_bmi.png',
+                        height: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value / 200 * width * .5,
+                        width: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value / 100 * width * .35,
+                        fit: BoxFit.fill,
+                        color: AppColors.purple,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.only(left: width * .07),
+                    child: Column(
                       children: [
                         SizedBox(
-                          height: 200,
-                          child: Row(
-                            children: [
-                              RotatedBox(
-                                quarterTurns: -1,
-                                child: Slider(
-                                  value: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value.toDouble(),
-                                  min: 0,
-                                  max: 200,
-                                  onChanged: (value) {
-                                    bloc.add(UpdateDetailPageEvent(
-                                      tabIndex: tabIndex,
-                                      userDetailModelIndex: userDetailModelIndex,
-                                      entryIndex: 0,
-                                      value: value,
-                                      bmi: true,
-                                      bmiHeight: true,
-                                    ));
-                                  },
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  scaleText(context, '200', true),
-                                  const SizedBox(height: 6),
-                                  scaleText(context, '175', true),
-                                  const SizedBox(height: 7),
-                                  scaleText(context, '150', true),
-                                  const SizedBox(height: 7),
-                                  scaleText(context, '125', true),
-                                  const SizedBox(height: 8),
-                                  scaleText(context, '100', true),
-                                  const SizedBox(height: 30),
-                                  scaleText(context, '50', true),
-                                  const SizedBox(height: 28),
-                                  scaleText(context, '0', true),
-                                ],
-                              ),
-                            ],
+                          width: width * .4,
+                          child: RotatedBox(
+                            quarterTurns: 1,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(height: width * .025),
+                                scaleText(context, '100', false),
+                                SizedBox(height: width * .025),
+                                scaleText(context, '80', false),
+                                SizedBox(height: width * .025),
+                                scaleText(context, '60', false),
+                                SizedBox(height: width * .024),
+                                scaleText(context, '40', false),
+                                SizedBox(height: width * .08),
+                                scaleText(context, '0', false),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 5),
-                        Image.asset(
-                          'assets/images/img_bmi.png',
-                          height: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[0].value.toDouble(),
-                          width: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value * 1.2,
-                          fit: BoxFit.fill,
-                          color: AppColors.purple,
+                        SizedBox(
+                          width: width * .35,
+                          child: Slider(
+                            value: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value.toDouble(),
+                            min: 0,
+                            max: 100,
+                            onChanged: (value) {
+                              bloc.add(UpdateDetailPageEvent(
+                                tabIndex: tabIndex,
+                                userDetailModelIndex: userDetailModelIndex,
+                                entryIndex: 1,
+                                value: value,
+                                bmi: true,
+                              ));
+                            },
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 35.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: 140,
-                            child: RotatedBox(
-                              quarterTurns: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  scaleText(context, '100', false),
-                                  const SizedBox(height: 8),
-                                  scaleText(context, '80', false),
-                                  const SizedBox(height: 9),
-                                  scaleText(context, '60', false),
-                                  const SizedBox(height: 9),
-                                  scaleText(context, '40', false),
-                                  const SizedBox(height: 32),
-                                  scaleText(context, '0', false),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 140,
-                            child: Slider(
-                              value: profileBloc.userModel!.userDetailList[tabIndex][userDetailModelIndex].entries[1].value.toDouble(),
-                              min: 0,
-                              max: 100,
-                              onChanged: (value) {
-                                bloc.add(UpdateDetailPageEvent(
-                                  tabIndex: tabIndex,
-                                  userDetailModelIndex: userDetailModelIndex,
-                                  entryIndex: 1,
-                                  value: value,
-                                  bmi: true,
-                                ));
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -612,6 +634,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
                       userDetailModelIndex: userDetailModelIndex,
                       entryIndex: entryKg.index,
                       hereditaryFactors: true,
+                      width: MediaQuery.of(context).size.width,
                     )
                   ],
                 ),

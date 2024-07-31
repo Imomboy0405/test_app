@@ -36,8 +36,8 @@ class MyBottomNavigationBar extends StatelessWidget {
           for (int index = 0; index <= 3; index++)
             SvgPicture.asset(
               bloc.listOfMenuIcon[index],
-              height: bloc.currentScreen == index + 1 ? 36 : 30,
-              width: bloc.currentScreen == index + 1 ? 36 : 30,
+              height: bloc.currentScreen == index + 1 ? screenWidth * .06 : screenWidth * .05,
+              width: bloc.currentScreen == index + 1 ? screenWidth * .06 : screenWidth * .05,
             )
         ]);
   }
@@ -64,10 +64,10 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           // #image
           const SizedBox(width: 10),
-          const Image(
-            image: AssetImage('assets/images/img_heart.png'),
-            width: 24,
-            height: 24,
+          Image(
+            image: const AssetImage('assets/images/img_heart.png'),
+            width: MediaQuery.of(context).size.width * .04,
+            height: MediaQuery.of(context).size.width * .04,
             color: AppColors.red,
           ),
           const SizedBox(width: 12),
@@ -304,7 +304,7 @@ class MyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 185,
+      height: MediaQuery.of(context).size.width * .5,
       decoration: BoxDecoration(
         color: AppColors.pink,
         borderRadius: BorderRadius.circular(16),

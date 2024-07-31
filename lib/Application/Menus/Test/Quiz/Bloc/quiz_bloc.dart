@@ -29,13 +29,14 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   int result = -1;
   String resultText = '';
   bool? confetti;
+  double width = 0;
 
-  double animatePosLeft = 90;
-  double animatePosTop = 50;
-  double animatePosLeft2 = 30;
-  double animatePosTop2 = 30;
-  double animatePosLeftMini = 70;
-  double animatePosTopMini = 200;
+  double animatePosLeft = .15;
+  double animatePosTop = .09;
+  double animatePosLeft2 = .3;
+  double animatePosTop2 = .17;
+  double animatePosLeftMini = .13;
+  double animatePosTopMini = .44;
 
   QuizBloc({required this.mainBloc})
       : super(const QuizInitialState(
@@ -66,6 +67,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   }
 
   void initialData(InitialQuestionsEvent event, Emitter<QuizState> emit) {
+    width = event.width;
     switch (locator<TestDetailBloc>().asset) {
       case 1:
         {
@@ -177,10 +179,10 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         currentQuiz = answers.indexOf(0) + 1;
       }
       selectedValue = 0;
-      if (currentQuiz * 55 > quizNumberController.offset + 359) {
-        quizNumberController.animateTo(currentQuiz * 55 - 359, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
-      } else if (currentQuiz * 55 - 55 < quizNumberController.offset) {
-        quizNumberController.animateTo(currentQuiz * 55 - 55, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+      if (currentQuiz * width * .14 > quizNumberController.offset + width * .956) {
+        quizNumberController.animateTo(currentQuiz * width * .14 - width * .912, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+      } else if ((currentQuiz - 1) * width * .14 < quizNumberController.offset) {
+        quizNumberController.animateTo((currentQuiz - 1) * width * .14, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
       }
       opacityAnime = 0;
       emitInitial(emit);
@@ -230,11 +232,11 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   }
 
   void updateAnimate() {
-    animatePosLeft = animatePosLeft == 90 ? 40 : 90;
-    animatePosTop = animatePosTop == 50 ? 35 : 50;
-    animatePosLeft2 = animatePosLeft2 == 30 ? 100 : 30;
-    animatePosTop2 = animatePosTop2 == 30 ? 80 : 30;
-    animatePosLeftMini = animatePosLeftMini == 70 ? 250 : 70;
-    animatePosTopMini = animatePosTopMini == 200 ? 60 : 200;
+    animatePosLeft = animatePosLeft == .15 ? .35 : .15;
+    animatePosTop = animatePosTop == .09 ? .17 : .09;
+    animatePosLeft2 = animatePosLeft2 == .3 ? .2 : .3;
+    animatePosTop2 = animatePosTop2 == .17 ? .08 : .17;
+    animatePosLeftMini = animatePosLeftMini == .13 ? .64 : .13;
+    animatePosTopMini = animatePosTopMini == .44 ? .1 : .44;
   }
 }

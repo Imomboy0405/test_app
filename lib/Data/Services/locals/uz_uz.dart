@@ -187,28 +187,47 @@ const Map<String, String> uzUZ = {
   'show_save_button_title': 'Saqlash tugmasini bosing',
   'show_save_button_description': 'Barcha m\'lumotlarni to\'ldirgach tibbiy ma\'lumotingizni saqlashni unutmang',
   'more_read': 'Ko\'proq o\'qish...',
-  "what_is_menopause": "Что такое менопауза?",
-  "symptoms_and_signs_of_menopause": "Симптомыи признаки менопаузы",
-  "menopause_hormonal_changes": "Гормональные изменения",
-  "emotional_and_psychological_aspects_of_menopause": "Эмоциональные и психологические аспекты менопаузы",
-  "bone_health_and_osteoporosis": "Здоровье костей и остеопороз",
-  "cardiovascular_health": "Сердечно-сосудистое здоровье",
-  "sleep_problems": "Проблемы со сном",
-  "changes_in_weight_and_metabolism": "Изменения в весе и метаболизме",
-  "skin_and_hair_problems": "Проблемы с кожей и волосами",
-  "treatment_and_therapy_of_menopause": "Лечение и терапия менопаузы",
-  "hormone_replacement_therapy_hrt": "Гормонозаместительная терапия (ГЗТ)",
-  "alternative_and_natural_treatments": "Альтернативные и натуральные методы лечения",
-  "nutrition_and_diet_during_menopause": "Питание и диета применопаузе",
-  "physical_activity_and_exercise": "Физическая активность и упражнения",
-  "sexual_health": "Сексуальное здоровье",
-  "psychological_support_and_counseling": "Психологическая поддержка и консультирование",
-  "menopause_and_work": "Менопауза и работа",
-  "support_from_family_and_friends": "Поддержка от семьи и друзей",
-  "menopause_and_common_myths": "Менопауза и общие мифы",
+  "what_is_menopause": "Menopauza nima?",
+  "symptoms_and_signs_of_menopause": "Menopauza belgilari va alomatlari",
+  "menopause_hormonal_changes": "Gormonal o'zgarishlar",
+  "emotional_and_psychological_aspects_of_menopause": "Menopauzaning emotsional va psixologik jihatlari",
+  "bone_health_and_osteoporosis": "Suyak salomatligi va osteoporoz",
+  "cardiovascular_health": "Yurak-qon tomir salomatligi",
+  "sleep_problems": "Uyqu muammolari",
+  "changes_in_weight_and_metabolism": "Vazn va metabolizm o'zgarishlari",
+  "skin_and_hair_problems": "Teri va soch muammolari",
+  "treatment_and_therapy_of_menopause": "Menopauza davolash va terapiyasi",
+  "hormone_replacement_therapy_hrt": "Gormonlarni almashtirish terapiyasi (GAT)",
+  "alternative_and_natural_treatments": "Muqobil va tabiiy davolash usullari",
+  "nutrition_and_diet_during_menopause": "Menopauza davrida ovqatlanish va parhez",
+  "physical_activity_and_exercise": "Jismoniy faollik va mashqlar",
+  "sexual_health": "Jinsiy salomatlik",
+  "psychological_support_and_counseling": "Psixologik qo'llab-quvvatlash va maslahat",
+  "menopause_and_work": "Menopauza va ish",
+  "support_from_family_and_friends": "Oila va do'stlarning qo'llab-quvvatlashi",
+  "menopause_and_common_myths": "Menopauza va keng tarqalgan afsonalar",
   'category': 'Kategoriya',
   'top_doctors': 'Eng yaxshi shifokorlar',
   'see_all': 'Barchasi',
+  "articleContent0": "#### Yurak salomatligi haqida ma'lumot\nYurakka qon olib keladigan tomirlar koronar arteriyalar deb ataladi. Ularning ichki devorlarida yog' yig'ilishi tufayli tıkanish sodir bo'lishi mumkin. Bu ateroskleroz deb ataladi. Ushbu to'siq tufayli yurak mushagiga kamroq qon yetib keladi va bu yurak xurujiga olib kelishi mumkin. Bu menopauzadan keyin ayollarda o'limning asosiy sababidir. Arteriyalar menopauzadan keyin va yosh o‘tgan sari ko‘proq tiqilib qoladi. Yuqori qon bosimi va qondagi yog'lar (xolesterin va triglitseridlar) miqdorining oshishi ateroskleroz rivojlanish ehtimolini oshiradi. Yuqori qon bosimi menopauzadan keyin/yosh bilan ko'proq uchraydi.\n\nQondagi yog'lar jismoniy faoliyatning yetishmasligi, nosog'lom ovqatlanish va vazn ortishi bilan oshishi mumkin. Qon bosimingizni muntazam ravishda shifokoringiz tavsiya qilganidek tekshirishingiz kerak.\n\n##### Yuragingiz holatini baholash uchun quyidagi minimal tekshiruvlar tavsiya etiladi:\nQon bosimi:\n\nQondagi yog'lar:\n- Umumiy xolesterin\n- Past zichlikdagi lipoproteinlar (PZL)\n- Yuqori zichlikdagi lipoproteinlar (YZL)\n- Triglitseridlar.\n\n##### Agar sizda quyidagi omillar mavjud bo'lsa, yurak kasalligi xavfi yuqori:\n**Yosh**: Yosh bilan xavf ortadi, eng yuqori xavf 65 yoshdan keyin bo'ladi.\n\n**Oilaviy anamnez**: Otangiz yoki aka-ukangizda 55 yoshdan oldin, onangizda yoki opangizda 65 yoshdan oldin yurak xuruji bo'lgan bo'lsa.\n\n**Menopauza yoshi**: Menopauzaga 40 yoshdan oldin kirgan ayollar eng yuqori xavf ostida. Agar menopauza yoshroq bo'lganda yuz bergan bo'lsa, xavf yuqori.\n\n**Tana massasi indeksi (TMI)**: Tana massasi indeksi (TMI) qanchalik yuqori bo'lsa, xavf shuncha yuqori bo'ladi. Agar siz osiyolik bo'lsangiz, TMI 23 kg/m2 dan yuqori, osiyolik bo'lmasangiz, 25 kg/m2 dan yuqori bo'lsa, yurak kasalligi xavfi ortadi.\n\n**Belning atrofi**: Xavf eng kam, agar u 89 sm (35 dyuym) dan kam bo'lsa, eng yuqori bo'lsa, agar u 114 sm (45 dyuym) dan oshsa.\n\n**Sistolik qon bosimi**: Sistolik qon bosimi 120 mm r.t.dan kam bo'lsa, xavf eng kam, 140 mm r.t.dan oshsa, yuqori.\n\n**Organizm yog'lari**: Anormal ko'rsatkichlar yurak kasalligi xavfini oshiradi, lekin jismoniy faollik va dorilar yordamida ko'rsatkichlarni yaxshilash mumkin.\n\n**Diabet**: Diabetning mavjudligi xavfni oshiradi, qondagi shakar darajasi nazorat qilinmasa (gliklangan gemoglobin [HbA1c] > 7) xavf yanada ortadi.\n\n**Jismoniy faoliyat**: Xavf eng kam, jismoniy faollik ko'p bo'lsa (haftada 150 daqiqa o'rtacha yoki haftada 75 daqiqa faol harakat). Agar jismoniy faoliyat haftasiga 30 daqiqadan kam bo'lsa, xavf eng yuqori bo'ladi.\n\n**Chekish**: Chekuvchilar (hozirgi va sobiq chekuvchilar) yuqori xavf ostida.",
+  "articleContent1": "#### Diabet haqida ma'lumot\nQondagi yuqori glyukoza darajasi diabetni ko'rsatadi. Diabet ko'pincha menopauzadan keyingi ayollarda uchraydi va jiddiy sog'liq muammosi bo'lib, jiddiy asoratlar bilan kechadi. Menopauza bilan bog'liq qorin yog'ining ko'payishi diabet rivojlanish xavfini oshiradi. Diabetga chalingan ayollarda yurak kasalligi xavfi deyarli ikki baravar oshadi. Biroq, diabetni yaxshi nazorat qilish diabetik asoratlar xavfini kamaytirishi mumkin. Agar sizda diabet rivojlanish xavfi o'rtacha yoki yuqori bo'lsa, shifokor bilan maslahatlashishingiz va diabet va uning asoratlarini oldini olish va nazorat qilish uchun muntazam kuzatishni davom ettirishingiz kerak.\n\n##### Diabetni tekshirish uchun quyidagi tekshiruvlar tavsiya etiladi\n- Och qoringa qon glyukoza darajasi\n- Och qolmagan holda qon glyukoza darajasi (ovqatdan 2 soat keyin)\n- HbA1c. Bu diabetga oid maxsus test bo'lib, qondagi shakar miqdori haqida so'nggi 3 oylik ma'lumot beradi\n\n##### Agar sizda quyidagi omillar mavjud bo'lsa, diabet rivojlanish xavfi yuqori:\n**Qondagi yuqori shakar darajasi**: Har qanday holatda yoki homiladorlik paytida yuqori qondagi shakar darajasi aniqlansa, diabet rivojlanish xavfi oshadi.\n\n**Yosh**: Eng yuqori xavf 65 yoshdan katta va eng kam xavf 45 yoshdan kichik bo'lganlarda.\n\n**TMI**: TMI ko'proq bo'lganda xavf oshadi, osiyoliklar uchun 23 kg/m2 dan, osiyolik bo'lmaganlar uchun 25 kg/m2 dan yuqori.\n\n**Belning atrofi**: Agar u 88 sm (35 dyuym) dan oshsa, xavf eng yuqori, 80 sm (31 dyuym) dan kam bo'lsa, xavf eng past bo'ladi.\n\n**Jismoniy faoliyat**: Xavf eng kam, jismoniy faoliyat ko'p bo'lsa (haftada 150 daqiqa o'rtacha yoki haftada 75 daqiqa faol harakat), xavf eng yuqori, agar haftasiga 30 daqiqadan kam bo'lsa.\n\n**Diabetning oilaviy tarixi**:  Ota-onangiz, aka-ukalaringiz yoki bolalaringizda diabet mavjudligi diabet rivojlanish xavfini oshiradi va hatto bobo-buvilar, amaki-xolalar va amakivachchalarda diabet mavjud bo'lsa, jiddiy xavf mavjud.\n\n###### Qandli diabet xavfi yuqori deb hisoblasangiz, shifokoringizga murojaat qiling.",
+  "articleContent2": "#### Suyak salomatligi haqida ma'lumot\nOsteoporoz - bu suyaklaringiz mo'rt bo'ladigan va osonlikcha sinishi (sinishi). Sinishlar jim bo'lishi mumkin (jaroxatsiz) yoki minimal travma bilan sodir bo'lishi mumkin. Osteoporoz ayollarda 45 yoshdan keyin erkaklarga qaraganda ko'proq uchraydi. Suyaklarni himoya qilish uchun etarli miqdorda kaltsiy va D vitamini va mushaklarni qo'llab-quvvatlash uchun etarli miqdorda protein bo'lgan ovqatlanish mushaklar kuchini saqlab qolish uchun ham muhimdir va yiqilish va sinishlarning oldini olish uchun muvozanat.\n\n##### Suyak salomatligi uchun tavsiya etilgan test suyak zichligini o'lchaydigan dxa t-skoridir:\n- Bel umurtqasi - umurtqa pog'onasi\n- Femur bo'yni - son. \n- Radius qo‘ldagi suyakdir\n\n##### Quyidagilar suyaklaringizning sog‘lig‘iga ta’sir qilishi va sinish xavfini oshirishi mumkin\n**Kam vazn**:\n- BMI sizning vazningizga moslashtirilgan. sizning o'sishingiz uchun. \n- BMI odamning vazni kam, optimal vazn yoki ortiqcha vaznga ega ekanligini aniqlash uchun ishlatiladi. \n- BMI 18,5 kg/m2 dan kam bo‘lsa, kavkazliklar uchun kam vaznli hisoblanadi. \n- Kam vaznli odamlarda suyaklar mo'rt bo'lib, sinish holatlari ko'proq uchraydi. \n\n**Oziq-ovqatlarga nisbatan murosasizlik yoki oshqozon-ichak kasalliklari**: Kron kasalligi, yarali kolit, çölyak kasalligi va boshqa holatlar kabi turli xil oshqozon-ichak kasalliklari ovqatning so'rilishini buzadi va suyaklarning mo'rtlashishi ehtimolini oshiradi. \n\n**Tez-tez tushish**:\n- Osteoporoz bilan tez-tez yiqilib tushgan odamlarda sinish xavfi yuqori. \n- Muvozanatning yomonlashishiga olib keladigan sog'lig'i bilan bog'liq muammolar bo'lgan keksa odamlar, mushaklar kuchsizligi/umumiy zaifligi bo'lgan odamlar, turish/yurish/muvozanatni saqlab qolish qiyinligi bo'lgan odamlar va ko'rish qobiliyati past odamlar yiqilish va keyinchalik sinish xavfi yuqori.\n \n* * Jigar yoki buyrakning og'ir kasalliklari**: Jigar yoki buyrakning og'ir kasalligi bo'lgan odamlarda suyaklarning yo'qolishi va osteoporoz xavfi yuqori. \n\n**Surunkali depressiya**: Ba'zi tadqiqotlarda depressiyaga ega bo'lish sinish xavfi yuqoriligi bilan bog'liq. Biroq, antidepressantlardan foydalanish bu ortib borayotgan xavf uchun javobgar bo'lishi mumkin.\n\n**Revmatoid artrit**: Romatoid artrit suyak sog'lig'iga ta'sir qiluvchi qo'shma kasallik bo'lib, suyaklarning yo'qolishi va osteoporoz bilan bog'liq. \n\n**Uzoq muddatli kortikosteroid terapiyasi (masalan, prednizolon)**:\n- Ba'zi odamlar uzoq vaqt kortikosteroidlar deb ataladigan dori-darmonlarni qabul qilishadi, ayniqsa astma, revmatoid artrit yoki boshqa immunitet kasalliklari bo'lganlar. - Nafas olish va og'iz orqali qabul qilingan steroidlar osteoporozli bemorlarda sinish xavfini oshirishi aniqlangan. \n\n**Erta menopauza**: Erta menopauza xavfni oshiradi; 45 yoshdan oldin menopauzaga kirganlar yuqori xavf ostida.\n\n##### Sizda osteoporoz xavfi yuqori, agar:\n**Yosh**: xavf yoshga qarab ortadi.\n\n ** Menopauza yoshi**: Erta menopauza xavfni oshiradi; 45 yoshdan oldin menopauzaga kirganlar yuqori xavf ostida. Eng yuqori xavf 40 yoshdan oldin menopauzaga kirgan ayollarda, ayniqsa hech qanday gormonlar (HRT yoki kombinatsiyalangan og'iz kontratseptivlari) qabul qilmagan ayollarda.\n\n**Oldingi sinish tarixi**: Oldingi sinish tarixi xavfni oshiradi. .\n \n**Oila tarixi**: Ota-ona yoki aka-uka yoki opa-singilda son suyagining sinishi tarixi xavfni oshiradi.\n\n**Chekish**: Hozirgi sigaret chekuvchilar, chekmaydiganlar esa katta xavf ostida. eng kam xavf ostida.\n\n**Spirtli ichimliklar**: spirtli ichimliklarni haftasiga 3 birlikdan ortiq iste'mol qilish xavfni sezilarli darajada oshiradi.\n\n**Suyak toksik dorilar**: Quyidagi dorilarni qo'llash kuchayadi. osteoporoz xavfi:\n- Depressiyaga qarshi dorilar .\n- Epilepsiya (tutqanoq) uchun dorilar.\n- Oshqozon kislotasini kamaytiradigan dorilar.\n- Astma yoki revmatoid artrit kabi uzoq muddatli kortikosteroid terapiyasi.\n- Ko‘krak bezi. estrogen darajasini pasaytiradigan saraton dori.\n \n###### Agar siz suyaklarning mo'rtlashishi osteoporoz tufayli sinish xavfi yuqori deb hisoblasangiz, shifokoringizga murojaat qiling.######",
+  "articleContent3": "#### Xotira va kognitiv salomatlik haqida ma'lumot\nXotira va boshqa kognitiv funksiyalar vaqt o'tishi bilan yomonlashishi mumkin. Bunga turli omillar ta'sir qilishi mumkin, jumladan, menopauza, diabet, yuqori qon bosimi, yurak kasalligi va boshqalar. Kognitiv pasayishning oldini olish uchun sog'lom turmush tarzini saqlash muhimdir. Bu yaxshi uyqu, sog'lom ovqatlanish, muntazam jismoniy faoliyat va intellektual faoliyatni o'z ichiga oladi. Shuningdek, muntazam ravishda tibbiy tekshiruvlardan o'tish va sog'liq bilan bog'liq muammolarni erta aniqlash va davolash ham muhimdir.\n\n##### Altsgeymer kasalligi haqida qisqacha ma'lumot:\n##### -Altsgeymer kasalligi keksalikda eng ko'p uchraydigan demensiyaning bir shaklidir. Bu kognitiv funktsiyalarning asta-sekin yomonlashishiga olib keladi. Kasallikning aniq sabablari noma'lum, ammo genetika, yosh, bosh travmasi va boshqa omillar ta'sir qilishi mumkin. Erta aniqlash va davolash kognitiv pasayishni sekinlashtirishi mumkin.",
+  "articleContent4": "#### Menopauzadan keyingi ayollarda saraton haqida ma'lumot\nMenopauzadan keyin ayollarda turli xil saraton turlari rivojlanish xavfi oshadi, jumladan ko'krak, bachadon bo'yni, tuxumdon va endometriya (bachadon ichki qatlami) saratoni. Ushbu saraton turlarining xavf omillari va ularni erta aniqlash uchun skrining usullari mavjud. Saratonning erta aniqlanishi davolanish imkoniyatlarini oshiradi va kasallikning og'irligini kamaytirishi mumkin. Muntazam tibbiy ko'riklardan o'tish va shifokor bilan maslahatlashish zarur.\n\n##### Ko'krak saratoni haqida ma'lumot:\nKo'krak saratoni menopauzadan keyin ayollarda eng ko'p uchraydigan saraton turi hisoblanadi. Ushbu kasallikning xavf omillari orasida yosh, genetik moyillik, gormonal o'zgarishlar va boshqa omillar mavjud. Muntazam mammografiya va ko'krakni o'z-o'zini tekshirish ko'krak saratonini erta bosqichda aniqlashga yordam beradi.\n\n##### Bachadon bo'yni saratoni haqida ma'lumot:\nBachadon bo'yni saratoni HPV (inson papillomavirus) bilan yuqadigan infeksiya bilan bog'liq. HPV vaktsinasi bachadon bo'yni saratoni xavfini kamaytirishi mumkin. Muntazam pap-testlar va HPV testlari bachadon bo'yni saratonini erta aniqlashga yordam beradi.\n\n##### Tuxumdon saratoni haqida ma'lumot:\nTuxumdon saratoni menopauzadan keyingi ayollarda kam uchraydi, ammo juda xavfli bo'lishi mumkin. Ushbu saratonning xavf omillari orasida genetik moyillik, menopauzaga kirish yoshi, va boshqa omillar mavjud. Ushbu kasallikni erta aniqlash uchun maxsus skrining testi mavjud emas, lekin muntazam tibbiy ko'riklar va simptomlar kuzatilishi kerak.\n\n##### Endometriya saratoni haqida ma'lumot:\nEndometriya saratoni menopauzadan keyingi ayollarda eng keng tarqalgan ginekologik saraton hisoblanadi. Ushbu kasallikning xavf omillari orasida yoshi, estrogen darajasining oshishi, va boshqa omillar mavjud. Endometriya saratonini erta aniqlash uchun ultratovush va boshqa diagnostika usullari mavjud.",
+  "articleTitle0": "Yurak kasalliklari",
+  "articleTitle1": "Diabet",
+  "articleTitle2": "Suyak kasalliklari",
+  "articleTitle3": "Xotira va kognitiv salomatlik",
+  "articleTitle4": "Menopauzadan keyingi ayollarda saraton",
+  "doctor_profile": "Shifokor profili",
+  "doctor_fullname": "Shifokor ismi",
+  "doctor_field": "Shifokor sohasi",
+  "patients": "Bemorlar",
+  "experience": "Tajriba",
+  "year": "yillik",
+  "rating": "Reyting",
+  "about_doctor": "Shifokor haqida",
+  "working_days": "Ish kunlari",
 
   /// TestPage
   'test': 'Test ishlaymiz 🙆‍♀️',
@@ -224,30 +243,28 @@ const Map<String, String> uzUZ = {
   'show_test_detail_title': 'Testni boshlash uchun bosing',
   'show_test_detail_description':
       'Test boshlashda avval test haqida batafsil tanishib chiqqach, testni ishlashni hohlasangiz tugmani bosing',
-  'test_detail_title_0': 'ШКАЛА ГРИНА',
-  'test_detail_info_0': 'Тестирование по шкале Грина – это эффективный инструмент для оценки тяжести климактерического синдрома, который '
-      'происходит из-за общего старения организма и постепенного снижения или резкого прекращения гормональной функции яичников. Обычно он '
-      'возникает у женщин в возрасте от 45-55 лет.'
-      '\nОбратите внимание: результат тестирования не может быть определяющим фактором наличия или отсутствия болезни, а полученные '
-      'данные помогают врачам назначить или скорректировать уже назначенное лечение.',
-  'test_detail_title_1': 'ОЦЕНКА СЕКСУАЛЬНОЙ ФУНКЦИИ У ЖЕНЩИН',
-  'test_detail_info_1': 'Сексуальная сфера – это важная и сложная часть жизни каждой женщины, которая в большой степени влияет на '
-      'качество жизни в целом. Тест позволяет оценить состояние сексуальной функции женщин с учетом ее шести основных составляющих: '
-      'половое влечение, чувствительность и возбудимость, любрикация, оргастичность, удовлетворенность половой жизнью, коитальный '
-      'и/или посткоитальный дискомфорт/боль.'
-      '\nПройдя данный тест, Вы сможете глубже понять себя и выявить те или иные сексуальные нарушения (если они имеются).'
-      '\nОтвечая на вопросы, обратите внимание на то, что Вы:'
-      '\n   \u25CF   анализируете качество своей сексуальной жизни на протяжении последних 4 недель'
-      '\n   \u25CF   отвечаете максимально честно и открыто.',
-  'test_detail_title_2': 'ШКАЛА ДЕПРЕССИИ БЕКА',
-  'test_detail_info_2': 'Шкала депрессии Бека — это тест, которому доверяют психиатры во всем мире. Данный вид тестирования широко '
-      'применяется в практике для диагностики и оценки уровня депрессивных расстройств.'
-      '\nЭтот опросник состоит из 21 группы утверждений. Пожалуйста, внимательно прочитайте каждую группу утверждений и, затем выберите '
-      'одно утверждение в каждой группе, которое наилучшим образом описывает то, как вы себя чувствовали в течение последней недели, в том '
-      'числе и сегодня. Если несколько утверждений в группе одинаково хорошо описывают ваше состояние, выберите нижнее утверждение для '
-      'этой группы.'
-      '\nОбратите внимание: результат тестирования не может быть определяющим фактором наличия или отсутствия болезни, а полученные данные '
-      'используются врачами в комплексной диагностике.',
+  'test_detail_title_0': 'GREEN SHKALASI',
+  'test_detail_info_0': "Green shkalasi bo'yicha testlash - bu menopauza sindromining og'irligini baholash uchun samarali vosita bo'lib, "
+      "umuman organizmning qarishi va tuxumdonlarning gormonal funksiyasining pasayishi yoki to'xtashi natijasida yuzaga keladi. "
+      "Odatda bu 45-55 yoshdagi ayollarda kuzatiladi.\nDiqqat: Test natijalari kasallik bor yoki yo'qligini aniqlashda hal qiluvchi "
+      "omil bo'la olmaydi, ammo olingan ma'lumotlar shifokorlarga belgilangan davolashni belgilash yoki uni tuzatishga yordam beradi.",
+
+  'test_detail_title_1': 'AYOLLARDA JINSIY FUNKSIYANI BAHOLASH',
+  'test_detail_info_1': "Jinsiy hayot - har bir ayolning hayotining muhim va murakkab qismi bo'lib, umumiy hayot sifatiga katta ta'sir ko'rsatadi. "
+      "Test ayollarning jinsiy funksiyalarini baholash uchun uning oltita asosiy qismini hisobga oladi: jinsiy tortish, sezgirlik va qo'zg'alish, "
+      "lubrikatsiya, orgazm, jinsiy hayotdan qoniqish, koital va/yoki postkoital noqulaylik/og'riq.\nUshbu testni o'tkazganingizdan so'ng, "
+      "o'zingizni yaxshiroq tushunishingiz va mavjud bo'lgan jinsiy buzilishlarni aniqlashingiz mumkin.\nSavollarga javob berganingizda "
+      "quyidagilarga e'tibor bering:\n   \u25CF   so'nggi 4 hafta davomida jinsiy hayotingizning sifatini tahlil qilasiz\n   \u25CF   "
+      "maksimal halol va ochiq javob berasiz.",
+
+  'test_detail_title_2': 'BEK DEPRESSIYA SHKALASI',
+  'test_detail_info_2':
+      "Bek depressiya shkalasi - bu psixiatrlar tomonidan butun dunyoda ishonchli deb hisoblangan test. Ushbu test turli xil depressiv "
+          "buzilishlarni aniqlash va baholash uchun keng qo'llaniladi.\nBu so'rovnoma 21 ta guruhdan iborat bo'lib, har bir guruhda o'z holatingizni "
+          "so'nggi hafta, jumladan bugungi kunda, qanday his qilganingizni eng yaxshi ifodalovchi bir bayonotni tanlang. Agar guruhdagi bir nechta "
+          "bayonotlar sizning holatingizni bir xil yaxshi ifodalasa, ushbu guruh uchun eng quyi bayonotni tanlang.\nDiqqat: Test natijalari "
+          "kasallik bor yoki yo'qligini aniqlashda hal qiluvchi omil bo'la olmaydi, ammo olingan ma'lumotlar shifokorlar tomonidan "
+          "murakkab diagnostika uchun ishlatiladi.",
 
   /// QuizPage
   'next': 'Keyingi',
@@ -264,6 +281,30 @@ const Map<String, String> uzUZ = {
   'question': 'Savol',
   'answer': 'Javob',
   'marked_answer': 'Siz javob tanlab bo\'ldingiz',
+  "question0": "Yurak urishining tezlashishi va kuchayishi",
+  "question1": "Taranglik yoki asabiylashish hissi",
+  "question2": "Uyqu buzilishi",
+  "question3": "Qo'zg'aluvchanlik",
+  "question4": "Vahima hujumlari",
+  "question5": "Diqqatni jamlashda qiyinchiliklar",
+  "question6": "Charchoq yoki energiya etishmasligi hissi",
+  "question7": "Ko'p narsalarga qiziqishni yo'qotish",
+  "question8": "O'zini baxtsiz his qilish yoki depressiya",
+  "question9": "Yig'loqi bo'lish",
+  "question10": "Asabiylashish",
+  "question11": "Bosh aylanishi yoki hushdan ketish hissi",
+  "question12": "Boshda yoki tanada bosim yoki siqilish",
+  "question13": "Tana qismlarida karaxtlik yoki chimchilash",
+  "question14": "Bosh og'rig'i",
+  "question15": "Mushaklarda yoki bo'g'imlarda og'riq",
+  "question16": "Qo'llarda yoki oyoqlarda sezuvchanlikni yo'qotish",
+  "question17": "Nafas olishda qiyinchilik",
+  "question18": "Issiqlik to'lqinlari",
+  "question19": "Kechasi terlash",
+  "title0": "Umuman bezovta qilmaydi.",
+  "title1": "Bir oz bezovta qiladi.",
+  "title2": "Kuchli bezovta qiladi.",
+  "title3": "Juda kuchli bezovta qiladi.",
 
   /// ChatPage
   'chat': 'Chat ✍️ ',

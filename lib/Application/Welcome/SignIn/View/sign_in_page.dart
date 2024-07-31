@@ -108,11 +108,14 @@ class SignInPage extends StatelessWidget {
                                 // #remember_me
                                 Row(
                                   children: [
-                                    Checkbox(
-                                      onChanged: (v) => context.read<SignInBloc>().add(RememberMeEvent()),
-                                      fillColor: WidgetStateProperty.all(AppColors.purple),
-                                      side: const BorderSide(width: 0),
-                                      value: bloc.rememberMe,
+                                    Transform.scale(
+                                      scale: MediaQuery.of(context).size.width * .0025,
+                                      child: Checkbox(
+                                        onChanged: (v) => context.read<SignInBloc>().add(RememberMeEvent()),
+                                        fillColor: WidgetStateProperty.all(AppColors.purple),
+                                        side: const BorderSide(width: 0),
+                                        value: bloc.rememberMe,
+                                      ),
                                     ),
                                     myTextButton(
                                       context: context,

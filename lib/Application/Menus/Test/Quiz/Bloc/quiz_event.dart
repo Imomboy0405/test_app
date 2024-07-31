@@ -46,6 +46,10 @@ class MiniButtonEvent extends QuizEvent {
 }
 
 class InitialQuestionsEvent extends QuizEvent {
+  final double width;
+
+  const InitialQuestionsEvent ({required this.width});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [width];
 }

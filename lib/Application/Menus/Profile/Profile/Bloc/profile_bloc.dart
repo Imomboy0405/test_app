@@ -12,6 +12,7 @@ import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_pa
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
 import 'package:test_app/Configuration/app_constants.dart';
+import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
@@ -117,6 +118,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> pressDone(DoneEvent event, Emitter<ProfileState> emit) async {
     await LangService.language(selectedLang);
+    locator<HomeBloc>().articles = articlesJson.map((json) => ArticleModel.fromJson(json)).toList();
     mainBloc.add(MainLanguageEvent());
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
   }

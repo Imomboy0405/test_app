@@ -31,7 +31,7 @@ class MyFlagButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: SizedBox(
-        width: 40,
+        width: MediaQuery.of(context).size.width * .1,
         child: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -86,8 +86,8 @@ class MyFlagButton extends StatelessWidget {
           },
           icon: Image(
             image: AssetImage('assets/icons/ic_flag_${currentLang.name}.png'),
-            width: 28,
-            height: 28,
+            width: MediaQuery.of(context).size.width * .075,
+            height: MediaQuery.of(context).size.width * .075,
             fit: BoxFit.fill,
           ),
         ),
@@ -118,52 +118,58 @@ class MyCircleGlassContainer extends StatelessWidget {
         ? BlocBuilder<StartBloc, StartState>(
             builder: (context, state) {
               StartBloc? bloc = context.read<StartBloc>();
-              return buildGlassContainer(bloc);
+              return buildGlassContainer(bloc, MediaQuery.of(context).size.width);
             },
           )
-        : buildGlassContainer(null);
+        : buildGlassContainer(null, MediaQuery.of(context).size.width);
   }
 
-  Widget buildGlassContainer(StartBloc? bloc) {
+  Widget buildGlassContainer(StartBloc? bloc, double width) {
     return Container(
-      decoration: shadow ? BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-          boxShadow: const [
-            BoxShadow(
+      decoration: shadow
+          ? BoxDecoration(borderRadius: BorderRadius.circular(width * 0.8), boxShadow: const [
+              BoxShadow(
                 color: AppColors.pink,
                 spreadRadius: 0,
                 blurRadius: 15,
-            ),
-          ]
-      ) : null,
+              ),
+            ])
+          : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(130),
+        borderRadius: BorderRadius.circular(width),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
           child: Container(
-            height: mini ? 70 : bloc == null ? 170 : 250,
-            width: mini ? 70 : bloc == null ? 170 : 250,
+            height: mini
+                ? width * .13
+                : bloc == null
+                    ? width * .4
+                    : width * .64,
+            width: mini
+                ? width * .13
+                : bloc == null
+                    ? width * .4
+                    : width * .64,
             decoration: BoxDecoration(
               color: transparent ? AppColors.transparent : AppColors.transparentBlack,
-              borderRadius: BorderRadius.circular(150),
+              borderRadius: BorderRadius.circular(width),
               border: Border.all(color: AppColors.black, width: 2),
             ),
             alignment: childPos
-                ? bloc!.left == 41
-                    ? Alignment.bottomLeft
-                    : bloc.left == 40
-                        ? Alignment.bottomRight
-                        : Alignment.topLeft
+                ? bloc!.left == .1
+                    ? Alignment.bottomRight
+                    : Alignment.bottomLeft
                 : null,
-            padding: const EdgeInsets.all(30),
+            padding: EdgeInsets.all(width * .08),
             child: childPos
-                ? Image(
-                    image: AssetImage('assets/images/img_${bloc!.left == 41 ? 'shield' : bloc.left == 40 ? 'heart' : 'test'}.png'),
-                    height: 100,
-                    width: 100,
-                    color: bloc.left == 41
+                ? Image.asset(
+                    'assets/images/img_${bloc!.screen == 1 ? 'shield' : bloc.screen == 2 ? 'heart' : 'test'}.png',
+                    height: width * .25,
+                    width: width * .25,
+                    scale: .5,
+                    color: bloc.screen == 1
                         ? AppColors.blue
-                        : bloc.left == 40
+                        : bloc.screen == 2
                             ? AppColors.red
                             : AppColors.green,
                   )
@@ -207,7 +213,12 @@ TextButton myTextButton({
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        assetIc != null ? SizedBox(height: 25, child: Image(image: AssetImage('assets/icons/ic_$assetIc.png'))) : const SizedBox.shrink(),
+        assetIc != null
+            ? SizedBox(
+                height: MediaQuery.of(context).size.width * .06,
+                child: Image(image: AssetImage('assets/icons/ic_$assetIc.png')),
+              )
+            : const SizedBox.shrink(),
         Text(' $txt', style: AppTextStyles.style9(context)),
       ],
     ),
@@ -259,7 +270,7 @@ class MyTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44,
+      height: MediaQuery.of(context).size.width * .1,
       decoration: BoxDecoration(
         color: AppColors.transparentBlack,
         borderRadius: BorderRadius.circular(6),
@@ -281,7 +292,7 @@ class MyTextField extends StatelessWidget {
           contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
           error: errorState ? const SizedBox.shrink() : null,
           prefixIcon: SizedBox(
-            width: 20,
+            width: MediaQuery.of(context).size.width * .1,
             child: Row(
               children: [
                 Expanded(
@@ -295,17 +306,18 @@ class MyTextField extends StatelessWidget {
                             : focus.hasFocus
                                 ? AppColors.whiteConst
                                 : AppColors.purple,
+                    size: MediaQuery.of(context).size.width * .06,
                   ),
                 ),
               ],
             ),
           ),
           suffixIcon: SizedBox(
-            height: 44,
+            height: MediaQuery.of(context).size.width * .1,
             width: (controller.text.isNotEmpty || focus.hasFocus)
                 ? icon == Icons.lock
-                    ? 96
-                    : 40
+                    ? MediaQuery.of(context).size.width * .25
+                    : MediaQuery.of(context).size.width * .15
                 : 1,
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -325,6 +337,7 @@ class MyTextField extends StatelessWidget {
                                   : focus.hasFocus
                                       ? AppColors.whiteConst
                                       : AppColors.purple,
+                          size: MediaQuery.of(context).size.width * .06,
                         ),
                       )
                     : const SizedBox.shrink(),
@@ -333,10 +346,19 @@ class MyTextField extends StatelessWidget {
                 controller.text.isNotEmpty || focus.hasFocus
                     ? IconButton(
                         padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(
+                          minWidth: MediaQuery.of(context).size.width * .1,
+                          minHeight: MediaQuery.of(context).size.width * .1,
+                        ),
+                        splashRadius: 30,
                         onPressed: () => !suffixIc ? Utils.mySnackBar(context: context1, txt: snackBarTxt, errorState: true) : {},
                         icon: suffixIc && !errorState
-                            ? const Icon(Icons.done, color: AppColors.green)
-                            : const Icon(Icons.error_outline, color: AppColors.red))
+                            ? Icon(
+                                Icons.done,
+                                color: AppColors.green,
+                                size: MediaQuery.of(context).size.width * .06,
+                              )
+                            : Icon(Icons.error_outline, color: AppColors.red, size: MediaQuery.of(context).size.width * .06))
                     : const SizedBox.shrink(),
               ],
             ),
@@ -406,7 +428,9 @@ class MyButton extends StatelessWidget {
       elevation: 4,
       highlightColor: AppColors.whiteConst.withOpacity(.5),
       splashColor: AppColors.whiteConst.withOpacity(.5),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: const BorderSide(color: AppColors.whiteConst)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * .02),
+          side: const BorderSide(color: AppColors.whiteConst)),
       child: Text(text, style: AppTextStyles.style4(context)),
     );
   }

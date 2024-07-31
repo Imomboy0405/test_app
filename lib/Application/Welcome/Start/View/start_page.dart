@@ -17,7 +17,7 @@ class StartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final double width = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (_) => StartBloc(),
       child: BlocBuilder<StartBloc, StartState>(
@@ -51,7 +51,7 @@ class StartPage extends StatelessWidget {
                   ),
                 ],
 
-                // #IBilling
+                // #test_app
                 title: Text('Test App', style: AppTextStyles.style0_1(context)),
                 leadingWidth: 60,
               ),
@@ -63,20 +63,20 @@ class StartPage extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     children: [
                       // #line_img
-                      const Padding(
-                        padding: EdgeInsets.only(left: 250),
+                      Padding(
+                        padding: EdgeInsets.only(left: width * .62),
                         child: Image(
-                          image: AssetImage('assets/images/img_line.png'),
-                          height: 100,
-                          width: 40,
+                          image: const AssetImage('assets/images/img_line.png'),
+                          height: width * .24,
+                          width: width * .12,
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 250, left: 300),
+                        padding: EdgeInsets.only(top: width * .62, left: width * .76),
                         child: Image(
                           image: const AssetImage('assets/images/img_line.png'),
-                          height: 80,
-                          width: 40,
+                          height: width * .24,
+                          width: width * .12,
                           color: AppColors.purple,
                         ),
                       ),
@@ -85,24 +85,24 @@ class StartPage extends StatelessWidget {
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.easeInOutBack,
-                        left: bloc.left1,
-                        top: bloc.top1,
+                        left: bloc.left1 * width,
+                        top: bloc.top1 * width,
                         child: const MyCircleGlassContainer(childPos: true),
                       ),
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 600),
                         curve: Curves.easeInOutBack,
-                        left: bloc.left,
-                        top: bloc.top,
+                        left: bloc.left * width,
+                        top: bloc.top * width,
                         child: const MyCircleGlassContainer(),
                       ),
                       AnimatedPositioned(
                         duration: const Duration(milliseconds: 1500),
                         curve: Curves.fastEaseInToSlowEaseOut,
-                        width: bloc.left == 41 ? 85 : bloc.left,
-                        height: bloc.left == 41 ? 85 : bloc.left,
-                        left: bloc.left2,
-                        top: bloc.top2,
+                        width: bloc.left * width,
+                        height: bloc.left * width,
+                        left: bloc.left2 * width,
+                        top: bloc.top2 * width,
                         child: const MyCircleGlassContainer(mini: true),
                       ),
                       const TabBarView(
@@ -126,7 +126,7 @@ class StartPage extends StatelessWidget {
                       ),
 
                       Container(
-                        padding: const EdgeInsets.only(bottom: 48, right: 24, left: 24),
+                        padding: EdgeInsets.only(bottom: width * .02, right: width * .06, left: width * .06),
                         height: MediaQuery.of(context).size.height - 125,
                         alignment: Alignment.topCenter,
                         child: Column(
@@ -141,16 +141,12 @@ class StartPage extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    const SizedBox(width: 10),
-                                    SizedBox(
-                                      height: 25,
-                                      width: 50,
-                                      child: TabPageSelector(
-                                        indicatorSize: 8,
-                                        color: AppColors.darkGrey,
-                                        selectedColor: AppColors.purple,
-                                        borderStyle: BorderStyle.none,
-                                      ),
+                                    SizedBox(width: width * .04),
+                                    TabPageSelector(
+                                      indicatorSize: width * .02,
+                                      color: AppColors.darkGrey,
+                                      selectedColor: AppColors.purple,
+                                      borderStyle: BorderStyle.none,
                                     ),
                                     const Spacer(),
                                   ],
@@ -159,7 +155,7 @@ class StartPage extends StatelessWidget {
                                 // #skip
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 700),
-                                  width: bloc.next ? 0 : 200,
+                                  width: bloc.next ? 0 : width * .5,
                                   onEnd: () => bloc.add(LoginAnimateEvent(first: true)),
                                   curve: Curves.easeInCirc,
                                   padding: const EdgeInsets.only(right: 40),
@@ -184,30 +180,26 @@ class StartPage extends StatelessWidget {
                                   builder: (context, state) {
                                     TabController c = DefaultTabController.of(context);
                                     c.animateTo(bloc.controller.page?.round() ?? 0, duration: const Duration(milliseconds: 350));
-                                    return AnimatedPadding(
-                                      duration: const Duration(milliseconds: 300),
-                                      padding: bloc.loginHeight != 75 ? EdgeInsets.zero : const EdgeInsets.only(right: 2.5),
-                                      child: AvatarGlow(
-                                        glowRadiusFactor: 0.35,
-                                        child: AnimatedContainer(
-                                          duration: const Duration(milliseconds: 300),
-                                          decoration: BoxDecoration(
-                                            color: bloc.login ? AppColors.purple : AppColors.black,
-                                            borderRadius: BorderRadius.circular(40),
-                                          ),
-                                          onEnd: () => bloc.add(LoginAnimateEvent()),
-                                          curve: Curves.easeInOutBack,
-                                          height: bloc.loginHeight,
-                                          width: bloc.loginHeight,
-                                          child: MaterialButton(
-                                            onPressed: () => context.read<StartBloc>().add(NextEvent(context: context)),
-                                            shape: const CircleBorder(),
-                                            splashColor: AppColors.purpleAccent,
-                                            child: Icon(
-                                              bloc.login ? Icons.login : Icons.arrow_forward,
-                                              color: bloc.login ? AppColors.black : AppColors.purple,
-                                              size: 30,
-                                            ),
+                                    return AvatarGlow(
+                                      glowRadiusFactor: 0.35,
+                                      child: AnimatedContainer(
+                                        duration: const Duration(milliseconds: 300),
+                                        decoration: BoxDecoration(
+                                          color: bloc.login ? AppColors.purple : AppColors.black,
+                                          borderRadius: BorderRadius.circular(width),
+                                        ),
+                                        onEnd: () => bloc.add(LoginAnimateEvent()),
+                                        curve: Curves.easeInOutBack,
+                                        height: bloc.loginHeight * width,
+                                        width: bloc.loginHeight * width,
+                                        child: MaterialButton(
+                                          onPressed: () => context.read<StartBloc>().add(NextEvent(context: context)),
+                                          splashColor: AppColors.purpleAccent,
+                                          shape: const CircleBorder(),
+                                          child: Icon(
+                                            bloc.login ? Icons.login : Icons.arrow_forward,
+                                            color: bloc.login ? AppColors.black : AppColors.purple,
+                                            size: width * .08,
                                           ),
                                         ),
                                       ),

@@ -19,6 +19,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ChatBloc bloc = locator<ChatBloc>();
+    final double width = MediaQuery.of(context).size.width;
     bloc.mainBloc = locator<MainBloc>();
     return BlocBuilder<ChatBloc, ChatState>(
       bloc: bloc,
@@ -51,7 +52,7 @@ class ChatPage extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               onPressed: () => bloc.add(ChatPushDetailEvent(userModel: bloc.users[index], context: context)),
                               child: Container(
-                                height: 96,
+                                height: width * .19,
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: AppColors.pink.withOpacity(.6),
@@ -66,16 +67,16 @@ class ChatPage extends StatelessWidget {
                                       child: Hero(
                                         tag: bloc.users[index].uId!,
                                         child: Container(
-                                          width: 65,
-                                          height: 65,
+                                          width: width * .12,
+                                          height: width * .12,
                                           decoration: BoxDecoration(
                                             color: AppColors.transparentPurple.withOpacity(.2),
-                                            borderRadius: BorderRadius.circular(33),
+                                            borderRadius: BorderRadius.circular(width * .06),
                                           ),
-                                          child: const Icon(
+                                          child: Icon(
                                             CupertinoIcons.profile_circled,
                                             color: AppColors.whiteConst,
-                                            size: 60,
+                                            size: width * .1,
                                           ),
                                         ),
                                       ),

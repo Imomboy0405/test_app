@@ -18,15 +18,15 @@ class StartBloc extends Bloc<StartEvent, StartState> {
   ];
   PageController controller = PageController();
   bool first = false;
-  double left = 41;
-  double top = 10;
-  double left1 = 45;
-  double top1 = 110;
-  double left2 = 280;
-  double top2 = 150;
+  double left = .1;
+  double top = .03;
+  double left1 = .23;
+  double top1 = .2;
+  double left2 = .2;
+  double top2 = .7;
   bool login = false;
   bool next = false;
-  double loginHeight = 75;
+  double loginHeight = .17;
   double oldScreen = 0;
   double screen = 0;
   bool pressNext = false;
@@ -51,12 +51,12 @@ class StartBloc extends Bloc<StartEvent, StartState> {
 
   Future<void> updateAnimate(UpdateAnimateEvent event, Emitter<StartState> emit) async {
     pressNext = true;
-    left = screen != 1 ? 40 : 75;
-    top = screen != 1 ? 10 : 50;
-    left1 = screen != 1 ? 100 : 10;
-    top1 = screen != 1 ? 80 : 10;
-    left2 = screen != 1 ? 250 : 70;
-    top2 = screen != 1 ? 15 : 300;
+    left = screen != 1 ? .1 : .2;
+    top = screen != 1 ? .03 : .1;
+    left1 = screen != 1 ? .23 : .1;
+    top1 = screen != 1 ? .2 : .3;
+    left2 = screen != 1 ? .2 : .04;
+    top2 = screen != 1 ? .7 : .1;
     first = !first;
     if (screen == 2) {
       next = true;
@@ -74,9 +74,9 @@ class StartBloc extends Bloc<StartEvent, StartState> {
       login = true;
     }
     if (event.first) {
-      loginHeight = 80;
+      loginHeight = .18;
     } else {
-      loginHeight = 75;
+      loginHeight = .17;
     }
     emit(StartInitialState(loginHeight: loginHeight, left: left, top: top, first: first));
   }

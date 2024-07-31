@@ -37,21 +37,18 @@ class HomeDetailPage extends StatelessWidget {
                       child: Column(
                         children: [
                           // #animated_text
-                          SizedBox(
-                            height: 26,
-                            child: AnimatedTextKit(
-                              totalRepeatCount: 1,
-                              animatedTexts: [
-                                TyperAnimatedText(
-                                  bloc.articles[bloc.currentPage].content[0].content,
-                                  textStyle: AppTextStyles.style18(context).copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.whiteConst
-                                  ),
-                                  textAlign: TextAlign.justify,
-                                )
-                              ],
-                            ),
+                          AnimatedTextKit(
+                            totalRepeatCount: 1,
+                            animatedTexts: [
+                              TyperAnimatedText(
+                                bloc.articles[bloc.currentPage].content[0].content,
+                                textStyle: AppTextStyles.style18(context).copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.whiteConst,
+                                ),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
                           ),
 
                           // #image

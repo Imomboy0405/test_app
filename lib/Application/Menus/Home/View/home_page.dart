@@ -68,10 +68,10 @@ class HomePage extends StatelessWidget {
                             child: CarouselSlider(
                               carouselController: bloc.carouselController,
                               options: CarouselOptions(
-                                autoPlay: bloc.autoPlayCarousel,
+                                autoPlay: false,
                                 autoPlayInterval: const Duration(seconds: 6),
                                 initialPage: bloc.currentPage,
-                                height: 218.0,
+                                height: width * .4,
                                 enlargeCenterPage: true,
                                 viewportFraction: 0.875,
                                 enlargeFactor: .2,
@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
                                                 // #card_doctor_image
                                                 Image.asset(
                                                   'assets/images/img_doctor_${(article.order - 1) % 5}.png',
-                                                  height: 200,
+                                                  height: width * .4,
                                                 ),
                                                 Expanded(
                                                   child: Column(
@@ -134,16 +134,16 @@ class HomePage extends StatelessWidget {
                                                     children: [
                                                       // #card_title
                                                       ConstrainedBox(
-                                                        constraints: const BoxConstraints(
-                                                          maxHeight: 80,
-                                                          maxWidth: 170,
-                                                          minWidth: 170,
+                                                        constraints: BoxConstraints(
+                                                          maxHeight: width * .15,
+                                                          maxWidth: width * .45,
+                                                          minWidth: width * .45,
                                                         ),
                                                         child: Text(
                                                           article.title,
                                                           style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst),
                                                           overflow: TextOverflow.ellipsis,
-                                                          maxLines: 3,
+                                                          maxLines: 2,
                                                         ),
                                                       ),
                                                       const Padding(
@@ -152,10 +152,10 @@ class HomePage extends StatelessWidget {
                                                       ),
                                                       // #card_info_text
                                                       ConstrainedBox(
-                                                        constraints: const BoxConstraints(
-                                                          maxHeight: 50,
-                                                          maxWidth: 170,
-                                                          minWidth: 170,
+                                                        constraints: BoxConstraints(
+                                                          maxHeight: width * .15,
+                                                          maxWidth: width * .45,
+                                                          minWidth: width * .45,
                                                         ),
                                                         child: Text(
                                                           article.content[0].content.trim(),
@@ -181,7 +181,7 @@ class HomePage extends StatelessWidget {
 
                           // #animated_text_image
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                            padding: EdgeInsets.fromLTRB(width * 0.03, width * 0.03, width * 0.03, 0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: BackdropFilter(
@@ -193,7 +193,7 @@ class HomePage extends StatelessWidget {
                                   onPressed: () => bloc.add(HomePressArticleEvent(context: context)),
                                   child: Container(
                                       height: width * 0.4,
-                                      padding: const EdgeInsets.all(5),
+                                      padding: EdgeInsets.all(width * 0.015),
                                       decoration: BoxDecoration(
                                         color: AppColors.pink.withOpacity(.5),
                                         borderRadius: BorderRadius.circular(16),
@@ -247,7 +247,7 @@ class HomePage extends StatelessWidget {
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10),
                                                 child: Image.asset(
-                                                  width: width * 0.5,
+                                                  width: width * 0.51,
                                                   height: width * 0.37,
                                                   'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
                                                   fit: BoxFit.cover,
@@ -264,7 +264,7 @@ class HomePage extends StatelessWidget {
 
                           // #category
                           Padding(
-                            padding: const EdgeInsets.all(12),
+                            padding: EdgeInsets.all(width * 0.03),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: BackdropFilter(
@@ -357,14 +357,14 @@ class HomePage extends StatelessWidget {
 
                           // #top_doctors
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
+                            padding: EdgeInsets.fromLTRB(width * 0.03, 0, width * 0.03, width * 0.05),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: BackdropFilter(
                                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                                 child: Container(
                                   height: width * .875,
-                                  padding: const EdgeInsets.all(5),
+                                  padding: EdgeInsets.all(width * 0.015),
                                   decoration: BoxDecoration(
                                     color: AppColors.pink.withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(10),
@@ -373,7 +373,7 @@ class HomePage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: width * .01),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
@@ -386,7 +386,7 @@ class HomePage extends StatelessWidget {
                                                 //todo
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                padding: const EdgeInsets.symmetric(horizontal: 7),
+                                                padding: EdgeInsets.symmetric(horizontal: width * 0.018),
                                                 visualDensity: VisualDensity.compact,
                                                 backgroundColor: AppColors.black,
                                               ),
@@ -399,7 +399,6 @@ class HomePage extends StatelessWidget {
                                       // #doctor_cards
                                       Flexible(
                                         child: SingleChildScrollView(
-                                          physics: const PageScrollPhysics(),
                                           child: Column(
                                             children: List.generate(
                                               5,
@@ -510,10 +509,10 @@ class MyDoctorButton extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Doctor full name', style: AppTextStyles.style4_1(context).copyWith(color: AppColors.pinkWhite)),
-                      Text('Doctor position', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('doctor_fullname'.tr(), style: AppTextStyles.style4_1(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('doctor_field'.tr(), style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
                       Text('🕙 10:30 - 18:30', style: AppTextStyles.style8(context).copyWith(color: AppColors.pinkWhite)),
-                      Text('Fee: 120 000 so\'m', style: AppTextStyles.style4(context).copyWith(color: AppColors.pinkWhite)),
+                      Text('${'working_days'.tr()}: 5/2', style: AppTextStyles.style8(context).copyWith(color: AppColors.pinkWhite)),
                     ],
                   ),
                   const Spacer(),
@@ -538,10 +537,10 @@ class MyDoctorButton extends StatelessWidget {
                           color: AppColors.pink,
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_forward,
                           color: AppColors.whiteConst,
-                          size: 28,
+                          size: MediaQuery.of(context).size.width * .06,
                         ),
                       ),
                     ],

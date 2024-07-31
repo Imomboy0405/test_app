@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:test_app/Data/Services/lang_service.dart';
+
 ArticleModel articleModelFromJson(String str) => ArticleModel.fromJson(json.decode(str));
 
 class ArticleModel {
@@ -18,11 +20,11 @@ class ArticleModel {
   });
 
   ArticleModel.fromJson(dynamic json) {
-    content = parseString(json['content']);
+    content = parseString(json['content'].toString().tr());
     id = json['id'];
     image = json['image'];
     order = json['order'];
-    title = json['title'];
+    title = json['title'].toString().tr();
   }
 }
 
@@ -82,7 +84,7 @@ List<Content> parseString(String text) {
       currentContent += char;
       // Agar nuqta yoki bosh harfli so'z boshlansa, bold va large ni o'chiramiz
       if ((char == '.' || char == '\n' ||
-              (currentContent.length > 3 && char.toUpperCase() == char && char != ' ' && char != ',')) &&
+              (currentContent.length > 3 && char.toUpperCase() == char && char != ' ' && char != ',' && char != '\'' && char != ':')) &&
           (isBold || isLarge)) {
         if (char == '\n') {
           if (currentContent.isNotEmpty) {

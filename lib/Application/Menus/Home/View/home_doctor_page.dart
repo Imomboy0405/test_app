@@ -26,7 +26,7 @@ class HomeDoctorPage extends StatelessWidget {
           onPopInvoked: (v) => bloc.add(HomePopDoctorPageEvent()),
           child: Scaffold(
             backgroundColor: AppColors.black,
-            appBar: const MyAppBar(titleText: 'Doctor info'),
+            appBar: MyAppBar(titleText: 'doctor_profile'.tr()),
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -115,14 +115,14 @@ class HomeDoctorPage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Doctor full name', style: AppTextStyles.style1(context)),
+                                Text('doctor_fullname'.tr(), style: AppTextStyles.style1(context)),
                                 const SizedBox(width: 5),
                                 Icon(CupertinoIcons.checkmark_seal_fill, color: AppColors.blue, size: width * .06)
                               ],
                             ),
 
                             // #doctor_position
-                            Text('Doctor position', style: AppTextStyles.style7(context)),
+                            Text('doctor_field'.tr(), style: AppTextStyles.style7(context)),
                             const SizedBox(height: 10),
                           ],
                         ),
@@ -155,21 +155,21 @@ class HomeDoctorPage extends StatelessWidget {
                                 context: context,
                                 icon: CupertinoIcons.person_2,
                                 text1: '1000+',
-                                text2: 'Patients',
+                                text2: 'patients'.tr(),
                               ),
                               doctorSkill(
                                 width: width,
                                 context: context,
                                 icon: CupertinoIcons.heart,
-                                text1: '10 Yrs',
-                                text2: 'Experience',
+                                text1: '5 ${'year'.tr()}',
+                                text2: 'experience'.tr(),
                               ),
                               doctorSkill(
                                 width: width,
                                 context: context,
                                 icon: CupertinoIcons.star,
                                 text1: '4.8',
-                                text2: 'Rating',
+                                text2: 'rating'.tr(),
                               ),
                             ],
                           ),
@@ -177,15 +177,13 @@ class HomeDoctorPage extends StatelessWidget {
 
                         // #about_doctor
                         const SizedBox(height: 10),
-                        Text('About doctor', style: AppTextStyles.style11(context).copyWith(fontSize: 18)),
+                        Text('about_doctor'.tr(), style: AppTextStyles.style11(context).copyWith(fontSize: 18)),
                         Text(
                           'test_detail_info_0'.tr(),
                           style: AppTextStyles.style8(context).copyWith(fontSize: 16),
                           textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: width * .04),
-                        MyButton(enable: true, text: 'Button', function: () {}),
-                        SizedBox(height:  width * .08),
 
                       ],
                     ),
