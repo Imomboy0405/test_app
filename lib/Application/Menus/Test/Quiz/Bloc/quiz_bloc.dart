@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
+import 'package:test_app/Application/Menus/Test/Test/Bloc/test_bloc.dart';
 import 'package:test_app/Application/Menus/Test/TestDetail/Bloc/test_detail_bloc.dart';
 import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Data/Models/quiz_model.dart';
@@ -26,8 +27,19 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   List<int> answers = [];
   List<QuizModel> quizModels = [];
   ScrollController quizNumberController = ScrollController();
+  ScrollController scrollController = ScrollController();
   int result = -1;
+  List<List> resultList = [
+    [0, 10, 'attraction', "attractionInfo_100"],
+    [0, 20, 'excitation', "excitationInfo_100"],
+    [0, 20, 'lubrication', "lubricationInfo_100"],
+    [0, 15, 'orgasm', "orgasmInfo_100"],
+    [0, 15, 'satisfaction', "satisfactionInfo_100"],
+    [0, 15, 'pain', "painInfo_100"],
+  ];
+  String resultChatText = '';
   String resultText = '';
+  String resultAnime = '';
   bool? confetti;
   double width = 0;
 
@@ -68,7 +80,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
   void initialData(InitialQuestionsEvent event, Emitter<QuizState> emit) {
     width = event.width;
-    switch (locator<TestDetailBloc>().asset) {
+    switch (locator<TestBloc>().asset + 1) {
       case 1:
         {
           quizModels = createQuizModelList(quizModelJsonStr1);
@@ -77,13 +89,13 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         }
       case 2:
         {
-          quizModels = createQuizModelList(quizModelJsonStr1);
+          quizModels = createQuizModelList(quizModelJsonStr2);
           answers = List.filled(quizModels.length, 0);
           break;
         }
       default:
         {
-          quizModels = createQuizModelList(quizModelJsonStr1);
+          quizModels = createQuizModelList(quizModelJsonStr3);
           answers = List.filled(quizModels.length, 0);
           break;
         }
@@ -148,17 +160,26 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           await Future.delayed(const Duration(milliseconds: 250));
           mainBloc.add(MainMenuButtonEvent(index: 2));
           final ChatBloc chatBloc = locator<ChatBloc>();
-          chatBloc.controller.text = resultText;
+          chatBloc.controller.text = resultChatText;
           chatBloc.add(ChatSendButtonEvent());
         }
       case MiniButton.view:
         {
+          scrollController.jumpTo(0);
           currentQuiz = 1;
           selectedValue = answers[0];
           emitInitial(emit);
         }
       default:
         {
+          resultList = [
+            [0, 10, 'attraction', "attractionInfo_100"],
+            [0, 20, 'excitation', "excitationInfo_100"],
+            [0, 20, 'lubrication', "lubricationInfo_100"],
+            [0, 15, 'orgasm', "orgasmInfo_100"],
+            [0, 15, 'satisfaction', "satisfactionInfo_100"],
+            [0, 15, 'pain', "painInfo_100"],
+          ];
           answers = List.filled(quizModels.length, 0);
           currentQuiz = 1;
           percent = 0;
@@ -196,15 +217,24 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         Navigator.pop(event.context);
         Navigator.pop(event.context);
       } else {
+        scrollController.jumpTo(0);
         if (result == -1) {
           result = 0;
-          for (int i = 0; i < quizModels.length; i++) {
-            result += quizModels[i].answers[answers[i] - 1].value;
-            resultText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question}\n'
-                '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title}\n';
+          if (locator<TestBloc>().asset == 0) {
+            for (int i = 0; i < quizModels.length; i++) {
+              resultList[quizModels[i].domain!][0] += quizModels[i].answers[answers[i] - 1].value;
+              /// todo result chat
+            }
+          } else {
+            for (int i = 0; i < quizModels.length; i++) {
+              result += quizModels[i].answers[answers[i] - 1].value;
+              resultChatText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question}\n'
+                  '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title}\n';
+            }
           }
           result = (result / (answers.length * 3) * 100).toInt();
-          resultText += '\n${'result'.tr()}: $result / 100';
+          resultChatText += '\n${'result'.tr()}: $result / 100';
+          initialResults();
           mainBloc.resultTests = List.from(mainBloc.resultTests);
           mainBloc.resultTests[locator<TestDetailBloc>().asset] = result;
           mainBloc.add(MainLanguageEvent());
@@ -238,5 +268,58 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     animatePosTop2 = animatePosTop2 == .17 ? .08 : .17;
     animatePosLeftMini = animatePosLeftMini == .13 ? .64 : .13;
     animatePosTopMini = animatePosTopMini == .44 ? .1 : .44;
+  }
+
+  void initialResults() {
+    switch (locator<TestBloc>().asset) {
+      case 1: {
+        if (result >= 50) {
+          resultText = 'result_test_1_ball_50';
+          resultAnime = 'assets/animations/anime_result_1.json';
+          return;
+        }
+        if (result >= 29) {
+          resultText = 'result_test_1_ball_29';
+          resultAnime = 'assets/animations/anime_result_2.json';
+          return;
+        }
+        if (result >= 19) {
+          resultText = 'result_test_1_ball_19';
+          resultAnime = 'assets/animations/anime_result_3.json';
+          return;
+        }
+        if (result >= 15) {
+          resultText = 'result_test_1_ball_15';
+          resultAnime = 'assets/animations/anime_result_4.json';
+          return;
+        }
+        resultText = 'result_test_1_ball_9';
+        resultAnime = 'assets/animations/anime_result_5.json';
+        return;
+      }
+      case 2: {
+        if (result >= 59) {
+          resultText = 'result_test_2_ball_59';
+          resultAnime = 'assets/animations/anime_result_2.json';
+          return;
+        }
+        if (result >= 58) {
+          resultText = 'result_test_2_ball_58';
+          resultAnime = 'assets/animations/anime_result_3.json';
+          return;
+        }
+        if (result >= 34) {
+          resultText = 'result_test_2_ball_34';
+          resultAnime = 'assets/animations/anime_result_4.json';
+          return;
+        }
+        resultText = 'result_test_2_ball_11';
+        resultAnime = 'assets/animations/anime_result_5.json';
+        return;
+      }
+      default: {
+        resultText = '';
+      }
+    }
   }
 }

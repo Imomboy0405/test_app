@@ -316,7 +316,7 @@ class MyTextField extends StatelessWidget {
             height: MediaQuery.of(context).size.width * .1,
             width: (controller.text.isNotEmpty || focus.hasFocus)
                 ? icon == Icons.lock
-                    ? MediaQuery.of(context).size.width * .25
+                    ? MediaQuery.of(context).size.width * .27
                     : MediaQuery.of(context).size.width * .15
                 : 1,
             child: Row(

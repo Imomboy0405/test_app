@@ -1,21 +1,28 @@
 import 'dart:convert';
 
+import 'package:test_app/Configuration/app_constants.dart';
+
 class QuizModel {
   String question;
   List<Answers> answers;
   String group;
+  int? domain;
 
   QuizModel({
     required this.question,
     required this.answers,
     required this.group,
+    required this.domain,
   });
 
   factory QuizModel.fromJson(Map<String, dynamic> json) {
     return QuizModel(
       question: json['question'],
-      answers:(json['answers'] as List).map((answer) => Answers.fromJson(answer)).toList(),
+      answers: (json['answers'] is List ? json['answers'] as List : types[json['answers'] - 1])
+          .map((answer) => Answers.fromJson(answer))
+          .toList(),
       group: json['group'],
+      domain: json['domain'],
     );
   }
   @override

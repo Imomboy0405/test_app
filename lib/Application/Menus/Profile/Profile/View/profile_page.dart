@@ -53,7 +53,7 @@ class ProfilePage extends StatelessWidget {
                             child: Column(
                               children: [
                                 // #profil
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
                                 MyProfileButton(
                                   endElement: SizedBox(
                                     height: MediaQuery.of(context).size.width * .46,
@@ -65,8 +65,8 @@ class ProfilePage extends StatelessWidget {
                                         Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            const Icon(CupertinoIcons.profile_circled, color: AppColors.whiteConst, size: 48),
-                                            const SizedBox(width: 10),
+                                            Icon(CupertinoIcons.profile_circled, color: AppColors.whiteConst, size: width * .12),
+                                            SizedBox(width: width * .02),
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget {
                                   ),
                                   function: () => (),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #medical_info
                                 myShowcase(
@@ -128,7 +128,7 @@ class ProfilePage extends StatelessWidget {
                                     endElement: Icon(Icons.health_and_safety, size: width * .05, color: AppColors.whiteConst),
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #theme
                                 MyProfileButton(
@@ -157,7 +157,7 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #sound
                                 MyProfileButton(
@@ -186,7 +186,7 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #language
                                 MyProfileButton(
@@ -199,7 +199,7 @@ class ProfilePage extends StatelessWidget {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #sign_out
                                 MyProfileButton(
@@ -207,7 +207,7 @@ class ProfilePage extends StatelessWidget {
                                   function: () => bloc.add(SignOutEvent()),
                                   endElement: Icon(CupertinoIcons.square_arrow_right, size: width * .05, color: AppColors.whiteConst),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #delete_account
                                 MyProfileButton(
@@ -215,8 +215,7 @@ class ProfilePage extends StatelessWidget {
                                   function: () => bloc.add(DeleteAccountEvent()),
                                   endElement: Icon(CupertinoIcons.delete, size: width * .05, color: AppColors.whiteConst),
                                 ),
-                                const SizedBox(height: 10),
-
+                                SizedBox(height: width * .015),
 
                                 // #tutorial
                                 MyProfileButton(
@@ -224,7 +223,7 @@ class ProfilePage extends StatelessWidget {
                                   function: () => bloc.add(TutorialEvent()),
                                   endElement: Icon(CupertinoIcons.book, size: width * .05, color: AppColors.whiteConst),
                                 ),
-                                const SizedBox(height: 10),
+                                SizedBox(height: width * .015),
 
                                 // #info
                                 MyProfileButton(

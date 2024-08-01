@@ -260,12 +260,12 @@ class MyProfileButton extends StatelessWidget {
         child: MaterialButton(
           elevation: 0,
           onPressed: () => function(),
-          height: text == null ? MediaQuery.of(context).size.width * 0.46 : MediaQuery.of(context).size.width * 0.115,
+          height: text == null ? MediaQuery.of(context).size.width * 0.46 : MediaQuery.of(context).size.width * 0.13,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: AppColors.pink.withOpacity(.6),
           splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
           highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width * .05, vertical: 0),
           child: text != null
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

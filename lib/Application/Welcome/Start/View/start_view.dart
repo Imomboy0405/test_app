@@ -37,7 +37,7 @@ class StartView extends StatelessWidget {
             ),
 
             Container(
-              padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
+              padding: EdgeInsets.only(top: width * .06, left: width * .08, right: width * .08),
               child: Text(
                 'welcome_info'.tr(),
                 textAlign: TextAlign.center,

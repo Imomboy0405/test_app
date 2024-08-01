@@ -42,7 +42,7 @@ class ChatPage extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                        padding: EdgeInsets.fromLTRB(width * .02, 0, width * .02, width * .01),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           key: key,
@@ -53,7 +53,7 @@ class ChatPage extends StatelessWidget {
                               onPressed: () => bloc.add(ChatPushDetailEvent(userModel: bloc.users[index], context: context)),
                               child: Container(
                                 height: width * .19,
-                                padding: const EdgeInsets.all(5),
+                                padding: EdgeInsets.all(width * .01),
                                 decoration: BoxDecoration(
                                   color: AppColors.pink.withOpacity(.6),
                                   borderRadius: BorderRadius.circular(10),
@@ -81,7 +81,7 @@ class ChatPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
+                                    SizedBox(width: width * .02),
 
                                     // #texts
                                     Expanded(

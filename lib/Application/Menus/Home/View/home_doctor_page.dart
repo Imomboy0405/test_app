@@ -176,11 +176,11 @@ class HomeDoctorPage extends StatelessWidget {
                         ),
 
                         // #about_doctor
-                        const SizedBox(height: 10),
-                        Text('about_doctor'.tr(), style: AppTextStyles.style11(context).copyWith(fontSize: 18)),
+                        SizedBox(height: width * .03),
+                        Text('about_doctor'.tr(), style: AppTextStyles.style11(context)),
                         Text(
                           'test_detail_info_0'.tr(),
-                          style: AppTextStyles.style8(context).copyWith(fontSize: 16),
+                          style: AppTextStyles.style8(context),
                           textAlign: TextAlign.justify,
                         ),
                         SizedBox(height: width * .04),
