@@ -30,12 +30,12 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   ScrollController scrollController = ScrollController();
   int result = -1;
   List<List> resultList = [
-    [0, 10, 'attraction', "attractionInfo_100"],
-    [0, 20, 'excitation', "excitationInfo_100"],
-    [0, 20, 'lubrication', "lubricationInfo_100"],
-    [0, 15, 'orgasm', "orgasmInfo_100"],
-    [0, 15, 'satisfaction', "satisfactionInfo_100"],
-    [0, 15, 'pain', "painInfo_100"],
+    [0, 10, 'attraction', "attractionInfo_100", "attractionInfo_60"],
+    [0, 20, 'excitation', "excitationInfo_100", "excitationInfo_60"],
+    [0, 20, 'lubrication', "lubricationInfo_100", "lubricationInfo_60"],
+    [0, 15, 'orgasm', "orgasmInfo_100", "orgasmInfo_60"],
+    [0, 15, 'satisfaction', "satisfactionInfo_100", "satisfactionInfo_60"],
+    [0, 15, 'pain', "painInfo_100", "painInfo_60"],
   ];
   String resultChatText = '';
   String resultText = '';
@@ -172,18 +172,20 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         }
       default:
         {
+          scrollController.jumpTo(0);
           resultList = [
-            [0, 10, 'attraction', "attractionInfo_100"],
-            [0, 20, 'excitation', "excitationInfo_100"],
-            [0, 20, 'lubrication', "lubricationInfo_100"],
-            [0, 15, 'orgasm', "orgasmInfo_100"],
-            [0, 15, 'satisfaction', "satisfactionInfo_100"],
-            [0, 15, 'pain', "painInfo_100"],
+            [0, 10, 'attraction', "attractionInfo_100", "attractionInfo_60"],
+            [0, 20, 'excitation', "excitationInfo_100", "excitationInfo_60"],
+            [0, 20, 'lubrication', "lubricationInfo_100", "lubricationInfo_60"],
+            [0, 15, 'orgasm', "orgasmInfo_100", "orgasmInfo_60"],
+            [0, 15, 'satisfaction', "satisfactionInfo_100", "satisfactionInfo_60"],
+            [0, 15, 'pain', "painInfo_100", "painInfo_60"],
           ];
           answers = List.filled(quizModels.length, 0);
           currentQuiz = 1;
           percent = 0;
           result = -1;
+          resultChatText = '';
           confetti = null;
           selectedValue = 0;
           emitInitial(emit);
@@ -223,17 +225,24 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           if (locator<TestBloc>().asset == 0) {
             for (int i = 0; i < quizModels.length; i++) {
               resultList[quizModels[i].domain!][0] += quizModels[i].answers[answers[i] - 1].value;
-              /// todo result chat
+              resultChatText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question.tr()}\n'
+                  '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title.tr()}\n';
+            }
+            for (int i = 0; i < resultList.length; i++) {
+              if (resultList[i][0] / resultList[i][1] < .6) {
+                resultList[i][3] = resultList[i][4];
+              }
+              resultChatText += '\n${resultList[i][2].toString().tr()}: ${resultList[i][0] ~/ resultList[i][1] * 100} %';
             }
           } else {
             for (int i = 0; i < quizModels.length; i++) {
               result += quizModels[i].answers[answers[i] - 1].value;
-              resultChatText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question}\n'
-                  '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title}\n';
+              resultChatText += '${'question'.tr()} №${i + 1}:\n${quizModels[i].question.tr()}\n'
+                  '${'answer'.tr()}: ${quizModels[i].answers[answers[i] - 1].title.tr()}\n';
             }
+            result = (result / (answers.length * 3) * 100).toInt();
+            resultChatText += '\n${'result'.tr()}: $result / 100';
           }
-          result = (result / (answers.length * 3) * 100).toInt();
-          resultChatText += '\n${'result'.tr()}: $result / 100';
           initialResults();
           mainBloc.resultTests = List.from(mainBloc.resultTests);
           mainBloc.resultTests[locator<TestDetailBloc>().asset] = result;

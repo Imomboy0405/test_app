@@ -63,14 +63,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         children: [
           // #image
-          const SizedBox(width: 10),
+          SizedBox(width: MediaQuery.of(context).size.width * .02),
           Image(
             image: const AssetImage('assets/images/img_heart.png'),
-            width: MediaQuery.of(context).size.width * .04,
-            height: MediaQuery.of(context).size.width * .04,
+            width: MediaQuery.of(context).size.width * .05,
+            height: MediaQuery.of(context).size.width * .05,
             color: AppColors.red,
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: MediaQuery.of(context).size.width * .03),
 
           // #title_text
           if (titleTap != null)

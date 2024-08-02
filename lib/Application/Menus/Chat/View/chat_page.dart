@@ -52,7 +52,7 @@ class ChatPage extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               onPressed: () => bloc.add(ChatPushDetailEvent(userModel: bloc.users[index], context: context)),
                               child: Container(
-                                height: width * .19,
+                                height: width * .2,
                                 padding: EdgeInsets.all(width * .01),
                                 decoration: BoxDecoration(
                                   color: AppColors.pink.withOpacity(.6),

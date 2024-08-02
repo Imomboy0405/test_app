@@ -57,7 +57,7 @@ class MyQuizButton extends StatelessWidget {
                   splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
                   highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
                   onPressed: () => ball != null ? null : onChanged(value),
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .03, vertical: 0),
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .03, vertical: MediaQuery.of(context).size.width * .01),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -134,8 +134,8 @@ class _HudProgressIndicatorState extends State<HudProgressIndicator> with Single
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.sizeOf(context).width - 100,
-      height: MediaQuery.sizeOf(context).width / 2 - 50,
+      width: MediaQuery.sizeOf(context).width * .8,
+      height: MediaQuery.sizeOf(context).width * .4,
       child: AnimatedBuilder(
         animation: _animation,
         builder: (context, child) {
@@ -167,8 +167,8 @@ class _HudProgressPainter extends CustomPainter {
       ..strokeWidth = size.width * .07;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      2.34159265359,
-      4.74159265359,
+      2.33159265359,
+      4.76159265359,
       false,
       backgroundPaint,
     );
@@ -199,18 +199,18 @@ class _HudProgressPainter extends CustomPainter {
     canvas.drawCircle(center, size.width * .166, circlePaint);
 
     // $draw_texts
-    _drawText(canvas, center, radius, '0', 2.24159265359, -size.width * .05, size.width * .01);
-    _drawText(canvas, center, radius, '20', 2.24159265359 + 4.74159265359 / 5, 0, -size.width * .06);
-    _drawText(canvas, center, radius, '40', 2.24159265359 + 4.74159265359 * 2 / 5, -size.width * .04, size.width * .01);
-    _drawText(canvas, center, radius, '60', 2.24159265359 + 4.74159265359 * 3 / 5, -size.width * .04, size.width * .1);
-    _drawText(canvas, center, radius, '80', 2.24159265359 + 4.74159265359 * 4 / 5, 0, -size.width * .06);
-    _drawText(canvas, center, radius, '100', 2.24159265359 + 4.74159265359, size.width * .01, -size.width * .1);
-    _drawText(canvas, center, 0, '${(progress * 100).toInt()} %', 2.24159265359 + 4.74159265359, 40, 10, result: true);
+    _drawText(canvas, center, radius, '0', 2.24159265359, -size.width * .1, -size.width * .01);
+    _drawText(canvas, center, radius, '20', 2.24159265359 + 4.74159265359 / 5,  size.width * .8, -size.width * .09);
+    _drawText(canvas, center, radius, '40', 2.24159265359 + 4.74159265359 * 2 / 5, -size.width * .07, -size.width * .09);
+    _drawText(canvas, center, radius, '60', 2.24159265359 + 4.74159265359 * 3 / 5, -size.width * .1, size.width * .05);
+    _drawText(canvas, center, radius, '80', 2.24159265359 + 4.74159265359 * 4 / 5, -size.width * .25, -size.width * .08);
+    _drawText(canvas, center, radius, '100', 2.24159265359 + 4.74159265359, -size.width * .05, -size.width * .12);
+    _drawText(canvas, center, 0, '${(progress * 100).toInt()} %', 2.24159265359 + 4.74159265359, 0, 0, result: true);
 
     // #stick
     final pointerAngle = 2.34159265359 + arcAngle;
-    final pointerLength = radius * 0.82;
-    const pointerStartOffset = 0.35;
+    final pointerLength = radius * 0.8;
+    const pointerStartOffset = 0.344;
     final pointerStart = Offset(
       center.dx + (radius * pointerStartOffset) * math.cos(pointerAngle),
       center.dy + (radius * pointerStartOffset) * math.sin(pointerAngle),
@@ -241,16 +241,16 @@ class _HudProgressPainter extends CustomPainter {
     canvas.drawLine(
         pointerStart,
         Offset(
-          center.dx + (pointerLength - 9) * math.cos(pointerAngle),
-          center.dy + (pointerLength - 9) * math.sin(pointerAngle),
+          center.dx + (pointerLength - size.width * .036) * math.cos(pointerAngle),
+          center.dy + (pointerLength - size.width * .036) * math.sin(pointerAngle),
         ),
-        Paint()..color = AppColors.whiteConst..strokeWidth = size.width * .045 + 2);
+        Paint()..color = AppColors.whiteConst..strokeWidth = size.width * .051);
 
     canvas.drawLine(
         pointerStart,
         Offset(
-          center.dx + (pointerLength - 10) * math.cos(pointerAngle),
-          center.dy + (pointerLength - 10) * math.sin(pointerAngle),
+          center.dx + (pointerLength - size.width * .04) * math.cos(pointerAngle),
+          center.dy + (pointerLength - size.width * .04) * math.sin(pointerAngle),
         ),
         thickPaint);
 
@@ -261,23 +261,23 @@ class _HudProgressPainter extends CustomPainter {
 
     canvas.drawLine(
         Offset(
-          center.dx + (pointerLength - 10) * math.cos(pointerAngle),
-          center.dy + (pointerLength - 10) * math.sin(pointerAngle),
+          center.dx + (pointerLength - size.width * .04) * math.cos(pointerAngle),
+          center.dy + (pointerLength - size.width * .04) * math.sin(pointerAngle),
         ),
         pointerEnd,
         Paint()
           ..color = AppColors.whiteConst
-          ..strokeWidth = size.width * .022 + 2
+          ..strokeWidth = size.width * .028
           ..style = PaintingStyle.stroke);
     canvas.drawLine(
         Offset(
-          center.dx + (pointerLength - 10) * math.cos(pointerAngle),
-          center.dy + (pointerLength - 10) * math.sin(pointerAngle),
+          center.dx + (pointerLength - size.width * .04) * math.cos(pointerAngle),
+          center.dy + (pointerLength - size.width * .04) * math.sin(pointerAngle),
         ),
         pointerEnd,
         thinPaint);
 
-    canvas.drawCircle(pointerEnd, size.width * .018 + 1, Paint()..style = PaintingStyle.fill..color = AppColors.whiteConst);
+    canvas.drawCircle(pointerEnd, size.width * .021, Paint()..style = PaintingStyle.fill..color = AppColors.whiteConst);
     canvas.drawCircle(pointerEnd, size.width * .018, thinPaint..style = PaintingStyle.fill);
   }
 
@@ -294,8 +294,8 @@ class _HudProgressPainter extends CustomPainter {
     );
     textPainter.layout();
     final textOffset = Offset(
-      center.dx + (radius - 10 + horizontalOffset) * math.cos(angle) - textPainter.width / 2,
-      center.dy + (radius - 40 + verticalOffset) * math.sin(angle) - textPainter.height / 2,
+      center.dx + (radius + horizontalOffset) * math.cos(angle) - textPainter.width / 2,
+      center.dy + (radius + verticalOffset) * math.sin(angle) - textPainter.height / 2,
     );
     textPainter.paint(canvas, textOffset);
   }

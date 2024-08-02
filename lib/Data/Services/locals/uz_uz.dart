@@ -345,9 +345,9 @@ const Map<String, String> uzUZ = {
   "types_5_4": "Juda qoniqarsiz",
   "types_5_5": "Jinsiy faollik yo'q",
 
-  'attraction': 'Jalb etilish',
+  'attraction': 'Libido',
   'excitation': 'Hayajonlanish',
-  'lubrication': 'Namlanish',
+  'lubrication': 'Lubrikatsiya',
   'orgasm': 'Orgazm',
   'satisfaction': 'Qoniqish',
   'pain': 'Og\'riq',
@@ -358,6 +358,12 @@ const Map<String, String> uzUZ = {
   "orgasmInfo_100": "Orgazm — bu kuchli lazzatlanish hissi, ongning o'zgarishi bilan birga keladi, qator mushaklar qisqarish va bo'shashishi bilan kechadi, bu jinsiy induktsiya qilinadigan vazokongestiya (yaxshilik / qoniqish)ga olib keladi. Turli manbalarga ko'ra, ayollarning 30% dan 79% gacha orgazm bilan bog'liq muammolarga duch keladi. Siz baxtlisiz, anketani to'ldirishga vaqt sarflaganingizda, yana bir orgazm olish uchun vaqt sarflashingiz mumkin edi!",
   "satisfactionInfo_100": "Qoniqish darajasi jinsiy funksiya, psixoemotsional va jismoniy bo'shashish jarayonini amalga oshirishni anglashni aks ettiradi, bu jinsiy reaktsiyalar tsiklining (qo'zg'alish, plato, orgazm va rezolyutsiya) bosqichma-bosqich o'tish jarayonida sodir bo'ladi. Qoniqishning buzilishi jinsiy funktsiyalarning buzilishi haqida dalolat beradi va qo'zg'alish, orgazm yoki og'riqning mavjudligi kabi boshqa parametrlardagi buzilishlar kontekstida ko'rib chiqilishi kerak. Tabriklaymiz, javoblaringizga ko'ra, siz jinsiy hayotingiz sifatidan to'liq qoniqasiz, kelajakdagi o'zgarishlarni profilaktika qilishga harakat qilishgina qoldi.",
   "painInfo_100": "Og'riqli jinsiy disfunktsiyalar — bu muhim muammo bo'lib, u 20% dan ortiq ayollarda uchraydi, bu vaginizm, dispareuniya va vulvodiniya kabi holatlarni o'z ichiga oladi. Sizda jinsiy aloqa paytida og'riq yo'qligidan omadingiz kelgan. Do'stlaringiz va yaqinlaringiz ham bu muammodan aziyat chekmayotganligiga ishonch hosil qiling!",
+  "attractionInfo_60": """Libido — bu insoniy jinsiylikning asosiy tushunchalaridan biri bo'lib, o'z jinsiyligini va uni namoyon qilish imkoniyatlarini anglatadi. Agar siz jinsiy istak bilan bog'liq muammolarga duch kelsangiz, bu gormonal tartibga solishning buzilishi, ginekologik yoki somatik kasalliklarning mavjudligi, shuningdek, psixoseksual o'z-o'zini anglash va sherik bilan o'zaro munosabatlar bilan bog'liq bo'lishi mumkin.""",
+  "excitationInfo_60": """Hayajonlanish — bu jinsiy reaksiyalar tsiklidagi birinchi bog'lanish bo'lib, jinsiy aloqa oldidan sodir bo'ladi. Chunki aynan hayajonlanish bosqichida organizm jinsiy aloqa uchun tayyorlanadi (klitorning erektsiyasi, qin namlanishi), hayajonlanish bosqichidagi har qanday buzilish normal jinsiy aloqaning amalga oshishiga to'sqinlik qiladi.""",
+  "lubricationInfo_60": """Lubrikatsiya — bu jinsiy stimulyatsiya (psixologik yoki jismoniy) ta'sirida qinning va uning kirish qismining namlanish jarayonidir, bu qin devorlariga kuchli qon oqimi hisobiga amalga oshiriladi. Yetarli darajada lubrikatsiya bo'lmasa, penetrativ jinsiy aloqa paytida jarohatlanish va og'riq yuzaga keladi. Agar sizda lubrikatsiya bilan bog'liq muammo bo'lsa, bu ko'p holatlarning simptomi bo'lishi mumkin, har birini alohida ko'rib chiqish kerak!""",
+  "orgasmInfo_60": """Orgazm — bu intensiv zavq hissi bo'lib, ongning o'zgargan holatini hosil qiladi, bu poperechno-polosatoy mushaklarning qisqarishi va bo'shashishi bilan birga bo'lib, jinsiy induktsiyalangan vazokongestiyani (farovonlik / qoniqish) induktsiyalaydi. Turli manbalarga ko'ra, ayollarning 30 dan 79% gacha orgazm bilan bog'liq muammolarga duch keladi. Ammo orgazmning yo'qligi hal qilib bo'lmaydigan muammo emas! Jinsiy hayot sifatini yaxshilash va orgazm ehtimolini oshirish uchun usullar va texnikalar mavjud.""",
+  "satisfactionInfo_60": """Qoniqish darajasi jinsiy funksiyani amalga oshirish jarayonini, psixologik va jismoniy bo'shashishni anglatadi, bu jinsiy reaktsiyalar tsiklidan (hayajonlanish, plato, orgazm va rezolyutsiya) bosqichma-bosqich o'tishda sodir bo'ladi. Qoniqishning buzilishi jinsiy funktsiyaning buzilishini ko'rsatadi va hayajonlanish, orgazm yoki og'riqning mavjudligi kabi boshqa parametrlarning buzilishlari kontekstida ko'rib chiqilishi kerak.""",
+  "painInfo_60": """Og'riqli jinsiy disfunksiyalar — bu muhim muammo bo'lib, u ayollarning 20% dan ko'prog'ida uchraydi, masalan, vaginizm, disparuniya va vulvodiniya kabi holatlarni o'z ichiga oladi. Agar siz jinsiy aloqa paytida og'riqni boshdan kechirayotgan bo'lsangiz, bu normal holat emas va siz buni chidamasligingiz kerak! Og'riqli jinsiy disfunktsiyalar muammosini hal qilish uchun maslahatga yoziling va biz sizning muammoingizni albatta topamiz.""",
 
   /// TEST 1
   "question_1_0": "Menga g'amgin emas.",
@@ -495,7 +501,6 @@ const Map<String, String> uzUZ = {
   "question18": "Issiqlik to'lqinlari",
   "question19": "Kechasi terlash",
   "question20": "Jinsiy aloqaga qiziqishning yo'qolishi",
-
   "title0": "Umuman bezovta qilmaydi.",
   "title1": "Bir oz bezovta qiladi.",
   "title2": "Kuchli bezovta qiladi.",
