@@ -162,7 +162,7 @@ class _HudProgressPainter extends CustomPainter {
 
     // #background_progress
     final backgroundPaint = Paint()
-      ..color = Colors.white.withOpacity(.8)
+      ..color = AppColors.whiteConst.withOpacity(.8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * .07;
     canvas.drawArc(
@@ -188,7 +188,7 @@ class _HudProgressPainter extends CustomPainter {
 
     final borderPaint = Paint()
     // #draw_circle
-      ..color = Colors.white.withOpacity(.8)
+      ..color = AppColors.whiteConst.withOpacity(.8)
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width * .005;
     canvas.drawCircle(center, size.width * .17, borderPaint);

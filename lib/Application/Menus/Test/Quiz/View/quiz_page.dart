@@ -497,7 +497,7 @@ class QuizPage extends StatelessWidget {
               text,
               maxLines: 3,
               textAlign: TextAlign.center,
-              style: AppTextStyles.style20_1(context),
+              style: AppTextStyles.style20_1(context).copyWith(color: AppColors.whiteConst),
             ),
           )
         ],
