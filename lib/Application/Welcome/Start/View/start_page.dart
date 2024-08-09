@@ -50,8 +50,8 @@ class StartPage extends StatelessWidget {
                   ),
                 ],
 
-                // #test_app
-                title: Text('Test App', style: AppTextStyles.style0_1(context)),
+                // #manopause
+                title: Text('menopause'.tr(), style: AppTextStyles.style0_1(context)),
                 leadingWidth: 60,
               ),
               body: SingleChildScrollView(

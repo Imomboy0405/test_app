@@ -33,7 +33,7 @@ class MainPage extends StatelessWidget {
         }
         return PopScope(
           canPop: false,
-          onPopInvoked: (v) => bloc.add(MainExitEvent()),
+          onPopInvokedWithResult: (v, d) => bloc.add(MainExitEvent()),
           child: Scaffold(
             backgroundColor: AppColors.black,
             resizeToAvoidBottomInset: true,

@@ -42,7 +42,7 @@ class ProfileDetailPage extends StatelessWidget {
               }
               return PopScope(
                 canPop: state is! ProfileDetailLoadingState,
-                onPopInvoked: (v) => bloc.add(DetailPopEvent()),
+                onPopInvokedWithResult: (v, d) => bloc.add(DetailPopEvent()),
                 child: Stack(
                   children: [
                     Scaffold(

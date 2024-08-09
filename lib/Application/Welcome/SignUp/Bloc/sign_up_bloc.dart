@@ -241,6 +241,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           await checkAuthCredential(userCredential: userCredential, context: event.context, width: event.width);
         }
       } catch (e) {
+        print(e);
         if (event.context.mounted) {
           Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
         }

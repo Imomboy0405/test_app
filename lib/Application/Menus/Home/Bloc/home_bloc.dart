@@ -20,7 +20,7 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  CarouselController carouselController = CarouselController();
+  CarouselSliderController carouselController = CarouselSliderController();
   int currentPage = 0;
   int newPage = 0;
   MainBloc mainBloc;

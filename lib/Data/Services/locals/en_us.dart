@@ -1,9 +1,10 @@
 const Map<String, String> enUS = {
   /// StartPage
-  'welcome_1': 'Welcome to Test app',
+  'menopause': 'Menopause',
+  'welcome_1': 'Welcome to application',
   'welcome_2':'Get rid of health problems',
   'welcome_3': 'Always be healthy with the help of the app',
-  'welcome_info': 'Test app provides you with articles about your health, medical information and tests',
+  'welcome_info': 'Application provides you with articles about your health, medical information and tests',
   'log_in': 'Log in',
   'log_info': 'By logging in, you agree to the following',
   'terms': 'Terms of use',

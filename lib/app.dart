@@ -46,7 +46,7 @@ class TestApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      title: 'Test App',
+      title: 'Menopause',
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('ru', 'RU'),

@@ -1,24 +1,25 @@
 {
   "project_info": {
     "project_number": "476535803397",
+    "firebase_url": "https://test-app-women-s-default-rtdb.firebaseio.com",
     "project_id": "test-app-women-s",
     "storage_bucket": "test-app-women-s.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476535803397:android:8d95f1613284271101d66c",
+        "mobilesdk_app_id": "1:476535803397:android:2e97920c2eb5f4ae01d66c",
         "android_client_info": {
-          "package_name": "com.pdp.test_app"
+          "package_name": "uz.menopause.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "476535803397-9leb1icg1s9fa0t4nhnq4gnvb84lscet.apps.googleusercontent.com",
+          "client_id": "476535803397-penpbe61pkkrnan2jjtkchp0h1pigci2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.pdp.test_app",
-            "certificate_hash": "8a7b020c8f4e01c2c3bbd64d94db095d6ee8304e"
+            "package_name": "uz.menopause.app",
+            "certificate_hash": "77f3019ed1743a5b06dc3bd74bf59b0b3aa24457"
           }
         },
         {

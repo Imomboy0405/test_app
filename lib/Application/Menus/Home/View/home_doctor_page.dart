@@ -23,7 +23,7 @@ class HomeDoctorPage extends StatelessWidget {
       builder: (context, state) {
         return PopScope(
           canPop: true,
-          onPopInvoked: (v) => bloc.add(HomePopDoctorPageEvent()),
+          onPopInvokedWithResult: (v, d) => bloc.add(HomePopDoctorPageEvent()),
           child: Scaffold(
             backgroundColor: AppColors.black,
             appBar: MyAppBar(titleText: 'doctor_profile'.tr()),

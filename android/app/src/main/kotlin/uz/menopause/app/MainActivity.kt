@@ -1,4 +1,4 @@
-package com.pdp.test_app
+package uz.menopause.app
 
 import io.flutter.embedding.android.FlutterActivity
 

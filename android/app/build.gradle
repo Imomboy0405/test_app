@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace = "com.pdp.test_app"
+    namespace = "uz.menopause.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "26.1.10909125"
 
@@ -38,16 +38,36 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.pdp.test_app"
+        applicationId = "uz.menopause.app"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            storeFile file("D:\\StudioProjects\\test_app\\android\\adndorid-release-sevarahon")
+            storePassword "s.S2769920"
+            keyAlias "upload"
+            keyPassword "s.S2769920"
+        }
+        debug {
+            storeFile file("D:\\StudioProjects\\test_app\\android\\adndorid-release-sevarahon")
+            storePassword "s.S2769920"
+            keyAlias "upload"
+            keyPassword "s.S2769920"
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.debug
+            signingConfig = signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
     bundle {
@@ -62,7 +82,7 @@ flutter {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.1.1"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
