@@ -304,7 +304,7 @@ class MyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width * .5,
+      height: MediaQuery.of(context).size.width * .4,
       decoration: BoxDecoration(
         color: AppColors.pink,
         borderRadius: BorderRadius.circular(16),

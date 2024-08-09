@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
                                 autoPlay: bloc.autoPlayCarousel,
                                 autoPlayInterval: const Duration(seconds: 6),
                                 initialPage: bloc.currentPage,
-                                height: width * .4,
+                                height: width * .5,
                                 enlargeCenterPage: true,
                                 viewportFraction: 0.875,
                                 enlargeFactor: .2,
@@ -93,8 +93,8 @@ class HomePage extends StatelessWidget {
                                               children: [
                                                 Container(
                                                   width: width - 80,
-                                                  margin: const EdgeInsets.only(top: 160),
-                                                  height: 50,
+                                                  margin: EdgeInsets.only(top: width * .35),
+                                                  height: width * .13,
                                                   decoration: BoxDecoration(
                                                     color: AppColors.purpleLight.withOpacity(0.5),
                                                     borderRadius: BorderRadius.circular(16),
@@ -102,10 +102,10 @@ class HomePage extends StatelessWidget {
                                                 ),
                                                 Container(
                                                   width: width - 120,
-                                                  margin: const EdgeInsets.only(top: 158),
-                                                  height: 60,
+                                                  margin: EdgeInsets.only(top: width * .35),
+                                                  height: width * .15,
                                                   decoration: BoxDecoration(
-                                                    color: AppColors.purpleLight.withOpacity(0.2),
+                                                    color: AppColors.purpleLight.withOpacity(0.25),
                                                     borderRadius: BorderRadius.circular(16),
                                                   ),
                                                 ),
@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
                                                 // #card_doctor_image
                                                 Image.asset(
                                                   'assets/images/img_doctor_${(article.order - 1) % 5}.png',
-                                                  height: width * .4,
+                                                  height: width * .45,
                                                 ),
                                                 Expanded(
                                                   child: Column(
@@ -181,7 +181,7 @@ class HomePage extends StatelessWidget {
 
                           // #animated_text_image
                           Padding(
-                            padding: EdgeInsets.fromLTRB(width * 0.03, width * 0.03, width * 0.03, 0),
+                            padding: EdgeInsets.fromLTRB(width * 0.03, width * 0.02, width * 0.03, 0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(16),
                               child: BackdropFilter(
