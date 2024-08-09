@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                             child: CarouselSlider(
                               carouselController: bloc.carouselController,
                               options: CarouselOptions(
-                                autoPlay: true,
+                                autoPlay: bloc.autoPlayCarousel,
                                 autoPlayInterval: const Duration(seconds: 6),
                                 initialPage: bloc.currentPage,
                                 height: width * .4,
