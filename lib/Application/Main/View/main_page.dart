@@ -37,14 +37,12 @@ class MainPage extends StatelessWidget {
           child: Scaffold(
             backgroundColor: AppColors.black,
             resizeToAvoidBottomInset: true,
-            // bottomNavigationBar: MyBottomNavigationBar(bloc: bloc, screenWidth: screenWidth,),
             body: Stack(
               alignment: Alignment.bottomCenter,
               children: [
                 MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
 
                 myBackground(context, state),
-
 
                 PageView(
                   physics: state is MainInitialState
@@ -64,7 +62,6 @@ class MainPage extends StatelessWidget {
 
                 if(state is! MainHideBottomNavigationBarState)
                   MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
-
 
                 if (bloc.exitState)
                   MyProfileScreen(

@@ -13,3 +13,4 @@ plugins {
 
 rootProject.name = "test_app"
 include("app")
+include(":test_app")

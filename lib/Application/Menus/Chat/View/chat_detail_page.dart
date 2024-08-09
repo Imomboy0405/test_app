@@ -169,7 +169,7 @@ class ChatTextField extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           margin: const EdgeInsets.only(bottom: 55),
           child: GridView.builder(
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.only(bottom: 5),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: MediaQuery.of(context).size.width ~/ 50,
             ),
@@ -179,7 +179,7 @@ class ChatTextField extends StatelessWidget {
                 onPressed: () => pressEmoji(emoji: emojis[index]),
                 icon: Text(
                   emojis[index],
-                  style: AppTextStyles.style0_2(context),
+                  style: AppTextStyles.style0_2(context).copyWith(fontSize: 26),
                 ),
               );
             },
