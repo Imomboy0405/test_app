@@ -14,9 +14,9 @@ class TestBloc extends Bloc<TestEvent, TestState> {
   MainBloc mainBloc;
   int asset = 0;
   List<String> question = [
-    '20',
-    '20',
-    '20',
+    '19',
+    '21',
+    '21',
   ];
   bool animation = true;
 

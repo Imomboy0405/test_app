@@ -116,7 +116,6 @@ class MyTestCard extends StatelessWidget {
                               maxLines: 2,
                             ),
                             // #number_of_question
-
                             iconText(
                               color: AppColors.red,
                               text: Text('${'number_of_question'.tr()}: $question', style: AppTextStyles.style19(context)),
