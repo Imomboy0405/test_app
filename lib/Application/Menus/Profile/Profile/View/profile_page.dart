@@ -82,7 +82,11 @@ class ProfilePage extends StatelessWidget {
                                           children: [
                                             Text("${'date_sign'.tr()}:", style: AppTextStyles.style19(context)),
                                             const SizedBox(width: 10),
-                                            Text(bloc.dateSign, style: AppTextStyles.style19(context)),
+                                            Flexible(
+                                                child: Text(bloc.dateSign != null ?  "${'month_${bloc.dateSign!.month}'.tr()} ${bloc.dateSign!.day}, ${bloc.dateSign!.year} ${'year_profile'.tr()}" : '',
+                                                maxLines: 1,
+                                                style: AppTextStyles.style19(context),
+                                            )),
                                           ],
                                         ),
 
@@ -122,8 +126,7 @@ class ProfilePage extends StatelessWidget {
                                   description: 'show_medical_info_description'.tr(),
                                   onTap: () => ShowCaseWidget.of(context).dismiss(),
                                   child: MyProfileButton(
-                                    text:
-                                        mainBloc.userModel!.userDetailList.isNotEmpty ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
+                                    text: true ? 'medical_info'.tr() : 'medical_info_not_found'.tr(),
                                     function: () => bloc.add(ProfileUpdateEvent(context: context)),
                                     endElement: Icon(Icons.health_and_safety, size: width * .05, color: AppColors.whiteConst),
                                   ),
