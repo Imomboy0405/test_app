@@ -23,12 +23,12 @@ class ChatDetailPage extends StatelessWidget {
           bloc.add(ChatInitialEvent());
         }
         return Scaffold(
-          backgroundColor: bloc.mainBloc.userModel!.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2' ? AppColors.black : AppColors.transparent,
+          backgroundColor: bloc.mainBloc.userModel!.uid == 'DBXkfBuedvagFrLIY1BgrNioH3u2' ? AppColors.black : AppColors.transparent,
           resizeToAvoidBottomInset: true,
-          appBar: bloc.users.isEmpty
+          appBar: bloc.newUsers.isEmpty
               ? null
               : MyAppBar(
-                  titleText: bloc.user!.fullName!,
+                  titleText: bloc.user!.displayName!,
                   titleTap: () => bloc.add(ChatPushInfoEvent(userModel: bloc.user!, context: context)),
                 ),
           body: Column(
@@ -42,7 +42,7 @@ class ChatDetailPage extends StatelessWidget {
                         itemCount: bloc.messages!.length,
                         itemBuilder: (context, index) {
                           return Row(
-                            mainAxisAlignment: bloc.messages![bloc.messages!.length - index - 1].typeUser
+                            mainAxisAlignment: bloc.messages![bloc.messages!.length - index - 1].sentBy == bloc.mainBloc.userModel?.uid
                                 ? bloc.user != null
                                     ? MainAxisAlignment.end
                                     : MainAxisAlignment.start
@@ -55,7 +55,7 @@ class ChatDetailPage extends StatelessWidget {
                                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
                                 margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 decoration: BoxDecoration(
-                                  color: bloc.messages![bloc.messages!.length - index - 1].typeUser
+                                  color: bloc.messages![bloc.messages!.length - index - 1].sentBy == bloc.mainBloc.userModel?.uid
                                       ? bloc.user != null
                                           ? AppColors.purple
                                           : AppColors.darkPink
@@ -69,12 +69,12 @@ class ChatDetailPage extends StatelessWidget {
                                   children: [
                                     // #massage_text
                                     Text(
-                                      bloc.messages![bloc.messages!.length - index - 1].msg,
+                                      bloc.messages![bloc.messages!.length - index - 1].message ?? '',
                                       style: AppTextStyles.style8(context),
                                     ),
                                     // #date_time
                                     Text(
-                                      bloc.messages![bloc.messages!.length - index - 1].dateTime,
+                                      bloc.messages![bloc.messages!.length - index - 1].sentAt.toString(),
                                       style: AppTextStyles.style8(context),
                                     ),
                                   ],

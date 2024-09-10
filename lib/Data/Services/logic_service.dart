@@ -33,26 +33,26 @@ class LogicService {
     return e.substring(e.indexOf('/') + 1, e.indexOf(']'));
   }
 
-  static bool selectModelsFound(List list) {
+  static bool selectModelsFound(List list, Map<String, dynamic> map) {
     for (var model in list) {
-      if (model is Entries && model.value is bool && model.value) {
+      if (model is Entries && map[model.id] is bool && map[model.id]) {
         return true;
       }
     }
     return false;
   }
 
-  static bool selectModelsFoundOrOtherModel(var model) {
+  static bool selectModelsFoundOrOtherModel(var model, Map<String, dynamic> map) {
     for (Entries entry in model.entries) {
-      if (entry.value is bool && entry.value || entry.value is! bool) {
+      if (map[entry.id] is bool && map[entry.id] || map[entry.id] is! bool) {
         return true;
       }
     }
     return false;
   }
 
-  static bool selectModelFound(var model) {
-    return model.entries.lastIndexWhere((Entries entry) => entry.value is bool && entry.value && entry.title != 'no') != -1;
+  static bool selectModelFound(var model, Map<String, dynamic> map) {
+    return model.entries.lastIndexWhere((Entries entry) => map[entry.id] is bool && map[entry.id]) != -1;
   }
 
   static String selectedEntryTitles(model) {

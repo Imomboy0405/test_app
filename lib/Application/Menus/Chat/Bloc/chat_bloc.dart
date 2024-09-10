@@ -1,17 +1,18 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
-import 'package:test_app/Application/Menus/Chat/View/chat_detail_page.dart';
 import 'package:test_app/Application/Menus/Chat/View/chat_user_info_page.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
-import 'package:test_app/Data/Services/r_t_d_b_service.dart';
+import 'package:test_app/Data/Services/util_service.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -26,8 +27,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   bool showKeyboard = false;
   bool initial = true;
   bool shimmer = true;
-  List<UserModel> users = [];
+  List<UserModel> newUsers = [];
+  List<UserModel> doctorUsers = [];
   UserModel? user;
+  List<List> userDetailList = [];
   FocusNode focusNode = FocusNode();
   bool focus = true;
   double keyboardHeight = 0;
@@ -152,6 +155,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     Icon(Icons.woman, color: AppColors.purple),
   ];
 
+  Map<String, dynamic> values = {};
   final player = AudioPlayer();
 
   ChatBloc()
@@ -162,13 +166,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             length: 0,
             focusNode: false,
             user: UserModel(
-              fullName: '',
-              createdTime: '',
+              displayName: '',
+              createdAt: null,
               email: '',
-              loginType: '',
-              password: '',
-              uId: '',
-              userDetailList: [],
+              role: '',
+              uid: '',
+              verified: false,
+              phoneNumber: null,
+              photoURL: null,
+              groups: [],
             ))) {
     on<ChatGetUsersEvent>(getUsers);
     on<ChatPushDetailEvent>(pushDetail);
@@ -181,9 +187,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatInitialEvent>((event, emit) {
       if (initial) {
         if (user != null) {
-          messagesRef = FirebaseDatabase.instance.ref('chat/${user!.uId}/messages');
+          messagesRef = FirebaseDatabase.instance.ref('chat/${user!.uid}/messages');
         } else {
-          messagesRef = FirebaseDatabase.instance.ref('chat/${mainBloc.userModel!.uId}/messages');
+          messagesRef = FirebaseDatabase.instance.ref('chat/${mainBloc.userModel!.uid}/messages');
         }
         initial = false;
         shimmer = false;
@@ -201,13 +207,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       shimmer: shimmer,
       user: user ??
           UserModel(
-            uId: '',
+            uid: '',
             email: '',
-            fullName: '',
-            password: '',
-            createdTime: '',
-            loginType: '',
-            userDetailList: [],
+            displayName: '',
+            createdAt: null,
+            role: '',
+            verified: false,
+            phoneNumber: null,
+            photoURL: null,
+            groups: [],
           ),
     ));
   }
@@ -231,19 +239,34 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   Future<void> getUsers(ChatGetUsersEvent event, Emitter<ChatState> emit) async {
-    users = await RTDBService.loadUsers();
-    var userToRemove = users.firstWhere((user) => user.uId == 'DBXkfBuedvagFrLIY1BgrNioH3u2');
-    users.remove(userToRemove);
-    emit(ChatAdminState(users: users));
+    final emptyGroups = await FirestoreService.loadEmptyGroups();
+    final doctorGroups = await FirestoreService.loadDoctorGroups(mainBloc.userModel!.uid!);
+    for (var group in emptyGroups) {
+      UserModel? user = await FirestoreService.loadUser(group.createdBy!);
+      if (user != null && !newUsers.contains(user)) newUsers.add(user.copyWith(groups: [group]));
+    }
+    for (var group in doctorGroups) {
+      UserModel? user = await FirestoreService.loadUser(group.createdBy!);
+      if (user != null && !doctorUsers.contains(user)) doctorUsers.add(user.copyWith(groups: [group]));
+    }
+    emit(ChatAdminState(doctorUsers: doctorUsers, newUsers: newUsers));
   }
 
-  void pushDetail(ChatPushDetailEvent event, Emitter<ChatState> emit) {
-    user = event.userModel;
-    messages = null;
-    initial = true;
-    shimmer = true;
-    myAnimatedPush(context: event.context, pushPage: const ChatDetailPage(), offset: const Offset(0, -1));
-    emitComfort(emit);
+  void pushDetail(ChatPushDetailEvent event, Emitter<ChatState> emit) async {
+    // user = event.userModel;
+    // messages = null;
+    // initial = true;
+    // shimmer = true;
+    emit(ChatLoadingState());
+    await FirestoreService.updateGroup(event.userModel.groups.first.copyWith(2, [event.userModel.uid!, mainBloc.userModel!.uid!]));
+    if (event.context.mounted) {
+      Utils.mySnackBar(txt: '${event.userModel.displayName} bemorlaringizga qo`shildi', context: event.context);
+    }
+    // myAnimatedPush(context: event.context, pushPage: const ChatDetailPage(), offset: const Offset(0, -1));
+    // (await FirestoreService.loadSeed(user!.uid!)).map((map) => values.addAll(map));
+    doctorUsers.add(event.userModel);
+    newUsers.remove(event.userModel);
+    emit(ChatAdminState(doctorUsers: doctorUsers, newUsers: newUsers));
   }
 
   void pushUserInfo(ChatPushInfoEvent event, Emitter<ChatState> emit) {
@@ -273,9 +296,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> pressSendButton(ChatSendButtonEvent event, Emitter<ChatState> emit) async {
     if (controller.text.trim().isNotEmpty) {
       final msgModel = MessageModel(
-        msg: controller.text.trim(),
-        typeUser: user != null ? true : false,
-        dateTime: DateTime.now().toString().substring(11, 16),
+        message: controller.text.trim(),
+        meta: {},
+        readBy: [],
+        sentAt: Timestamp.now(),
+        sentBy: user?.uid,
         id: DateTime.now().toString(),
       );
       messages ??= [];

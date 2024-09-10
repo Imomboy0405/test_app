@@ -26,10 +26,16 @@ final class ChatInitialState extends ChatState {
 }
 
 final class ChatAdminState extends ChatState {
-  final List<UserModel> users;
+  final List<UserModel> doctorUsers;
+  final List<UserModel> newUsers;
 
-  const ChatAdminState({required this.users});
+  const ChatAdminState({required this.doctorUsers, required this.newUsers});
 
   @override
-  List<Object> get props => [users];
+  List<Object> get props => [doctorUsers, newUsers];
+}
+
+final class ChatLoadingState extends ChatState {
+  @override
+  List<Object?> get props => [];
 }
