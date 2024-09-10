@@ -1,29 +1,14 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:test_app/Data/Models/chat_model.dart';
+import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 
 class RTDBService {
   static final database = FirebaseDatabase.instance.ref();
 
-
   static Future<Stream<DatabaseEvent>> storeUser(UserModel userModel) async {
-    await database.child('users').child(userModel.uId!).set(userModel.toJson());
+    await database.child('users').child(userModel.uid!).set(userModel.toJson());
     return database.onChildAdded;
-  }
-
-  static Future<Stream<DatabaseEvent>> deleteUser(UserModel userModel) async {
-    await database.child('users').child(userModel.uId!).remove();
-    await database.child('chat').child(userModel.uId!).remove();
-    return database.onChildAdded;
-  }
-
-  static Future<UserModel?> loadUser(String uId) async {
-    final snapshot = await database.child('users/$uId').get();
-    if (snapshot.exists) {
-      return UserModel.fromJson(snapshot.value as Map);
-    }
-    return null;
   }
 
   static Future<List<UserModel>> loadUsers() async {
@@ -31,33 +16,52 @@ class RTDBService {
     DatabaseEvent event = await query.once();
     List<UserModel> users = [];
     if (event.snapshot.value != null && event.snapshot.value is Map) {
-      users = (event.snapshot.value as Map<dynamic, dynamic>).values
+      users = (event.snapshot.value as Map<dynamic, dynamic>)
+          .values
           .map((model) {
-        try {
-          return UserModel.fromJson(Map<String, dynamic>.from(model));
-        } catch (e) {
-          debugPrint('Xatolik: $e');
-          return null;
-        }
-      })
+            try {
+              return UserModel.fromJson(Map<String, dynamic>.from(model));
+            } catch (e) {
+              debugPrint('Xatolik: $e');
+              return null;
+            }
+          })
           .whereType<UserModel>()
           .toList();
     }
     return users;
   }
 
-  static Future<Stream<DatabaseEvent>> storeChat(ChatModel model, String uId) async {
-    await database.child('chat').child(uId).set(model.toJson());
-    return database.onChildAdded;
+  static Future<List<ArticleModel>> loadArticles() async {
+    Query query = database.child('articles/ru');
+    DatabaseEvent event = await query.once();
+    List<ArticleModel> articles = [];
+    if (event.snapshot.value != null && event.snapshot.value is Map) {
+      articles = (event.snapshot.value as Map<dynamic, dynamic>)
+          .entries
+          .map((article) {
+            try {
+              article.value['id'] = article.key;
+              return ArticleModel.fromJson(article.value);
+            } catch (e) {
+              debugPrint('Xatolik: $e');
+              return null;
+            }
+          })
+          .whereType<ArticleModel>()
+          .toList();
+    }
+    return articles;
   }
 
-  static Future<ChatModel> loadChat(String uId) async {
-    Query query = database.child('chat').child(uId);
+  static Future<List<Map>> loadSeed() async {
+    Query query = database.child('seed');
     DatabaseEvent event = await query.once();
-    ChatModel chatModel = ChatModel(messages: []);
-    if (event.snapshot.value != null && event.snapshot.value is Map) {
-      chatModel = ChatModel.fromJson(Map<String, dynamic>.from(event.snapshot.value as Map));
+    List<Map> seed = [];
+    if (event.snapshot.value != null) {
+      Map map = event.snapshot.value as Map;
+      map.forEach((key, value) => seed.add(value));
     }
-    return chatModel;
+    return seed;
   }
 }

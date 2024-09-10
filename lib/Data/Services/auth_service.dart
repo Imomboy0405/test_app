@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:test_app/Data/Models/user_model.dart';
-import 'r_t_d_b_service.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
 
 class AuthService {
   static final _auth = FirebaseAuth.instance;
@@ -34,7 +34,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      UserModel? userModel = await RTDBService.loadUser(_auth.currentUser!.uid);
+      UserModel? userModel = await FirestoreService.loadUser(_auth.currentUser!.uid);
       return userModel;
     } catch (e) {
       return e.toString();

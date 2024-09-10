@@ -1,43 +1,42 @@
 {
   "project_info": {
-    "project_number": "476535803397",
-    "firebase_url": "https://test-app-women-s-default-rtdb.firebaseio.com",
-    "project_id": "test-app-women-s",
-    "storage_bucket": "test-app-women-s.appspot.com"
+    "project_number": "128126653672",
+    "firebase_url": "https://menopause-9a9b5-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "menopause-9a9b5",
+    "storage_bucket": "menopause-9a9b5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:476535803397:android:2e97920c2eb5f4ae01d66c",
+        "mobilesdk_app_id": "1:128126653672:android:540226d17785ab4721655d",
         "android_client_info": {
           "package_name": "uz.menopause.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "476535803397-penpbe61pkkrnan2jjtkchp0h1pigci2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "uz.menopause.app",
-            "certificate_hash": "77f3019ed1743a5b06dc3bd74bf59b0b3aa24457"
-          }
-        },
-        {
-          "client_id": "476535803397-vli0v1tk33du35ujq754982jhid77st8.apps.googleusercontent.com",
+          "client_id": "128126653672-jc2od7vk6s90ocbmeflkfdoms3cgc376.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD2O3e7pF8nOJGliVik-eL-2DiLAgICWh4"
+          "current_key": "AIzaSyBCycSG9svzvTGKUVzEBw5FzUOd5Z4GPgo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "476535803397-vli0v1tk33du35ujq754982jhid77st8.apps.googleusercontent.com",
+              "client_id": "128126653672-jc2od7vk6s90ocbmeflkfdoms3cgc376.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "128126653672-5gmn6tb4l0laqg7jg36sbk4ulcqhsh6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "uz.menopause.app"
+              }
             }
           ]
         }

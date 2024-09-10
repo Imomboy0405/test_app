@@ -1,21 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Main/View/main_page.dart';
 import 'package:test_app/Application/Welcome/SignUp/View/sign_up_page.dart';
-import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/auth_service.dart';
 import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/logic_service.dart';
-import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
+
 part 'sign_in_event.dart';
 part 'sign_in_state.dart';
 
@@ -112,7 +112,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
-
       if (error is UserModel) {
         locator<MainBloc>().userModel = error;
         if (rememberMe) {
@@ -122,7 +121,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           locator<MainBloc>().rememberMe = false;
         }
         if (event.context.mounted) {
-          Utils.mySnackBar(txt: 'welcome_user'.tr() + error.fullName!, context: event.context);
+          Utils.mySnackBar(txt: 'welcome_user'.tr() + error.displayName!, context: event.context);
           Navigator.pushReplacementNamed(event.context, MainPage.id);
         }
       } else {
@@ -205,7 +204,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   Future<void> checkAuthCredential({required UserCredential userCredential, required BuildContext context}) async {
     String? uId = userCredential.user?.uid;
     if (uId != null) {
-      UserModel? userModel = await RTDBService.loadUser(FirebaseAuth.instance.currentUser!.uid);
+      UserModel? userModel = await FirestoreService.loadUser(FirebaseAuth.instance.currentUser!.uid);
       if (userModel != null) {
         locator<MainBloc>().userModel = userModel;
         if (rememberMe) {
@@ -215,29 +214,31 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           locator<MainBloc>().rememberMe = false;
         }
         if (context.mounted) {
-          Utils.mySnackBar(txt: 'welcome_user'.tr() + userModel.fullName!, context: context);
+          Utils.mySnackBar(txt: 'welcome_user'.tr() + userModel.displayName!, context: context);
           Navigator.pushReplacementNamed(context, MainPage.id);
         }
       } else {
         try {
           userModel = UserModel(
-            uId: uId,
+            uid: uId,
             email: userCredential.user?.email,
-            fullName: userCredential.user?.displayName,
-            password: '',
-            createdTime: DateTime.now().toString().substring(0, 10),
-            loginType: 'googleOrFacebook',
-            userDetailList: [],
+            displayName: userCredential.user?.displayName,
+            createdAt: Timestamp.now(),
+            role: 'patient',
+            verified: true,
+            photoURL: userCredential.user?.photoURL,
+            phoneNumber: userCredential.user?.phoneNumber,
+            groups: [],
           );
-          await RTDBService.storeUser(userModel);
-          DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
-          final msgModel = MessageModel(
-            msg: 'welcome_user'.tr() + userModel.fullName!,
-            typeUser: true,
-            dateTime: DateTime.now().toString().substring(11, 16),
-            id: DateTime.now().toString(),
-          );
-          await messagesRef.push().set(msgModel.toJson());
+          await FirestoreService.createUser(userModel);
+          // DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uid}/messages');
+          // final msgModel = MessageModel(
+          //   msg: 'welcome_user'.tr() + userModel.displayName!,
+          //   typeUser: true,
+          //   dateTime: DateTime.now().toString().substring(11, 16),
+          //   id: DateTime.now().toString(),
+          // );
+          // await messagesRef.push().set(msgModel.toJson());
           if (context.mounted) {
             Utils.mySnackBar(txt: 'account_created'.tr(), context: context);
           }
@@ -250,7 +251,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             locator<MainBloc>().rememberMe = false;
           }
           if (context.mounted) {
-            Utils.mySnackBar(txt: 'welcome_user'.tr() + userModel.fullName!, context: context);
+            Utils.mySnackBar(txt: 'welcome_user'.tr() + userModel.displayName!, context: context);
             Navigator.pushReplacementNamed(context, MainPage.id);
           }
         } catch (e) {

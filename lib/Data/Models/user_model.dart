@@ -1,44 +1,55 @@
 import 'dart:convert';
 
-UserModel userFromJson(String str) => UserModel.fromJson(json.decode(str));
-String userToJson(UserModel data) => json.encode(data.toJson());
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:test_app/Data/Models/group_model.dart';
+
+UserModel userFromJson(String str) => UserModel.fromJsonLocal(json.decode(str));
+String userToJson(UserModel data) => json.encode(data.toJsonLocal());
 
 class UserModel {
-  String? uId;
+  String? uid;
   String? email;
-  String? fullName;
-  String? password;
-  String? createdTime;
-  String? loginType;
-  List<List> userDetailList = [];
+  String? displayName;
+  Timestamp? createdAt;
+  String? role;
+  String? photoURL;
+  String? phoneNumber;
+  bool? verified;
+  late List<GroupModel> groups;
 
   UserModel({
-    required this.uId,
+    required this.uid,
     required this.email,
-    required this.fullName,
-    required this.password,
-    required this.createdTime,
-    required this.loginType,
-    required this.userDetailList,
+    required this.displayName,
+    required this.createdAt,
+    required this.role,
+    required this.verified,
+    required this.phoneNumber,
+    required this.photoURL,
+    required this.groups,
   });
 
   UserModel copyWith({
-    String? uId,
+    String? uid,
     String? email,
-    String? fullName,
-    String? password,
-    String? createdTime,
-    String? loginType,
-    List<List>? userDetailList,
+    String? displayName,
+    Timestamp? createdAt,
+    String? role,
+    String? phoneNumber,
+    String? photoURL,
+    bool? verified,
+    List<GroupModel>? groups,
   }) {
     return UserModel(
-      uId: uId ?? this.uId,
+      uid: uid ?? this.uid,
       email: email ?? this.email,
-      fullName: fullName ?? this.fullName,
-      password: password ?? this.password,
-      createdTime: createdTime ?? this.createdTime,
-      loginType: loginType ?? this.loginType,
-      userDetailList: userDetailList ?? this.userDetailList,
+      displayName: displayName ?? this.displayName,
+      createdAt: createdAt ?? this.createdAt,
+      role: role ?? this.role,
+      verified: verified ?? this.verified,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      photoURL: photoURL ?? this.photoURL,
+      groups: groups ?? this.groups,
     );
   }
 
@@ -48,113 +59,115 @@ class UserModel {
   }
 
   UserModel.fromJson(Map<dynamic, dynamic> json) {
-    uId = json['uId'];
+    uid = json['uid'];
     email = json['email'];
-    fullName = json['fullName'];
-    password = json['password'];
-    createdTime = json['createdTime'];
-    loginType = json['loginType'];
-    if (json['userDetailList'] != null) {
-      json['userDetailList'].forEach((list) {
-        userDetailList.add(list.map((v) => v['type'] == 'group' ? UserDetailModel.fromJson(v) : Entries.fromJson(v)).toList());
-      });
-    }
+    displayName = json['displayName'];
+    createdAt = json['createdAt'];
+    role = json['role'];
+    verified = json['verified'];
+    phoneNumber = json['phoneNumber'];
+    photoURL = json['photoURL'];
+    groups = [];
+  }
+
+  UserModel.fromJsonLocal(Map<dynamic, dynamic> json) {
+    uid = json['uid'];
+    email = json['email'];
+    displayName = json['displayName'];
+    createdAt = Timestamp.fromDate(DateTime.parse(json['createdAt']));
+    role = json['role'];
+    verified = json['verified'];
+    phoneNumber = json['phoneNumber'];
+    photoURL = json['photoURL'];
+    groups = [];
   }
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['uId'] = uId;
+    map['uid'] = uid;
     map['email'] = email;
-    map['fullName'] = fullName;
-    map['password'] = password;
-    map['createdTime'] = createdTime;
-    map['loginType'] = loginType;
-    map['userDetailList'] = userDetailList.map((list) => list.map((v) => v.toJson()).toList()).toList();
+    map['displayName'] = displayName;
+    map['createdAt'] = createdAt;
+    map['role'] = role;
+    map['verified'] = verified;
+    map['photoURL'] = photoURL;
+    map['phoneNumber'] = phoneNumber;
+    map['groups'] = groups;
+    return map;
+  }
+
+  Map<String, dynamic> toJsonLocal() {
+    final map = <String, dynamic>{};
+    map['uid'] = uid;
+    map['email'] = email;
+    map['displayName'] = displayName;
+    map['createdAt'] = createdAt?.toDate().toIso8601String();
+    map['role'] = role;
+    map['verified'] = verified;
+    map['photoURL'] = photoURL;
+    map['phoneNumber'] = phoneNumber;
+    map['groups'] = groups;
     return map;
   }
 }
 
-UserDetailModel medicalHistoryModelFromJson(String str) => UserDetailModel.fromJson(json.decode(str));
-String medicalHistoryModelToJson(UserDetailModel data) => json.encode(data.toJson());
-
 class UserDetailModel {
   late List<Entries> entries;
-  late String id;
-  late int index;
-  late bool? flex;
-  late String? title;
-  late String type;
+  late String? id;
+  late Map<String, String>? title;
 
   UserDetailModel({
     required this.entries,
     required this.id,
-    required this.index,
     required this.title,
-    required this.type,
-    required this.flex,
   });
 
   UserDetailModel.fromJson(dynamic json) {
     if (json['entries'] != null) {
       entries = [];
-      json['entries'].forEach((v) {
+      json['entries'].forEach((k, v) {
         entries.add(Entries.fromJson(v));
       });
     }
     id = json['id'];
-    index = json['index'];
-    title = json['title'];
-    type = json['type'];
-    flex = json['flex'];
+    title = Map<String,String>.from(json['title']);
   }
 
   UserDetailModel copyWith({
     List<Entries>? entries,
     String? id,
-    int? index,
-    String? title,
-    String? type,
-    bool? flex,
+    Map<String, String>? title,
   }) =>
       UserDetailModel(
         entries: entries ?? this.entries,
         id: id ?? this.id,
-        index: index ?? this.index,
         title: title ?? this.title,
-        type: type ?? this.type,
-        flex: flex ?? this.flex,
       );
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['entries'] = entries.map((v) => v.toJson()).toList();
-    map['id'] = id;
-    map['index'] = index;
-    map['title'] = title;
-    map['type'] = type;
-    map['flex'] = flex;
+    entries.map((v) => map.addAll(v.toJson()));
     return map;
   }
 }
 
-Entries entriesFromJson(String str) => Entries.fromJson(json.decode(str));
-String entriesToJson(Entries data) => json.encode(data.toJson());
-
 class Entries {
   late String id;
+  late List<Entries>? entries;
   late int index;
-  late dynamic value;
   late int? max;
   late int? min;
-  late String title;
-  late String type;
+  late Map<String, String>? title;
+  late String? type;
+  late bool? flex;
 
   Entries({
     required this.id,
     required this.index,
-    required this.value,
     this.max,
     this.min,
+    this.entries,
+    this.flex,
     required this.title,
     required this.type,
   });
@@ -162,11 +175,12 @@ class Entries {
   Entries.fromJson(dynamic json) {
     id = json['id'];
     index = json['index'];
-    value = json['type'] == 'boolean' ? json['value'] ?? false : json['value'];
     max = json['max'];
     min = json['min'];
-    title = json['title'];
+    title = json['title'] != null ? Map<String, String>.from(json['title']) : null;
     type = json['type'];
+    entries = json['entries']?.map((map) => Entries.fromJson(map)).toList().whereType<Entries>().toList();
+    flex = json['flex'];
   }
 
   Entries copyWith({
@@ -175,28 +189,27 @@ class Entries {
     dynamic value,
     int? max,
     int? min,
-    String? title,
+    Map<String, String>? title,
     String? type,
+    List<Entries>? entries,
+    bool? flex,
   }) =>
       Entries(
         id: id ?? this.id,
         index: index ?? this.index,
-        value: value ?? this.value,
         max: max ?? this.max,
         min: min ?? this.min,
         title: title ?? this.title,
         type: type ?? this.type,
+        entries: entries ?? this.entries,
+        flex: flex ?? this.flex,
       );
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['id'] = id;
-    map['index'] = index;
-    map['value'] = value;
-    map['max'] = max;
-    map['min'] = min;
-    map['title'] = title;
-    map['type'] = type;
+    if (entries != null && entries!.isNotEmpty) {
+      entries!.map((v) => map.addAll(v.toJson()));
+    }
     return map;
   }
 }

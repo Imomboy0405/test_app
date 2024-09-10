@@ -1,16 +1,15 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/auth_service.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/logic_service.dart';
-import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
 import '../../SignIn/View/sign_in_page.dart';
 
@@ -134,25 +133,27 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (googleOrFacebook) {
       UserModel userModel = UserModel(
-        fullName: fullNameController.text.trim(),
-        password: '',
+        displayName: fullNameController.text.trim(),
         email: emailController.text.trim(),
-        uId: FirebaseAuth.instance.currentUser!.uid,
-        createdTime: DateTime.now().toString().substring(0, 10),
-        loginType: 'googleOrFacebook',
-        userDetailList: [],
+        uid: FirebaseAuth.instance.currentUser!.uid,
+        createdAt: Timestamp.now(),
+        role: 'patient',
+        verified: true,
+        phoneNumber: FirebaseAuth.instance.currentUser!.phoneNumber,
+        photoURL: FirebaseAuth.instance.currentUser!.photoURL,
+        groups: [],
       );
 
       try {
-        await RTDBService.storeUser(userModel);
-        DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
-        final msgModel = MessageModel(
-          msg: 'welcome_user'.tr() + userModel.fullName!,
-          typeUser: true,
-          dateTime: DateTime.now().toString().substring(11, 16),
-          id: DateTime.now().toString(),
-        );
-        await messagesRef.push().set(msgModel.toJson());
+        await FirestoreService.createUser(userModel);
+        // DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uid}/messages');
+        // final msgModel = MessageModel(
+        //   msg: 'welcome_user'.tr() + userModel.displayName!,
+        //   typeUser: true,
+        //   dateTime: DateTime.now().toString().substring(11, 16),
+        //   id: DateTime.now().toString(),
+        // );
+        // await messagesRef.push().set(msgModel.toJson());
 
         if (event.context.mounted) {
           Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
@@ -181,24 +182,26 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           if (verifyDone) {
             timer.cancel();
             UserModel userModel = UserModel(
-              fullName: fullNameController.text.trim(),
-              password: passwordController.text.trim(),
+              displayName: fullNameController.text.trim(),
               email: emailController.text.trim(),
-              uId: FirebaseAuth.instance.currentUser!.uid,
-              createdTime: DateTime.now().toString().substring(0, 10),
-              loginType: 'email',
-              userDetailList: [],
+              uid: FirebaseAuth.instance.currentUser!.uid,
+              createdAt: Timestamp.now(),
+              role: 'patient',
+              verified: true,
+              photoURL: null,
+              phoneNumber: null,
+              groups: [],
             );
             try {
-              await RTDBService.storeUser(userModel);
-              DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uId}/messages');
-              final msgModel = MessageModel(
-                msg: 'welcome_user'.tr() + userModel.fullName!,
-                typeUser: true,
-                dateTime: DateTime.now().toString().substring(11, 16),
-                id: DateTime.now().toString(),
-              );
-              await messagesRef.push().set(msgModel.toJson());
+              await FirestoreService.createUser(userModel);
+              // DatabaseReference messagesRef = FirebaseDatabase.instance.ref('chat/${userModel.uid}/messages');
+              // final msgModel = MessageModel(
+              //   msg: 'welcome_user'.tr() + userModel.displayName!,
+              //   typeUser: true,
+              //   dateTime: DateTime.now().toString().substring(11, 16),
+              //   id: DateTime.now().toString(),
+              // );
+              // await messagesRef.push().set(msgModel.toJson());
               if (event.context.mounted) {
                 Utils.mySnackBar(txt: 'account_created'.tr(), context: event.context);
                 Navigator.pushReplacementNamed(event.context, SignInPage.id);
@@ -241,7 +244,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           await checkAuthCredential(userCredential: userCredential, context: event.context, width: event.width);
         }
       } catch (e) {
-        print(e);
         if (event.context.mounted) {
           Utils.mySnackBar(txt: e.toString(), context: event.context, errorState: true);
         }
@@ -304,7 +306,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     if (uId != null) {
       googleOrFacebook = true;
-      UserModel? userModel = await RTDBService.loadUser(FirebaseAuth.instance.currentUser!.uid);
+      UserModel? userModel = await FirestoreService.loadUser(FirebaseAuth.instance.currentUser!.uid);
       if (userModel == null) {
         if (email != null) {
           emailController.text = email;
