@@ -6,13 +6,15 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Menus/Profile/Profile/Bloc/profile_bloc.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
-import 'package:test_app/Data/Services/locator_service.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
+import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 
 part 'profile_detail_event.dart';
 part 'profile_detail_state.dart';
 
 class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   List<int> currentIndexes = List.filled(5, 0);
+  List<Map<String, dynamic>> values = List.filled(5, {});
   final ProfileBloc profileBloc;
   bool initial = true;
 
@@ -29,24 +31,32 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
 
   final player = AudioPlayer();
 
-  ProfileDetailBloc({required this.profileBloc})
-      : super(ProfileDetailInitialState(
-          currentIndexes: const [0, 0, 0, 0, 0],
-          userModel: locator<ProfileBloc>().userModel!,
-        )) {
+  ProfileDetailBloc({required this.profileBloc}) : super(ProfileDetailLoadingState()) {
     on<UpdateDetailPageEvent>(updateDetail);
     on<UpdateDetailExpansionPanelEvent>(updateExpansionPanel);
     on<DetailLoadingEvent>(loadingPage);
     on<DetailPopEvent>(popInvoiced);
     on<ShowCaseEvent>(showCase);
+    on<InitialDataEvent>(initialData);
   }
 
-  void initialData() {
-    initial = false;
-    if (!profileBloc.mainBloc.showCaseModel.profileDetail) {
-      showCheckBox = true;
-      firstCheckBox = true;
+  Future<void> initialData(InitialDataEvent event, Emitter<ProfileDetailState> emit) async {
+    emit(ProfileDetailLoadingState());
+    if (initial) {
+      if (!profileBloc.mainBloc.showCaseModel.profileDetail) {
+        showCheckBox = true;
+        firstCheckBox = true;
+      }
     }
+    values = await FirestoreService.loadSeed(profileBloc.mainBloc.userModel!.uid!);
+
+    if (profileBloc.userDetailList.isEmpty) {
+      final list = await RTDBService.loadSeed();
+      profileBloc.userDetailList = list.map((map) => UserDetailModel.fromJson(map)).toList();
+    } else {
+      // profileBloc.userDetailList = profileBloc.userDetailList.map((map) => map.copyWith()).toList();
+    }
+    emitDetail(emit);
   }
 
   Future<void> showCase(ShowCaseEvent event, Emitter<ProfileDetailState> emit) async {
@@ -85,20 +95,11 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
     }
   }
 
-  void emitDetail(Emitter<ProfileDetailState> emit) {
-    emit(ProfileDetailInitialState(
-      currentIndexes: currentIndexes,
-      userModel: profileBloc.userModel!.deepCopy(),
-    ));
-  }
+  void emitDetail(Emitter<ProfileDetailState> emit) => emit(ProfileDetailInitialState(currentIndexes: currentIndexes, values: values));
 
-  void loadingPage(DetailLoadingEvent event, Emitter<ProfileDetailState> emit) {
-    emit(ProfileDetailLoadingState());
-  }
+  void loadingPage(DetailLoadingEvent event, Emitter<ProfileDetailState> emit) => emit(ProfileDetailLoadingState());
 
-  void popInvoiced(DetailPopEvent event, Emitter<ProfileDetailState> emit) {
-    profileBloc.currentTab = 0;
-  }
+  void popInvoiced(DetailPopEvent event, Emitter<ProfileDetailState> emit) => profileBloc.currentTab = 0;
 
   void updateExpansionPanel(UpdateDetailExpansionPanelEvent event, Emitter<ProfileDetailState> emit) {
     currentIndexes = List.from(currentIndexes);
@@ -111,93 +112,9 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   }
 
   void updateDetail(UpdateDetailPageEvent event, Emitter<ProfileDetailState> emit) {
-    if (profileBloc.mainBloc.sound) {
-      player.play(AssetSource('sounds/sound_button.wav'));
-    }
-
-    if (event.bmi) {
-      if (event.bmiHeight) {
-        profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value =
-            event.value >= 100
-                ? event.value ~/ 1
-                : profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value;
-      } else {
-        profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value =
-            event.value >= 40
-                ? event.value ~/ 1
-                : profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value;
-      }
-    } else {
-      if (event.expansionPanel) {
-        if (event.tabIndex == 3) {
-          if (event.userDetailModelIndex >= 7) {
-            if ((event.value is int && event.value == 0) ||
-                (event.value is bool && ((event.entryIndex == 0 && event.value) || (event.entryIndex == 1 && !event.value)))) {
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[0] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[0].copyWith(value: true);
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[1] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[1].copyWith(value: false);
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2].copyWith(value: 0);
-            } else {
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[0] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[0].copyWith(value: false);
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[1] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[1].copyWith(value: true);
-
-              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2] =
-                  profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2].copyWith(
-                      value: profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2].value == null ||
-                              profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2].value < 1
-                          ? 1
-                          : profileBloc.userModel!.userDetailList[3][event.userDetailModelIndex].entries[2].value);
-            }
-          } else if (event.userDetailModelIndex == 6) {
-            if (event.entryIndex == 0) {
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[1] = profileBloc
-                  .userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[1]
-                  .copyWith(value: !event.value);
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[2] = profileBloc
-                  .userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[2]
-                  .copyWith(value: !event.value);
-            } else if (event.value) {
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[0] =
-                  profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[0].copyWith(value: false);
-            } else if (profileBloc
-                    .userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex == 1 ? 2 : 1].value ==
-                false) {
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[0] =
-                  profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[0].copyWith(value: true);
-            }
-          } else if (event.userDetailModelIndex >= 4) {
-            if (event.value) {
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex == 0 ? 1 : 0] =
-                  profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex == 0 ? 1 : 0]
-                      .copyWith(value: false);
-            } else {
-              profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex == 0 ? 1 : 0] =
-                  profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex == 0 ? 1 : 0]
-                      .copyWith(value: true);
-            }
-          } else {
-            profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries = profileBloc
-                .userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries
-                .map<Entries>((entry) => entry.copyWith(value: false) as Entries)
-                .toList();
-          }
-        }
-        if (event.bloodPressureIndex == 0) {
-          profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value = event.value;
-        } else {
-          profileBloc.userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value = profileBloc
-              .userModel!.userDetailList[event.tabIndex][event.userDetailModelIndex].entries[event.entryIndex].value
-              .replaceRange(event.bloodPressureIndex == 1 ? 0 : 4, event.bloodPressureIndex == 1 ? 3 : 7,
-                  event.value < 100 ? '0${event.value}' : event.value.toString());
-        }
-      } else {
-        profileBloc.userModel!.userDetailList[event.tabIndex][event.entryIndex].value = event.value;
-      }
-    }
+    if (profileBloc.mainBloc.sound) player.play(AssetSource('sounds/sound_button.wav'));
+    values = List.from(values);
+    values[profileBloc.currentTab] = {...values[profileBloc.currentTab], event.id: event.value};
     emitDetail(emit);
   }
 }

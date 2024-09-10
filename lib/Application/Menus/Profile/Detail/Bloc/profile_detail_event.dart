@@ -15,28 +15,16 @@ class DetailPopEvent extends ProfileDetailEvent {
 }
 
 class UpdateDetailPageEvent extends ProfileDetailEvent {
-  final int tabIndex;
-  final int userDetailModelIndex;
-  final int entryIndex;
+  final String id;
   final dynamic value;
-  final bool expansionPanel;
-  final bool bmi;
-  final bool bmiHeight;
-  final int bloodPressureIndex;
 
   const UpdateDetailPageEvent({
-    required this.tabIndex,
-    required this.userDetailModelIndex,
-    required this.entryIndex,
+    required this.id,
     required this.value,
-    this.expansionPanel = false,
-    this.bmi = false,
-    this.bmiHeight = false,
-    this.bloodPressureIndex = 0,
   });
 
   @override
-  List<Object?> get props => [tabIndex, userDetailModelIndex, entryIndex, value, expansionPanel, bmi, bmiHeight, bloodPressureIndex];
+  List<Object?> get props => [id, value];
 }
 
 class UpdateDetailExpansionPanelEvent extends ProfileDetailEvent {
@@ -67,4 +55,14 @@ class ShowCaseEvent extends ProfileDetailEvent {
 
   @override
   List<Object?> get props => [context, tapCheckBox, tapNextButton, tapBMI, tapSave];
+}
+
+class InitialDataEvent extends ProfileDetailEvent {
+  final int index;
+
+  const InitialDataEvent({this.index = -1});
+
+  @override
+  List<Object?> get props => [index];
+
 }

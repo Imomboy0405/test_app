@@ -96,11 +96,12 @@ class InfoEvent extends ProfileEvent {
 class NextEvent extends ProfileEvent {
   final int index;
   final BuildContext context;
+  final List<Map<String, dynamic>> values;
 
-  NextEvent({required this.index, required this.context});
+  NextEvent({required this.index, required this.context, this.values = const []});
 
   @override
-  List<Object?> get props => [index, context];
+  List<Object?> get props => [index, context, values];
 
 }
 

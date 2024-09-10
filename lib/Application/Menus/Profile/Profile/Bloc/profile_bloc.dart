@@ -16,9 +16,9 @@ import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/firestore_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
-import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
 
@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final MainBloc mainBloc;
   bool darkMode = ThemeService.getTheme == ThemeMode.dark;
   String fullName = '';
-  String dateSign = '';
+  DateTime? dateSign;
   String? phoneNumber;
   String? email;
   Language selectedLang = LangService.getLanguage;
@@ -41,14 +41,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Language.kr,
   ];
   int currentTab = 0;
-  UserModel? userModel;
-  List<List<Map<String, dynamic>>> profileDetailJsons = [
-    medicalHistory,
-    medicationsToken,
-    surgicalInterventions,
-    hereditaryFactors,
-    anthropometry,
-  ];
+  List<UserDetailModel> userDetailList = [];
+  List<Map<String, dynamic>> values = [];
 
   final keyMedicalInfo = GlobalKey(debugLabel: 'showMedicalInfo');
 
@@ -86,9 +80,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     mainBloc.darkMode = darkMode;
     selectedLang = LangService.getLanguage;
 
-    fullName = mainBloc.userModel!.fullName!;
+    fullName = mainBloc.userModel!.displayName!;
     email = mainBloc.userModel!.email != null && mainBloc.userModel!.email!.isNotEmpty ? mainBloc.userModel!.email! : null;
-    dateSign = mainBloc.userModel!.createdTime!;
+
+    dateSign = mainBloc.userModel!.createdAt!.toDate();
 
     emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
   }
@@ -165,7 +160,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       if (user != null) {
         await user.delete();
       }
-      await RTDBService.deleteUser(mainBloc.userModel!);
+      await FirestoreService.deleteUser(mainBloc.userModel!.uid!);
     }
     await DBService.deleteData(StorageKey.user);
     locator.unregister<MainBloc>();
@@ -198,41 +193,42 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       DefaultTabController.of(event.context).animateTo(event.index);
       emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
     } else {
-      for (int i = 4; i <= 8; i++) {
-        UserDetailModel userDetail = userModel!.userDetailList[3][i];
-        if (userDetail.index >= 4) {
-          bool checked = false;
-          for (Entries entry in userDetail.entries) {
-            if (entry.value == true) {
-              checked = true;
-              break;
-            }
-          }
-          if (!checked) {
-            Utils.mySnackBar(txt: 'unselected'.tr() + userDetail.title!.tr(), context: event.context, errorState: true, bottom: false);
-            currentTab = 3;
-            DefaultTabController.of(event.context).animateTo(3);
-            await Future.delayed(const Duration(milliseconds: 300));
-            if (event.context.mounted) {
-              event.context.read<ProfileDetailBloc>().add(UpdateDetailExpansionPanelEvent(
-                    tabIndex: 3,
-                    value: userDetail.index,
-                    pressSaveButton: true,
-                  ));
-            }
-            emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
-            return;
-          }
-        }
-      }
+      // #required check code
+      // for (int i = 4; i <= 8; i++) {
+      //   UserDetailModel userDetail = userDetailList[i];
+      //   if (userDetail.entries >= 4) {
+      //     bool checked = false;
+      //     for (Entries entry in userDetail.entries) {
+      //       if (entry.value == true) {
+      //         checked = true;
+      //         break;
+      //       }
+      //     }
+      //     if (!checked) {
+      //       Utils.mySnackBar(txt: 'unselected'.tr() + userDetail.title!['ru']!, context: event.context, errorState: true, bottom: false);
+      //       currentTab = 3;
+      //       DefaultTabController.of(event.context).animateTo(3);
+      //       await Future.delayed(const Duration(milliseconds: 300));
+      //       if (event.context.mounted) {
+      //         event.context.read<ProfileDetailBloc>().add(UpdateDetailExpansionPanelEvent(
+      //               tabIndex: 3,
+      //               value: userDetail.entries[],
+      //               pressSaveButton: true,
+      //             ));
+      //       }
+      //       emit(ProfileDetailPageState(index: currentTab, userModel: mainBloc.userModel!));
+      //       return;
+      //     }
+      //   }
+      // }
 
       try {
         event.context.read<ProfileDetailBloc>().add(DetailLoadingEvent());
-        await RTDBService.storeUser(userModel!);
         if (mainBloc.rememberMe) {
-          await DBService.saveUser(userModel!);
+          mainBloc.userDetailList = userDetailList;
+          values = event.values;
         }
-        mainBloc.userModel = userModel;
+        await FirestoreService.updateSeed(event.values, mainBloc.userModel!.uid!);
         if (event.context.mounted) {
           currentTab = 0;
           Navigator.pop(event.context);

@@ -6,15 +6,15 @@ sealed class ProfileDetailState extends Equatable {
 
 final class ProfileDetailInitialState extends ProfileDetailState {
   final List<int> currentIndexes;
-  final UserModel userModel;
+  final List<Map<String, dynamic>> values;
 
   const ProfileDetailInitialState({
     required this.currentIndexes,
-    required this.userModel,
+    required this.values,
   });
 
   @override
-  List<Object> get props => [currentIndexes, userModel];
+  List<Object> get props => [currentIndexes, values];
 }
 
 final class ProfileDetailLoadingState extends ProfileDetailState {

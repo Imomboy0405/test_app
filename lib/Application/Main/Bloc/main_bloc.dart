@@ -36,6 +36,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   PageController controller = PageController(keepPage: true, initialPage: 1);
 
   UserModel? userModel;
+  List<UserDetailModel> userDetailList = [];
 
   MainBloc()
       : super(MainInitialState(
