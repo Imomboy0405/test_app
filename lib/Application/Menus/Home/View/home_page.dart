@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
             double width = MediaQuery.of(context).size.width;
             return Scaffold(
               backgroundColor: AppColors.transparent,
-              appBar: MyAppBar(animatedHellos: bloc.helloAnime, titleText: (locator<MainBloc>().userModel?.fullName ?? '')),
+              appBar: MyAppBar(animatedHellos: bloc.helloAnime, titleText: (locator<MainBloc>().userModel?.displayName ?? '')),
               body: Padding(
                 padding: const EdgeInsets.only(bottom: 75),
                 child: Stack(
@@ -262,102 +262,9 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
 
-                          // #category
-                          Padding(
-                            padding: EdgeInsets.all(width * 0.03),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                                child: Container(
-                                  height: width * .47,
-                                  width: width - 24,
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.pink.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      // #category_text
-                                      Padding(
-                                        padding: const EdgeInsets.all(5),
-                                        child: Text('category'.tr(), style: AppTextStyles.style4_1(context).copyWith(color: AppColors.whiteConst)),
-                                      ),
-
-                                      // #categoryies
-                                      Flexible(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: List.generate(
-                                              bloc.category.length,
-                                              (int i) => CupertinoButton(
-                                                padding: EdgeInsets.zero,
-                                                onPressed: () => bloc.add(HomeCategoryEvent(selectedCategory: bloc.category[i].tr(), selectedCategoryImage: i)),
-                                                child: Container(
-                                                  height: width * .4,
-                                                  width: width * .23,
-                                                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                                                  child: Stack(
-                                                    children: [
-                                                      // #category_image
-                                                      Container(
-                                                        height: width * .23,
-                                                        margin: const EdgeInsets.only(top: 5),
-                                                        padding: const EdgeInsets.all(5),
-                                                        decoration: BoxDecoration(
-                                                          color: AppColors.black,
-                                                          borderRadius: BorderRadius.circular(100),
-                                                          boxShadow: const [
-                                                            BoxShadow(
-                                                              color: AppColors.pink,
-                                                              spreadRadius: 0,
-                                                              blurRadius: 7,
-                                                            )
-                                                          ]
-                                                        ),
-                                                        child: ClipRRect(
-                                                          borderRadius: BorderRadius.circular(100),
-                                                          child: Image.asset(
-                                                            'assets/images/img_category_$i.png',
-                                                            height: width * .23,
-                                                            width: width * .23,
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-
-                                                      // #category_text
-                                                      Container(
-                                                        margin: EdgeInsets.only(top: width * .245),
-                                                        child: Text(
-                                                          bloc.category[i].tr(),
-                                                          style: AppTextStyles.style8(context),
-                                                          maxLines: 2,
-                                                          textAlign: TextAlign.center,
-                                                          overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
                           // #top_doctors
                           Padding(
-                            padding: EdgeInsets.fromLTRB(width * 0.03, 0, width * 0.03, width * 0.05),
+                            padding: EdgeInsets.fromLTRB(width * 0.03, width * 0.03, width * 0.03, width * 0.05),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: BackdropFilter(
@@ -446,7 +353,7 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      )
+                      ),
                   ],
                 ),
               ),

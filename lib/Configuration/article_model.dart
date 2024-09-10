@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:test_app/Data/Services/lang_service.dart';
-
 ArticleModel articleModelFromJson(String str) => ArticleModel.fromJson(json.decode(str));
 
 class ArticleModel {
@@ -20,11 +18,11 @@ class ArticleModel {
   });
 
   ArticleModel.fromJson(dynamic json) {
-    content = parseString(json['content'].toString().tr());
+    content = parseString(json['content']);
     id = json['id'];
     image = json['image'];
     order = json['order'];
-    title = json['title'].toString().tr();
+    title = json['title'];
   }
 }
 

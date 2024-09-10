@@ -9,11 +9,11 @@ import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_doctor_page.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
-import 'package:test_app/Configuration/app_constants.dart';
 import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/r_t_d_b_service.dart';
 import 'package:test_app/Data/Services/theme_service.dart';
 
 part 'home_event.dart';
@@ -98,29 +98,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (mainBloc.userModel == null) {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);
-        fullName = mainBloc.userModel!.fullName!;
+        fullName = mainBloc.userModel!.displayName!;
       }
 
       String? json = await DBService.loadData(StorageKey.test);
-      if (json != null) {
-        mainBloc.resultTests = List<int>.from(jsonDecode(json));
-      }
+      if (json != null) mainBloc.resultTests = List<int>.from(jsonDecode(json));
 
       json = null;
       json = await DBService.loadData(StorageKey.showCase);
-      if (json != null) {
-        mainBloc.showCaseModel = showCaseModelFromJson(json);
-      }
+      if (json != null) mainBloc.showCaseModel = showCaseModelFromJson(json);
 
       json = null;
       json = await DBService.loadData(StorageKey.sound);
-      if (json != null) {
-        mainBloc.sound = json == 'true';
-      }
+      if (json != null) mainBloc.sound = json == 'true';
 
-      if (articles.isEmpty) {
-        articles = articlesJson.map((json) => ArticleModel.fromJson(json)).toList();
-      }
+      if (articles.isEmpty) articles = await RTDBService.loadArticles();
+
       emitInitial(emit);
     }
   }
