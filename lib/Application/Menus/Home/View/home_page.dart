@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -246,10 +247,12 @@ class HomePage extends StatelessWidget {
                                               tag: bloc.articles[bloc.currentPage].content[0].content,
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10),
-                                                child: Image.asset(
+                                                child: Image.memory(
+                                                  // 'assets/images/img_article_${bloc.newPage}.png',
+                                                  bloc.articleImages[bloc.newPage],
+                                                  // base64Decode(bloc.articles[(bloc.opacityAnime == 0 ? bloc.newPage : bloc.currentPage)].image.substring(bloc.articles[bloc.newPage].image.indexOf(',') + 1)),
                                                   width: width * 0.51,
                                                   height: width * 0.37,
-                                                  'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
                                                   fit: BoxFit.cover,
                                                 ),
                                               ),

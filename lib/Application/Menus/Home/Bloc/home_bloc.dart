@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
@@ -33,6 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   String selectedCategory = '';
   int selectedCategoryImage = 0;
   List<ArticleModel> articles = [];
+  List<Uint8List> articleImages = [];
   List<String> category =[
     "what_is_menopause",
     "symptoms_and_signs_of_menopause",
@@ -112,9 +114,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       json = await DBService.loadData(StorageKey.sound);
       if (json != null) mainBloc.sound = json == 'true';
 
-      if (articles.isEmpty) articles = await RTDBService.loadArticles();
-
+      if (articles.isEmpty) {
+        articles = await RTDBService.loadArticles();
+        for (var item in articles) {
+          articleImages.add(base64Decode(item.image.substring(item.image.indexOf(',') + 1)));
+        }
+      }
       emitInitial(emit);
+
     }
   }
 

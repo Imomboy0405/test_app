@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,9 +58,10 @@ class HomeDetailPage extends StatelessWidget {
                             tag: bloc.articles[bloc.currentPage].content[0].content,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
-                              child: Image.asset(
+                              child: Image.memory(
+                                bloc.articleImages[bloc.currentPage],
                                 width: MediaQuery.of(context).size.width - 22,
-                                'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
+                                semanticLabel: 'assets/images/img_article_${bloc.opacityAnime == 0 ? bloc.newPage : bloc.newPage}.png',
                                 fit: BoxFit.contain,
                               ),
                             ),
