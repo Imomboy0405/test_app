@@ -36,10 +36,10 @@ class MainLanguageEvent extends MainEvent {
   List<Object?> get props => [];
 }
 
-class MainThemeEvent extends MainEvent {
-  @override
-  List<Object?> get props => [];
-}
+// class MainThemeEvent extends MainEvent {
+//   @override
+//   List<Object?> get props => [];
+// }
 
 class MainSoundEvent extends MainEvent {
   final bool sound;

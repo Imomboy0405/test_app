@@ -9,17 +9,15 @@ import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/Bloc/profile_detail_bloc.dart';
 import 'package:test_app/Application/Menus/Profile/Detail/View/profile_detail_page.dart';
+import 'package:test_app/Application/Menus/Profile/Edit/View/profile_edit_page.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/SignIn/View/sign_in_page.dart';
-import 'package:test_app/Configuration/app_constants.dart';
-import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
 import 'package:test_app/Data/Services/firestore_service.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart';
 import 'package:test_app/Data/Services/util_service.dart';
 
 part 'profile_event.dart';
@@ -27,7 +25,7 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final MainBloc mainBloc;
-  bool darkMode = ThemeService.getTheme == ThemeMode.dark;
+  // bool darkMode = ThemeService.getTheme == ThemeMode.dark;
   String fullName = '';
   DateTime? dateSign;
   String? phoneNumber;
@@ -37,7 +35,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Language.uz,
     Language.ru,
     Language.en,
-    Language.qr,
     Language.kr,
   ];
   int currentTab = 0;
@@ -48,7 +45,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   final player = AudioPlayer();
 
-  ProfileBloc({required this.mainBloc}) : super(ProfileInitialState(darkMode: false, phone: '', email: '')) {
+  ProfileBloc({required this.mainBloc}) : super(ProfileInitialState(phone: '', email: '')) {
     on<InitialUserEvent>(initialUser);
     on<ProfileUpdateEvent>(pressProfileUpdate);
     on<LanguageEvent>(pressLanguage);
@@ -66,26 +63,33 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateDetailEvent>(updateEmit);
     on<ProfileShowCaseEvent>(showCase);
     on<TutorialEvent>(pressTutorial);
+    on<ProfileEditEvent>(pressEditProfile);
   }
 
   Future<void> showCase(ProfileShowCaseEvent event, Emitter<ProfileState> emit) async {
     ShowCaseWidget.of(event.context).startShowCase([keyMedicalInfo]);
-    emit(ProfileInitialState(darkMode: darkMode, email: email, phone: phoneNumber));
+    emit(ProfileInitialState(email: email, phone: phoneNumber));
     mainBloc.showCaseModel.profile = true;
     await DBService.saveShowCase(mainBloc.showCaseModel);
   }
 
   void initialUser(InitialUserEvent event, Emitter<ProfileState> emit) async {
-    darkMode = ThemeService.getTheme == ThemeMode.dark;
-    mainBloc.darkMode = darkMode;
+    // darkMode = ThemeService.getTheme == ThemeMode.dark;
+    // mainBloc.darkMode = darkMode;
     selectedLang = LangService.getLanguage;
 
     fullName = mainBloc.userModel!.displayName!;
+    phoneNumber = mainBloc.userModel?.phoneNumber;
     email = mainBloc.userModel!.email != null && mainBloc.userModel!.email!.isNotEmpty ? mainBloc.userModel!.email! : null;
 
     dateSign = mainBloc.userModel!.createdAt!.toDate();
 
-    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+    emit(ProfileInitialState(phone: phoneNumber, email: email));
+  }
+
+  void pressEditProfile(ProfileEditEvent event, Emitter<ProfileState> emit) {
+    myAnimatedPush(context: event.context, pushPage: const ProfileEditPage(), offset: const Offset(0, .7));
+    emit(ProfileInitialState(email: email, phone: phoneNumber));
   }
 
   void pressProfileUpdate(ProfileUpdateEvent event, Emitter<ProfileState> emit) {
@@ -108,24 +112,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void pressCancel(CancelEvent event, Emitter<ProfileState> emit) {
     selectedLang = LangService.getLanguage;
     mainBloc.add(MainLanguageEvent());
-    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+    emit(ProfileInitialState(phone: phoneNumber, email: email));
   }
 
   Future<void> pressDone(DoneEvent event, Emitter<ProfileState> emit) async {
     await LangService.language(selectedLang);
-    locator<HomeBloc>().articles = articlesJson.map((json) => ArticleModel.fromJson(json)).toList();
+    // locator<HomeBloc>().articles = articlesJson.map((json) => ArticleModel.fromJson(json)).toList();
     mainBloc.add(MainLanguageEvent());
-    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+    emit(ProfileInitialState(phone: phoneNumber, email: email));
   }
 
   Future<void> pressDarkMode(DarkModeEvent event, Emitter<ProfileState> emit) async {
-    darkMode = event.darkMode;
-    await ThemeService.theme(darkMode ? ThemeMode.dark : ThemeMode.light);
+    // darkMode = event.darkMode;
+    // await ThemeService.theme(darkMode ? ThemeMode.dark : ThemeMode.light);
     if (mainBloc.sound) {
       player.play(AssetSource('sounds/sound_button.wav'));
     }
-    mainBloc.add(MainThemeEvent());
-    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+    // mainBloc.add(MainThemeEvent());
+    emit(ProfileInitialState(phone: phoneNumber, email: email));
   }
 
   void pressSound(SoundEvent event, Emitter<ProfileState> emit) {
@@ -133,7 +137,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       player.play(AssetSource('sounds/sound_button.wav'));
     }
     mainBloc.add(MainSoundEvent(sound: event.sound));
-    emit(ProfileInitialState(darkMode: darkMode, phone: phoneNumber, email: email));
+    emit(ProfileInitialState(phone: phoneNumber, email: email));
   }
 
   void pressSignOut(SignOutEvent event, Emitter<ProfileState> emit) {
@@ -229,12 +233,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           values = event.values;
         }
         await FirestoreService.updateSeed(event.values, mainBloc.userModel!.uid!);
-        if (event.context.mounted) {
-          currentTab = 0;
-          Navigator.pop(event.context);
-          Utils.mySnackBar(txt: 'update_profile_success'.tr(), context: event.context, bottom: false);
-        }
-        emit(ProfileInitialState(darkMode: darkMode, email: email, phone: phoneNumber));
+        currentTab = 0;
+        emit(ProfileDetailPopState());
+        emit(ProfileInitialState(email: email, phone: phoneNumber));
       } catch (e) {
         if (event.context.mounted) {
           Navigator.pop(event.context);

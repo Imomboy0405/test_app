@@ -36,7 +36,7 @@ class TestDetailPage extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.pink.withOpacity(0.6),
+                      color: AppColors.pink.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: const EdgeInsets.all(5),

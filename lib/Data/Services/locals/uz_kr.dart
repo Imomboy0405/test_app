@@ -14,8 +14,7 @@ const Map<String, String> uzKR = {
   'button_0': 'Oʻzbek (Lotin)',
   'button_1': 'Русский',
   'button_2': 'English (USA)',
-  'button_3': 'Қарақалпақ',
-  'button_4': 'Ўзбек (Кирилл)',
+  'button_3': 'Ўзбек (Кирилл)',
   'skip': 'Ўтказиш',
 
   /// SignInPage
@@ -62,6 +61,8 @@ const Map<String, String> uzKR = {
   'email_already_in_use': 'E-почта манзили \nбошқа ҳисоб орқали рўйхатдан ўтган',
 
   /// ProfilePage
+  'edit_profile': 'Профилни таҳрирлаш',
+  'error_phone': 'Телефон рақам нотўғри',
   'profile': 'Профил',
   'month_1': 'Январь',
   'month_2': 'Февраль',
@@ -79,7 +80,7 @@ const Map<String, String> uzKR = {
   'sounds_and_vibration': 'Овозлар ва вибрация',
   'medical_info': 'Тиббий маълумот',
   'medical_info_not_found': 'Тиббий маълумот ўрнатилмаган',
-  'test_app_user': 'Тест апп фойдаланувчиси',
+  'test_app_user': 'Менопауза фойдаланувчиси',
   'date_sign': 'Рўйхатдан ўтиш санаси',
   'current_lang': 'Ўзбек (кирилл)',
   'cancel': 'Бекор қилиш',
@@ -93,10 +94,10 @@ const Map<String, String> uzKR = {
   'tutorial': 'Фойдаланишни қўлланмаси',
   'tutorial_text': 'Иловадан фойдаланиш қўлланмасини қайтадан намойиш қилишни тасдиқланг',
   'info': 'Илова ҳақида маълумот',
-  'info_text': 'Илова версияси:  1.0.0\nЯратилган вақти:  01.07.2024\nМуаллиф:  Имомбой Мирисломов\nE-почта:  imomboymirislomov@gmail.com',
+  'info_text': 'Илова версияси:  2.0.4\nОхирги янгиланиш:  10.09.2024\nКомпания:  Mobile Solutions\nE-почта:  imomboymirislomov@gmail.com',
   'email_not_set': 'E-почта ўрнатилмаган',
   'phone_not_set': 'Телефон рақами ўрнатилмаган',
-  'update_profile_success': 'Тиббий м\'лумотлар мувофаққиятли янгиланди',
+  'update_profile_success': 'Тиббий ма\'лумотлар мувофаққиятли янгиланди',
 
   /// ProfileDetailPage
   'save': 'Сақлаш',
@@ -289,7 +290,8 @@ const Map<String, String> uzKR = {
   'result_test': 'Натижани кўриш',
   'previous': 'Олдинги',
   'select_variant': 'Вариант белгиланг',
-  'ball': 'балл', 'return_home': 'Уйга қайтиш',
+  'ball': 'балл',
+  'return_home': 'Ортга қайтиш',
   'share_chat': 'Чатга улашиш',
   'play_again': 'Қайта ишлаш',
   'exit_test': 'Тестдан чиқиш',
@@ -546,11 +548,14 @@ const Map<String, String> uzKR = {
   "result_test_2_ball_11": "Климактерик синдромнинг мавжуд эмаслигини кўрсатади.",
 
   /// ChatPage
+  'msg_not_found': 'Ҳозирча хабарлар йўқ...',
   'chat': 'Чат ✍️ ',
   'enter_chat': 'Чатга кириш',
   'write_msg': 'Хабар ёзинг...',
   'id': 'ИД',
   'user_info': 'Фойдаланувчи маълумотлари',
+  'your_patients': 'Беморларингиз',
+  'new_patients': 'Янги беморлар',
 
   /// MainPage
   'exit': 'Чиқиш',

@@ -71,3 +71,12 @@ class HomeCancelEvent extends HomeEvent {
   List<Object?> get props => [];
 }
 
+class HomeEnterTestEvent extends HomeEvent {
+  final int index;
+  final BuildContext context;
+
+  const HomeEnterTestEvent({required this.context, required this.index});
+
+  @override
+  List<Object?> get props => [context, index];
+}

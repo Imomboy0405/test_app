@@ -129,3 +129,12 @@ class ProfileShowCaseEvent extends ProfileEvent {
   @override
   List<Object?> get props => [context];
 }
+
+class ProfileEditEvent extends ProfileEvent {
+  final BuildContext context;
+
+  ProfileEditEvent({required this.context});
+
+  @override
+  List<Object?> get props => [context];
+}

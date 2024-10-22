@@ -6,23 +6,25 @@ sealed class ChatState extends Equatable {
 
 final class ChatInitialState extends ChatState {
   final bool showEmojis;
-  final List<MessageModel> messages;
+  final Map<String, dynamic> values;
   final int length;
   final UserModel user;
   final bool focusNode;
   final bool shimmer;
+  final List<MessageModel?> recentMessages;
 
   const ChatInitialState({
     required this.showEmojis,
-    required this.messages,
+    required this.values,
     required this.length,
     required this.user,
     required this.focusNode,
     required this.shimmer,
+    required this.recentMessages,
   });
 
   @override
-  List<Object> get props => [showEmojis, messages, length, user, focusNode, shimmer];
+  List<Object> get props => [showEmojis, values, length, user, focusNode, shimmer, recentMessages];
 }
 
 final class ChatAdminState extends ChatState {

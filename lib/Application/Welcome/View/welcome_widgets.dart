@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_app/Application/Welcome/Start/Bloc/start_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
@@ -16,7 +17,6 @@ class MyFlagButton extends StatelessWidget {
     Language.uz,
     Language.ru,
     Language.en,
-    Language.qr,
     Language.kr,
   ];
 
@@ -41,9 +41,9 @@ class MyFlagButton extends StatelessWidget {
               backgroundColor: Colors.transparent,
               builder: (BuildContext context) {
                 return DraggableScrollableSheet(
-                  initialChildSize: 0.7,
-                  minChildSize: 0.67,
-                  maxChildSize: 0.7,
+                  initialChildSize: 0.6,
+                  minChildSize: 0.57,
+                  maxChildSize: 0.6,
                   expand: true,
                   builder: (BuildContext cont, ScrollController scrollController) {
                     return Container(
@@ -52,7 +52,7 @@ class MyFlagButton extends StatelessWidget {
                           borderRadius: const BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
                       child: ListView.builder(
                         controller: scrollController,
-                        itemCount: 6,
+                        itemCount: 5,
                         itemBuilder: (c, index) {
                           return index == 0
                               ? Padding(
@@ -185,7 +185,7 @@ Container myIsLoading(BuildContext context) {
   return Container(
     height: MediaQuery.of(context).size.height,
     width: MediaQuery.of(context).size.width,
-    color: AppColors.transparentBlack,
+    color: AppColors.whiteConst.withOpacity(.4),
     alignment: Alignment.center,
     child: CircularProgressIndicator(
       color: AppColors.purple,
@@ -240,6 +240,7 @@ class MyTextField extends StatelessWidget {
   final bool? obscure;
   final bool disabled;
   final bool actionDone;
+  final List<TextInputFormatter> inputFormatters;
   final void Function() onChanged;
   final void Function() onTap;
   final void Function() onSubmitted;
@@ -265,6 +266,7 @@ class MyTextField extends StatelessWidget {
     this.obscure,
     this.disabled = false,
     this.actionDone = false,
+    this.inputFormatters = const [],
   });
 
   @override
@@ -277,6 +279,7 @@ class MyTextField extends StatelessWidget {
       ),
       width: MediaQuery.of(context1).size.width - 60,
       child: TextField(
+        inputFormatters: inputFormatters,
         enabled: !disabled,
         obscureText: icon == Icons.lock ? obscure! : false,
         cursorColor: AppColors.purple,
@@ -448,7 +451,6 @@ BoxDecoration myGradient() {
     gradient: LinearGradient(
       colors: [
         AppColors.purple,
-        AppColors.purpleAccent,
         AppColors.purpleLight,
         AppColors.black,
       ],

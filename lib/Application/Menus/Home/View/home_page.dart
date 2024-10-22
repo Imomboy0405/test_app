@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/Bloc/home_bloc.dart';
+import 'package:test_app/Application/Menus/Test/Test/View/test_widgets.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Application/Welcome/View/welcome_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
@@ -23,6 +23,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeBloc bloc = locator<HomeBloc>();
+    MainBloc mainBloc = locator<MainBloc>();
     return BlocBuilder<HomeBloc, HomeState>(
       bloc: bloc,
       builder: (context, state) {
@@ -32,7 +33,7 @@ class HomePage extends StatelessWidget {
         }
         if (state is HomeLoadingState) {
           return Scaffold(
-            backgroundColor: AppColors.transparent,
+            backgroundColor: AppColors.whiteConst,
             body: myIsLoading(context),
           );
         } else {
@@ -97,7 +98,7 @@ class HomePage extends StatelessWidget {
                                                   margin: EdgeInsets.only(top: width * .35),
                                                   height: width * .13,
                                                   decoration: BoxDecoration(
-                                                    color: AppColors.purpleLight.withOpacity(0.5),
+                                                    color: AppColors.purpleLight.withOpacity(0.2),
                                                     borderRadius: BorderRadius.circular(16),
                                                   ),
                                                 ),
@@ -106,7 +107,7 @@ class HomePage extends StatelessWidget {
                                                   margin: EdgeInsets.only(top: width * .35),
                                                   height: width * .15,
                                                   decoration: BoxDecoration(
-                                                    color: AppColors.purpleLight.withOpacity(0.25),
+                                                    color: AppColors.purpleLight.withOpacity(0.15),
                                                     borderRadius: BorderRadius.circular(16),
                                                   ),
                                                 ),
@@ -193,80 +194,110 @@ class HomePage extends StatelessWidget {
                                   highlightColor: AppColors.pink,
                                   onPressed: () => bloc.add(HomePressArticleEvent(context: context)),
                                   child: Container(
-                                      height: width * 0.4,
-                                      padding: EdgeInsets.all(width * 0.015),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.pink.withOpacity(.5),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          // #text
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const SizedBox.shrink(),
-                                              // #title_text
-                                              Builder(builder: (context) {
-                                                return SizedBox(
-                                                  width: width * 0.4,
-                                                  child: AnimatedTextKit(
-                                                    totalRepeatCount: 1,
-                                                    key: Key(bloc.articles[bloc.currentPage].content[0].content),
-                                                    animatedTexts: [
-                                                      TyperAnimatedText(
-                                                        bloc.articles[bloc.currentPage].content[0].content,
-                                                        textStyle: AppTextStyles.style18(context).copyWith(
-                                                          fontWeight: FontWeight.w600,
-                                                          color: AppColors.whiteConst,
-                                                        ),
-                                                        textAlign: TextAlign.center,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              }),
-
-                                              // #read_more_text
-                                              SizedBox(
+                                    height: width * 0.4,
+                                    padding: EdgeInsets.all(width * 0.015),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.pink,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        // #text
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const SizedBox.shrink(),
+                                            // #title_text
+                                            Builder(builder: (context) {
+                                              return SizedBox(
                                                 width: width * 0.4,
-                                                child: Text(
-                                                  'more_read'.tr(),
-                                                  style: AppTextStyles.style8(context),
-                                                  textAlign: TextAlign.center,
+                                                child: AnimatedTextKit(
+                                                  totalRepeatCount: 1,
+                                                  key: Key(bloc.articles[bloc.currentPage].content[0].content),
+                                                  animatedTexts: [
+                                                    TyperAnimatedText(
+                                                      bloc.articles[bloc.currentPage].content[0].content,
+                                                      textStyle: AppTextStyles.style18(context).copyWith(
+                                                        fontWeight: FontWeight.w600,
+                                                        color: AppColors.whiteConst,
+                                                      ),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              );
+                                            }),
 
-                                          // #image
-                                          AnimatedOpacity(
-                                            opacity: bloc.opacityAnime,
-                                            duration: const Duration(milliseconds: 300),
-                                            child: Hero(
-                                              tag: bloc.articles[bloc.currentPage].content[0].content,
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: Image.memory(
-                                                  // 'assets/images/img_article_${bloc.newPage}.png',
-                                                  bloc.articleImages[bloc.newPage],
-                                                  // base64Decode(bloc.articles[(bloc.opacityAnime == 0 ? bloc.newPage : bloc.currentPage)].image.substring(bloc.articles[bloc.newPage].image.indexOf(',') + 1)),
-                                                  width: width * 0.51,
-                                                  height: width * 0.37,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                            // #read_more_text
+                                            SizedBox(
+                                              width: width * 0.4,
+                                              child: Text(
+                                                'more_read'.tr(),
+                                                style: AppTextStyles.style8(context),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
+                                        // #image
+                                        AnimatedOpacity(
+                                          opacity: bloc.opacityAnime,
+                                          duration: const Duration(milliseconds: 300),
+                                          child: Hero(
+                                            tag: bloc.articles[bloc.currentPage].content[0].content,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(10),
+                                              child: Image.memory(
+                                                // 'assets/images/img_article_${bloc.newPage}.png',
+                                                bloc.articleImages[bloc.newPage],
+                                                // base64Decode(bloc.articles[(bloc.opacityAnime == 0 ? bloc.newPage : bloc.currentPage)].image.substring(bloc.articles[bloc.newPage].image.indexOf(',') + 1)),
+                                                width: width * 0.51,
+                                                height: width * 0.37,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
 
-                          // #top_doctors
                           Padding(
+                            padding: EdgeInsets.all(width * .03),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                MyTestCard(
+                                  animation: false,
+                                  position: 0,
+                                  imgAsset: 'assets/images/img_test_0.png',
+                                  title: 'test_detail_title_0'.tr(),
+                                  content: 'test_detail_info_0'.tr(),
+                                  question: '19',
+                                  result: mainBloc.resultTests[0] != -1 ? '${mainBloc.resultTests[0]}' : 'not_worked'.tr(),
+                                  enterTest: () => bloc.add(HomeEnterTestEvent(context: context, index: 0)),
+                                ),
+                                MyTestCard(
+                                  animation: false,
+                                  position: 1,
+                                  imgAsset: 'assets/images/img_test_1.png',
+                                  title: 'test_detail_title_1'.tr(),
+                                  content: 'test_detail_info_1'.tr(),
+                                  question: '21',
+                                  result: mainBloc.resultTests[1] != -1 ? '${mainBloc.resultTests[1]}' : 'not_worked'.tr(),
+                                  enterTest: () => bloc.add(HomeEnterTestEvent(context: context, index: 1)),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // #top_doctors
+                          /*Padding(
                             padding: EdgeInsets.fromLTRB(width * 0.03, width * 0.03, width * 0.03, width * 0.05),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
@@ -276,7 +307,7 @@ class HomePage extends StatelessWidget {
                                   height: width * .875,
                                   padding: EdgeInsets.all(width * 0.015),
                                   decoration: BoxDecoration(
-                                    color: AppColors.pink.withOpacity(0.5),
+                                    color: AppColors.pink,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
@@ -325,7 +356,7 @@ class HomePage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),
+                          ),*/
                         ],
                       ),
                     ),

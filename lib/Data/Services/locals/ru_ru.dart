@@ -14,8 +14,7 @@ const Map<String, String> ruRU = {
   'button_0': 'Oʻzbek (Lotin)',
   'button_1': 'Русский',
   'button_2': 'English (USA)',
-  'button_3': 'Қарақалпақ',
-  'button_4': 'Ўзбек (Кирилл)',
+  'button_3': 'Ўзбек (Кирилл)',
   'skip': 'Пропустить',
 
   /// SignInPage
@@ -63,6 +62,8 @@ const Map<String, String> ruRU = {
   'email_already_in_use': 'Адрес электронной почты \nзарегистрирован другой учетной записью',
 
   /// ProfilePage
+  'edit_profile': 'Редактировать профиль',
+  'error_phone': 'Номер телефона неверен',
   'profile': 'Профиль',
   'month_1': 'Январь',
   'month_2': 'Февраль',
@@ -80,7 +81,7 @@ const Map<String, String> ruRU = {
   'sounds_and_vibration': 'Звуки и вибрация',
   'medical_info': 'Медицинская информация',
   'medical_info_not_found': 'Медицинская информация не установлена',
-  'test_app_user': 'Пользователь Test app',
+  'test_app_user': 'Пользователь Менопауза',
   'date_sign': 'Дата регистрации',
   'current_lang': 'Pусский',
   'cancel': 'Отмена',
@@ -94,7 +95,7 @@ const Map<String, String> ruRU = {
   'tutorial': 'Руководство пользователя',
   'tutorial_text': 'Подтвердите, что вы хотите снова отобразить руководство пользователя приложения',
   'info': 'Информация о приложении',
-  'info_text': 'Версия приложения:  1.0.0\nДата создания:  01.07.2024\nАвтор:  Имомбой Мирисломов\nЭлектронная почта:  imomboymirislomov@gmail.com',
+  'info_text': 'Версия приложения:  2.0.4\nПоследнее обновление:  10.09.2024\nКомпания:  Mobile Solutions\nЭлектронная почта:  imomboymirislomov@gmail.com',
   'email_not_set': 'Электронная почта не установлена',
   'phone_not_set': 'Hе установлен',
   'update_profile_success': 'Медицинская информация успешно обновлена',
@@ -289,9 +290,9 @@ const Map<String, String> ruRU = {
   'previous': 'Предыдущий',
   'select_variant': 'Выберите вариант',
   'ball': 'балл',
-  'return_home': 'Вернуться домой',
+  'return_home': 'Возвращаться',
   'share_chat': 'Поделиться в чате',
-  'play_again': 'Играть снова',
+  'play_again': 'Пройти снова',
   'exit_test': 'Выйти из теста',
   'question': 'Вопрос',
   'answer': 'Ответ',
@@ -527,11 +528,14 @@ const Map<String, String> ruRU = {
   "result_test_2_ball_11": "Говорят об отсутствии проявлений климактерического синдрома",
 
   /// ChatPage
+  'msg_not_found': 'На данный момент нет сообщений...',
   'chat': 'Чат ✍️ ',
   'enter_chat': 'Войти в чат',
   'write_msg': 'Напишите сообщение...',
   'id': 'ID',
   'user_info': 'Информация о пользователе',
+  'your_patients': 'Ваши пациенты',
+  'new_patients': 'Новые пациенты',
 
   /// MainPage
   'exit': 'Выход',

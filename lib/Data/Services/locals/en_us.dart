@@ -14,8 +14,7 @@ const Map<String, String> enUS = {
   'button_0': 'Oʻzbek (Lotin)',
   'button_1': 'Русский',
   'button_2': 'English (USA)',
-  'button_3': 'Қарақалпақ',
-  'button_4': 'Ўзбек (Кирилл)',
+  'button_3': 'Ўзбек (Кирилл)',
   'skip': 'Skip',
 
   /// SignInPage
@@ -63,6 +62,8 @@ const Map<String, String> enUS = {
   'email_already_in_use': 'The email address is \nalready in use by another account',
 
   /// ProfilePage
+  'edit_profile': 'Edit profile',
+  'error_phone': 'The phone number is incorrect',
   'profile': 'Profile',
   'month_1': 'January',
   'month_2': 'February',
@@ -80,7 +81,7 @@ const Map<String, String> enUS = {
   'sounds_and_vibration': 'Sounds and vibration',
   'medical_info': 'Medical Information',
   'medical_info_not_found': 'Medical information not set',
-  'test_app_user': 'Test app User',
+  'test_app_user': 'Menopause User',
   'date_sign': 'Registration Date',
   'current_lang': 'English (USA)',
   'cancel': 'Cancel',
@@ -94,7 +95,7 @@ const Map<String, String> enUS = {
   'tutorial': 'User Guide',
   'tutorial_text': 'Confirm that you want to display the app user guide again',
   'info': 'App Information',
-  'info_text': 'App version: 1.0.0\nCreated on:01.07.2024\nAuthor: Imomboy Mirislomov\nEmail: imomboymirislomov@gmail.com',
+  'info_text': 'App version:  2.0.4\nLast update:  10.09.2024\nCompany:  Mobile Solutions\nEmail:  imomboymirislomov@gmail.com',
   'email_not_set': 'Email not set',
   'phone_not_set': 'Phone number not set',
   'update_profile_success': 'Medical information successfully updated',
@@ -288,9 +289,9 @@ const Map<String, String> enUS = {
   'previous': 'Previous',
   'select_variant': 'Select option',
   'ball': 'point',
-  'return_home': 'Return home',
+  'return_home': 'Go back',
   'share_chat': 'Share in chat',
-  'play_again': 'Play again',
+  'play_again': 'Recycling',
   'exit_test': 'Exit test',
   'question': 'Question',
   'answer': 'Answer',
@@ -526,10 +527,13 @@ const Map<String, String> enUS = {
 
   /// ChatPage
   'chat': 'Chat ✍️ ',
+  'msg_not_found': 'There are no messages yet...',
   'enter_chat': 'Enter chat',
   'write_msg': 'Write a message...',
   'id': 'ID',
   'user_info': 'User information',
+  'your_patients': 'Your patients',
+  'new_patients': 'New patients',
 
   /// MainPage
   'exit': 'Exit',

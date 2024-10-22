@@ -9,13 +9,16 @@ import 'package:showcaseview/showcaseview.dart';
 import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Application/Menus/Home/View/home_detail_page.dart';
 import 'package:test_app/Application/Menus/Home/View/home_doctor_page.dart';
+import 'package:test_app/Application/Menus/Test/Test/Bloc/test_bloc.dart';
+import 'package:test_app/Application/Menus/Test/TestDetail/View/test_detail_page.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/article_model.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
+import 'package:test_app/Data/Services/lang_service.dart';
+import 'package:test_app/Data/Services/locator_service.dart';
 import 'package:test_app/Data/Services/r_t_d_b_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -72,6 +75,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomePopDoctorPageEvent>(backHome);
     on<HomeCategoryEvent>(pressCategory);
     on<HomeCancelEvent>(pressCancel);
+    on<HomeEnterTestEvent>(pressEnterTest);
   }
 
   void emitInitial(Emitter<HomeState> emit) {
@@ -96,7 +100,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (first) {
       emit(HomeLoadingState());
       first = false;
-      mainBloc.darkMode = ThemeService.getTheme == ThemeMode.dark;
+      // mainBloc.darkMode = ThemeService.getTheme == ThemeMode.dark;
       if (mainBloc.userModel == null) {
         String? json = await DBService.loadData(StorageKey.user);
         mainBloc.userModel = userFromJson(json!);
@@ -115,7 +119,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (json != null) mainBloc.sound = json == 'true';
 
       if (articles.isEmpty) {
-        articles = await RTDBService.loadArticles();
+        articles = await RTDBService.loadArticles(LangService.getLanguage.name);
         for (var item in articles) {
           articleImages.add(base64Decode(item.image.substring(item.image.indexOf(',') + 1)));
         }
@@ -172,5 +176,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void pressCancel(HomeCancelEvent event, Emitter<HomeState> emit) {
     autoPlayCarousel = true;
     emitInitial(emit);
+  }
+
+  void pressEnterTest(HomeEnterTestEvent event, Emitter<HomeState> emit) {
+    locator<TestBloc>().asset = event.index;
+    myAnimatedPush(context: event.context, pushPage: const TestDetailPage(), offset: const Offset(0, .7));
   }
 }

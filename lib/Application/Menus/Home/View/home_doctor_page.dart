@@ -71,9 +71,9 @@ class HomeDoctorPage extends StatelessWidget {
                             gradient: LinearGradient(
                               colors: [
                                 AppColors.pink,
-                                AppColors.purpleAccent,
-                                AppColors.purpleAccent,
-                                Colors.black.withOpacity(.5),
+                                AppColors.pink,
+                                AppColors.purpleLight.withOpacity(.8),
+                                AppColors.darkPink.withOpacity(.5),
                               ],
                               begin: Alignment.topCenter,
                               end: const Alignment(0, 1.3),
@@ -135,7 +135,7 @@ class HomeDoctorPage extends StatelessWidget {
                     width: width,
                     padding: EdgeInsets.symmetric(horizontal: width * .05),
                     decoration: BoxDecoration(
-                      color: AppColors.pink.withOpacity(.8),
+                      color: AppColors.pink,
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(width * .12), topRight: Radius.circular(width * .12)),
                     ),
                     child: Column(
@@ -146,7 +146,7 @@ class HomeDoctorPage extends StatelessWidget {
                         Container(
                           height: width * .35,
                           margin: EdgeInsets.only(top: width * .04),
-                          decoration: BoxDecoration(color: AppColors.transparentBlack, borderRadius: BorderRadius.circular(width * .07)),
+                          decoration: BoxDecoration(color: AppColors.transparentBlack.withOpacity(.3), borderRadius: BorderRadius.circular(width * .07)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [

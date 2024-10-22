@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:test_app/Data/Models/group_model.dart';
+import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
+import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
   static final CollectionReference _usersCollection = FirebaseFirestore.instance.collection('user');
+  static const _uuid = Uuid();
 
   static Future<void> createUser(UserModel user) async => await _usersCollection.doc(user.uid).set(user.toJson());
 
@@ -71,8 +74,51 @@ class FirestoreService {
     }
     return groups;
   }
-  
-  static Future<void> updateGroup(GroupModel group) async {
-    await _db.collection('group').doc(group.id).update(group.toJson());
+
+  static Future<void> createGroup(GroupModel group) async => await _db.collection('group').doc(group.id).set(group.toJson());
+
+  static Future<void> updateGroup(GroupModel group) async => await _db.collection('group').doc(group.id).update(group.toJson());
+
+  static Future<List<MessageModel>> loadMessage(String groupId) async {
+    final query = await _db.collection('message').doc(groupId).collection('messages').get();
+    final list = query.docs
+        .map((doc) {
+          if (doc.exists) {
+            return MessageModel.fromJson(doc.data());
+          }
+        })
+        .whereType<MessageModel>()
+        .toList();
+    return list;
+  }
+
+  static Future<MessageModel> sendMessage(String groupId, String messageText, String uid) async {
+    final messageCollection = _db.collection('message').doc(groupId).collection('messages');
+    final messageId = _uuid.v4();
+    final newMessage = MessageModel(
+      sentBy: uid,
+      sentAt: Timestamp.now(),
+      message: messageText,
+      id: messageId,
+      meta: {},
+      readBy: [],
+    );
+    await messageCollection.doc(messageId).set(newMessage.toJson());
+    await _db.collection('group').doc(groupId).set(
+      {
+        'recentMessage': newMessage.toJson(),
+        'updatedAt': newMessage.sentAt,
+      },
+      SetOptions(merge: true),
+    );
+    return newMessage;
+  }
+
+  static Stream<List<MessageModel>> listenForNewMessages(String groupId) {
+    final messagesCollection = _db.collection('message').doc(groupId).collection('messages');
+    return messagesCollection
+        .orderBy('sentAt')
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => MessageModel.fromJson(doc.data())).toList());
   }
 }

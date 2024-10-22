@@ -14,8 +14,7 @@ const Map<String, String> uzUZ = {
   'button_0': 'Oʻzbek (Lotin)',
   'button_1': 'Русский',
   'button_2': 'English (USA)',
-  'button_3': 'Қарақалпақ',
-  'button_4': 'Ўзбек (Кирилл)',
+  'button_3': 'Ўзбек (Кирилл)',
   'skip': 'O\'tkazish',
 
   /// SignInPage
@@ -62,6 +61,8 @@ const Map<String, String> uzUZ = {
   'email_already_in_use': 'E-pochta manzili \nboshqa hisob orqali ro\'yxatdan o\'tgan',
 
   /// ProfilePage
+  'edit_profile': 'Profilni tahrirlash',
+  'error_phone': 'Telefon raqam noto\'g\'ri',
   'profile': 'Profil',
   'month_1': 'Yanvar',
   'month_2': 'Fevral',
@@ -79,7 +80,7 @@ const Map<String, String> uzUZ = {
   'sounds_and_vibration': 'Ovozlar va vibratsiya',
   'medical_info': 'Tibbiy ma\'lumot',
   'medical_info_not_found': 'Tibbiy ma\'lumot o\'rnatilmagan',
-  'test_app_user': 'Test app foydalanuvchisi',
+  'test_app_user': 'Menopauza foydalanuvchisi',
   'date_sign': 'Ro\'yxatdan o\'tish sanasi',
   'current_lang': 'O\'zbek (lotin)',
   'cancel': 'Bekor qilish',
@@ -94,7 +95,7 @@ const Map<String, String> uzUZ = {
   'tutorial_text': 'Ilovadan foydalanish qo\'llanmasini qaytadan namoyish qilishni tasdiqlang',
   'info': 'Ilova haqida ma\'lumot',
   'info_text':
-      'Ilova versiyasi:  1.0.0\nYaratilgan vaqti:  01.07.2024\nMuallif:  Imomboy Mirislomov\nE-pochta:  imomboymirislomov@gmail.com',
+      'Ilova versiyasi:  2.0.4\nOxirgi yangilanish:  10.09.2024\nKompaniya:  Mobile Solutions\nE-pochta:  imomboymirislomov@gmail.com',
   'email_not_set': 'E-pochta o\'rnatilmagan',
   'phone_not_set': 'Telefon raqami o\'rnatilmagan',
   'update_profile_success': 'Tibbiy m\'lumotlar muvofaqqiyatli yangilandi',
@@ -288,7 +289,7 @@ const Map<String, String> uzUZ = {
   'previous': 'Oldingi',
   'select_variant': 'Variant belgilang',
   'ball': 'ball',
-  'return_home': 'Uyga qaytish',
+  'return_home': 'Ortga qaytish',
   'share_chat': 'Chatga ulashish',
   'play_again': 'Qayta ishlash',
   'exit_test': 'Testdan chiqish',
@@ -526,11 +527,14 @@ const Map<String, String> uzUZ = {
   "result_test_2_ball_11": "Klimakterik sindromning mavjud emasligini ko‘rsatadi.",
 
   /// ChatPage
+  'msg_not_found': 'Hozircha xabarlar yo\'q...',
   'chat': 'Chat ✍️ ',
   'enter_chat': 'Chatga kirish',
   'write_msg': 'Xabar yozing...',
   'id': 'ID',
   'user_info': 'Foydalanuvchi ma\'lumotlari',
+  'your_patients': 'Bemorlaringiz',
+  'new_patients': 'Yangi bemorlar',
 
   /// MainPage
   'exit': 'Chiqish',

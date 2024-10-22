@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:test_app/Data/Models/show_case_model.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/db_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart' as theme;
 import 'package:test_app/Data/Services/lang_service.dart';
 
 part 'main_event.dart';
 part 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
-  bool darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
+  // bool darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
   bool sound = true;
   Language language = LangService.getLanguage;
   ShowCaseModel showCaseModel = ShowCaseModel();
@@ -42,7 +41,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       : super(MainInitialState(
           screen: 1,
           lang: LangService.getLanguage,
-          darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
+          // darkMode: theme.ThemeService.getTheme == theme.ThemeMode.dark,
           sound: true,
           resultTests: List.filled(3, -1),
         )) {
@@ -50,7 +49,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainMenuButtonEvent>(pressMenuButton);
     on<MainHideBottomNavigationBarEvent>(hideBottomNavigationBar);
     on<MainLanguageEvent>(languageUpdate);
-    on<MainThemeEvent>(themeUpdate);
+    // on<MainThemeEvent>(themeUpdate);
     on<MainSoundEvent>(soundUpdate);
     on<MainExitEvent>(pressExit);
     on<MainCancelEvent>(pressCancel);
@@ -61,7 +60,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(MainInitialState(
       screen: currentScreen,
       lang: language,
-      darkMode: darkMode,
+      // darkMode: darkMode,
       sound: sound,
       resultTests: resultTests,
     ));
@@ -128,10 +127,10 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emitComfort(emit);
   }
 
-  void themeUpdate(MainThemeEvent event, Emitter<MainState> emit) {
-    darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
-    emitComfort(emit);
-  }
+  // void themeUpdate(MainThemeEvent event, Emitter<MainState> emit) {
+  //   darkMode = theme.ThemeService.getTheme == theme.ThemeMode.dark;
+  //   emitComfort(emit);
+  // }
 
   void soundUpdate(MainSoundEvent event, Emitter<MainState> emit) async {
     sound = event.sound;

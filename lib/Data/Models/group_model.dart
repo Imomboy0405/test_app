@@ -29,20 +29,20 @@ class GroupModel {
       id: map['id'],
       members: List<String>.from(map['members']),
       membersCount: map['membersCount'],
-      recentMessage: MessageModel.fromJson(map['recentMessage']),
+      recentMessage: map['recentMessage'] != null ? MessageModel.fromJson(map['recentMessage']) : null,
       type: map['type'],
       updatedAt: map['updatedAt'],
     );
   }
 
-  GroupModel copyWith(int membersCount, List<String> members) {
+  GroupModel copyWith({int? membersCount, List<String>? members, MessageModel? recentMessage}) {
     return GroupModel(
       createdAt:  createdAt,
       createdBy: createdBy,
       id: id,
-      members: members,
-      membersCount: membersCount,
-      recentMessage: recentMessage,
+      members: members ?? this.members,
+      membersCount: membersCount ?? this.membersCount,
+      recentMessage: recentMessage ?? this.recentMessage,
       type: type,
       updatedAt: updatedAt,
     );

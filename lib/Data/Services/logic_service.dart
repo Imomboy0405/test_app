@@ -1,5 +1,4 @@
 import 'package:test_app/Data/Models/user_model.dart';
-import 'package:test_app/Data/Services/lang_service.dart';
 
 class LogicService {
   static bool checkFullName(String fullName) {
@@ -42,29 +41,27 @@ class LogicService {
     return false;
   }
 
-  static bool selectModelsFoundOrOtherModel(var model, Map<String, dynamic> map) {
-    for (Entries entry in model.entries) {
-      if (map[entry.id] is bool && map[entry.id] || map[entry.id] is! bool) {
+  static bool selectModelsFoundOrOtherModel(Entries entry, Map<String, dynamic> map) {
+      if (map[entry.id] is bool && map[entry.id] || map[entry.id] is! bool && map[entry.id] != null) {
         return true;
-      }
     }
     return false;
   }
 
-  static bool selectModelFound(var model, Map<String, dynamic> map) {
-    return model.entries.lastIndexWhere((Entries entry) => map[entry.id] is bool && map[entry.id]) != -1;
+  static bool selectModelFound(Entries model, Map<String, dynamic> map) {
+    return model.entries?.lastIndexWhere((Entries entry) => map[entry.id] is bool && map[entry.id]) != -1;
   }
 
-  static String selectedEntryTitles(model) {
-    List list = model.entries
-        .where((entry) => entry.value == true || entry.value is int)
-        .map((entry) => entry.value == true ? entry.title : [entry.title, entry.value])
-        .toList();
-    if (list.length == 2) {
-      return '${list[0].toString().tr()}, ${list[1] is List ? '${list[1][0].toString().tr()} ${list[1][1]}' : list[1].toString().tr()}';
-    }
-    return list[0].toString().tr();
-  }
+  // static String selectedEntryTitles(Entries model) {
+  //   List list = model.entries!
+  //       .where((entry) => entry.value == true || entry.value is int)
+  //       .map((entry) => entry.value == true ? entry.title : [entry.title, entry.value])
+  //       .toList();
+  //   if (list.length == 2) {
+  //     return '${list[0].toString().tr()}, ${list[1] is List ? '${list[1][0].toString().tr()} ${list[1][1]}' : list[1].toString().tr()}';
+  //   }
+  //   return list[0].toString().tr();
+  // }
 
 
 }

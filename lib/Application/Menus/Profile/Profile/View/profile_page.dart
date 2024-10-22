@@ -28,7 +28,7 @@ class ProfilePage extends StatelessWidget {
           return BlocBuilder<ProfileBloc, ProfileState>(
               bloc: bloc,
               builder: (context, state) {
-                if ((bloc.fullName == '' || (mainBloc.darkMode != bloc.darkMode) || (mainBloc.language != bloc.selectedLang)) &&
+                if ((bloc.fullName == '' || (mainBloc.language != bloc.selectedLang)) &&
                     state is ProfileInitialState) {
                   bloc.add(InitialUserEvent());
                 }
@@ -96,7 +96,7 @@ class ProfilePage extends StatelessWidget {
                                             Text("${'phone_num'.tr()}:", style: AppTextStyles.style19(context)),
                                             const SizedBox(width: 10),
                                             Flexible(
-                                              child: Text(bloc.phoneNumber == null ? 'phone_not_set'.tr() : bloc.phoneNumber!,
+                                              child: Text(bloc.phoneNumber ?? 'phone_not_set'.tr(),
                                                   style: AppTextStyles.style19(context)),
                                             ),
                                           ],
@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  function: () => (),
+                                  function: () => bloc.add(ProfileEditEvent(context: context)),
                                 ),
                                 SizedBox(height: width * .015),
 
@@ -134,7 +134,7 @@ class ProfilePage extends StatelessWidget {
                                 SizedBox(height: width * .015),
 
                                 // #theme
-                                MyProfileButton(
+                                /*MyProfileButton(
                                   text: 'theme'.tr(),
                                   function: () => bloc.add(DarkModeEvent(darkMode: !bloc.darkMode)),
                                   endElement: SizedBox(
@@ -146,7 +146,7 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                       selectedColor: AppColors.whiteConst,
                                       color: AppColors.whiteConst,
-                                      fillColor: AppColors.purple,
+                                      fillColor: AppColors.darkPink1.withOpacity(.5),
                                       splashColor: AppColors.purple,
                                       borderColor: AppColors.whiteConst,
                                       borderWidth: 0.3,
@@ -160,7 +160,7 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(height: width * .015),
+                                SizedBox(height: width * .015),*/
 
                                 // #sound
                                 MyProfileButton(
@@ -175,7 +175,7 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                       selectedColor: AppColors.whiteConst,
                                       color: AppColors.whiteConst,
-                                      fillColor: AppColors.purple,
+                                      fillColor: AppColors.darkPink1.withOpacity(.5),
                                       splashColor: AppColors.purple,
                                       borderColor: AppColors.whiteConst,
                                       borderWidth: 0.3,
@@ -255,7 +255,7 @@ class ProfilePage extends StatelessWidget {
                           height: 300,
                           child: ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: 5,
+                            itemCount: 4,
                             padding: EdgeInsets.zero,
                             itemBuilder: (c, index) {
                               return RadioListTile(

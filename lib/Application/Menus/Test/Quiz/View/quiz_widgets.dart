@@ -4,7 +4,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart';
 
 class MyQuizButton extends StatelessWidget {
   final String text;
@@ -54,8 +53,8 @@ class MyQuizButton extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * .04),
                 child: MaterialButton(
-                  splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
-                  highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+                  splashColor: /*ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight :*/ AppColors.darkPink,
+                  highlightColor: /*ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight :*/ AppColors.darkPink,
                   onPressed: () => ball != null ? null : onChanged(value),
                   padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * .03, vertical: MediaQuery.of(context).size.width * .01),
                   child: Row(

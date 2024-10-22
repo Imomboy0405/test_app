@@ -17,14 +17,18 @@ class DetailPopEvent extends ProfileDetailEvent {
 class UpdateDetailPageEvent extends ProfileDetailEvent {
   final String id;
   final dynamic value;
+  final bool? bmiSliderStart;
+  final bool bmiSliding;
 
   const UpdateDetailPageEvent({
     required this.id,
     required this.value,
+    this.bmiSliderStart,
+    this.bmiSliding = false,
   });
 
   @override
-  List<Object?> get props => [id, value];
+  List<Object?> get props => [id, value, bmiSliderStart, bmiSliding];
 }
 
 class UpdateDetailExpansionPanelEvent extends ProfileDetailEvent {

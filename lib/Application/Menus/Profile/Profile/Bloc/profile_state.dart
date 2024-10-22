@@ -3,14 +3,14 @@ part of 'profile_bloc.dart';
 abstract class ProfileState extends Equatable {}
 
 class ProfileInitialState extends ProfileState {
-  final bool darkMode;
+  // final bool darkMode;
   final String? phone;
   final String? email;
 
-  ProfileInitialState({required this.darkMode, required this.email, required this.phone});
+  ProfileInitialState({ required this.email, required this.phone});
 
   @override
-  List<Object?> get props => [darkMode, email, phone];
+  List<Object?> get props => [email, phone];
 }
 
 class ProfileLoadingState extends ProfileState {
@@ -56,3 +56,7 @@ class ProfileDetailPageState extends ProfileState {
   List<Object?> get props => [index, userModel];
 }
 
+class ProfileDetailPopState extends ProfileState {
+  @override
+  List<Object?> get props => [];
+}

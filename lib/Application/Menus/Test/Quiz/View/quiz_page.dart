@@ -52,8 +52,8 @@ class QuizPage extends StatelessWidget {
                           decoration: state is QuizInitialState ? myGradient() : BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                AppColors.purpleAccent,
                                 AppColors.purpleLight,
+                                AppColors.purpleAccent,
                               ],
                               begin: const Alignment(2, 0),
                               end: const Alignment(-2, 0),
@@ -160,7 +160,7 @@ class QuizPage extends StatelessWidget {
                                         margin: EdgeInsets.fromLTRB(width * .04, 0, width * .04, width * .04),
                                         padding: EdgeInsets.only(bottom: width * .02),
                                         decoration: BoxDecoration(
-                                          color: AppColors.transparentBlack,
+                                          color: AppColors.transparentBlack.withOpacity(.5),
                                           borderRadius: BorderRadius.circular(width * .04),
                                           border: Border.all(width: 2, color: AppColors.black),
                                           boxShadow: [
@@ -217,7 +217,7 @@ class QuizPage extends StatelessWidget {
                                                                 (i + 1).toString(),
                                                                 style: i + 1 == bloc.currentQuiz || bloc.answers[i] != 0
                                                                     ? AppTextStyles.style4_1(context)
-                                                                    : AppTextStyles.style7_0(context),
+                                                                    : AppTextStyles.style7(context),
                                                               ),
                                                             ),
                                                             Container(

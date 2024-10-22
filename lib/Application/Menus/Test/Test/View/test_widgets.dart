@@ -65,7 +65,7 @@ class MyTestCard extends StatelessWidget {
             height: MediaQuery.of(context).size.width * .58,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-              color: AppColors.pink.withOpacity(.6),
+              color: AppColors.pink.withOpacity(.8),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
@@ -78,7 +78,7 @@ class MyTestCard extends StatelessWidget {
                         width: MediaQuery.of(context).size.width * .382,
                         height: MediaQuery.of(context).size.width * .382,
                         decoration: BoxDecoration(
-                          color: AppColors.transparentPurple.withOpacity(.2),
+                          color: AppColors.transparentPurple.withOpacity(.4),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding: const EdgeInsets.all(5),

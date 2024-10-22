@@ -20,15 +20,13 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ChatBloc bloc = locator<ChatBloc>();
+    final ChatBloc bloc = locator<ChatBloc>()..add(ChatGetUsersEvent());
     // final double width = MediaQuery.of(context).size.width;
     bloc.mainBloc = locator<MainBloc>();
     return BlocBuilder<ChatBloc, ChatState>(
       bloc: bloc,
       builder: (context, state) {
-        if (bloc.mainBloc.userModel!.role == 'doctor' && state is ChatInitialState) {
-          bloc.add(ChatGetUsersEvent());
-        }
+
         return SafeArea(
           child: Scaffold(
             backgroundColor: AppColors.transparent,
@@ -56,12 +54,12 @@ class ChatPage extends StatelessWidget {
                                       unselectedLabelColor: AppColors.whiteConst.withOpacity(.5),
                                       labelStyle: AppTextStyles.style3(context),
                                       labelPadding: const EdgeInsets.symmetric(horizontal: 6),
-                                      tabs: const [
+                                      tabs: [
                                         Tab(
-                                          text: 'Bemorlaringiz',
+                                          text: 'your_patients'.tr(),
                                         ),
                                         Tab(
-                                          text: 'Yangi bemorlar',
+                                          text: 'new_patients'.tr(),
                                         ),
                                       ],
                                     ),
@@ -125,12 +123,12 @@ class ChatPage extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                 child: MaterialButton(
                   padding: EdgeInsets.zero,
-                  onPressed: () => bloc.add(ChatPushDetailEvent(userModel: list[index], context: context)),
+                  onPressed: () => bloc.add(ChatPressGroupEvent(userModel: list[index], context: context, chat: chat)),
                   child: Container(
                     height: width * .2,
                     padding: EdgeInsets.all(width * .01),
                     decoration: BoxDecoration(
-                      color: AppColors.pink.withOpacity(.6),
+                      color: AppColors.pink.withOpacity(.9),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
@@ -186,13 +184,25 @@ class ChatPage extends StatelessWidget {
 
                               // #recent_message
                               if (chat)
-                                Flexible(
-                                  child: Text(
-                                    '${list[index].groups.first.recentMessage?.message}',
-                                    style: AppTextStyles.style8(context),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        list[index].groups.first.recentMessage?.message?.replaceAll('\n', ' ') ?? 'msg_not_found'.tr(),
+                                        style: AppTextStyles.style9(context),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: width * .02),
+                                      child: Text(
+                                        formatDate(list[index].groups.first.recentMessage?.sentAt?.toDate()),
+                                        style: AppTextStyles.style9(context),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               else
                                 Flexible(
@@ -216,6 +226,21 @@ class ChatPage extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+String formatDate(DateTime? dateTime) {
+  if (dateTime != null) {
+    final now = DateTime.now();
+    if (dateTime.year == now.year &&
+        dateTime.month == now.month &&
+        dateTime.day == now.day) {
+      return dateTime.toString().substring(11, 16);
+    } else {
+      return dateTime.toString().substring(0, 10);
+    }
+  } else {
+    return '';
   }
 }
 

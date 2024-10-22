@@ -42,7 +42,7 @@ class MainPage extends StatelessWidget {
               children: [
                 MyBottomNavigationBar(screenWidth: screenWidth, bloc: bloc),
 
-                myBackground(context, state),
+                // myBackground(context, state),
 
                 PageView(
                   physics: state is MainInitialState

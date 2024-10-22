@@ -9,8 +9,6 @@ import 'package:test_app/Application/Main/Bloc/main_bloc.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
-import 'package:test_app/Data/Services/locator_service.dart';
-import 'package:test_app/Data/Services/theme_service.dart';
 
 class MyBottomNavigationBar extends StatelessWidget {
   const MyBottomNavigationBar({
@@ -148,7 +146,7 @@ class MyProfileScreen extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
               child: Container(
-                color: AppColors.transparentBlack,
+                color: AppColors.transparentWhite,
               ),
             ),
           ),
@@ -158,7 +156,7 @@ class MyProfileScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.fromLTRB(24, 18, 24, 20),
           decoration: BoxDecoration(
-            color: AppColors.pink.withOpacity(.6),
+            color: AppColors.pink.withOpacity(.8),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
@@ -262,9 +260,9 @@ class MyProfileButton extends StatelessWidget {
           onPressed: () => function(),
           height: text == null ? MediaQuery.of(context).size.width * 0.46 : MediaQuery.of(context).size.width * 0.13,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          color: AppColors.pink.withOpacity(.6),
-          splashColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
-          highlightColor: ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight : AppColors.pink,
+          color: AppColors.pink.withOpacity(.9),
+          splashColor: /*ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight :*/ AppColors.pink,
+          highlightColor: /*ThemeService.getTheme == ThemeMode.dark ? AppColors.purpleLight :*/ AppColors.pink,
           padding: EdgeInsets.symmetric(horizontal:  MediaQuery.of(context).size.width * .05, vertical: 0),
           child: text != null
               ? Row(
@@ -306,11 +304,11 @@ class MyCard extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width * .4,
       decoration: BoxDecoration(
-        color: AppColors.pink,
+        color: AppColors.pink2,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.purpleAccent.withOpacity(0.3),
+            color: AppColors.pink2.withOpacity(0.3),
             blurRadius: 7,
             spreadRadius: 2,
             offset: const Offset(0, 10),
@@ -345,7 +343,7 @@ class MyCard extends StatelessWidget {
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: locator<MainBloc>().darkMode ? AppColors.transparentPurple : AppColors.transparentBlack,
+            color: /*locator<MainBloc>().darkMode ? AppColors.pink2.withOpacity(.3) :*/ AppColors.transparentBlack.withOpacity(.4),
             blurRadius: 50,
             spreadRadius: 75,
           ),

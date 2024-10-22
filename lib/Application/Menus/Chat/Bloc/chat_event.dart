@@ -38,14 +38,15 @@ class ChatGetUsersEvent extends ChatEvent {
   List<Object?> get props => [];
 }
 
-class ChatPushDetailEvent extends ChatEvent {
+class ChatPressGroupEvent extends ChatEvent {
   final UserModel userModel;
   final BuildContext context;
+  final bool chat;
 
-  const ChatPushDetailEvent({required this.userModel, required this.context});
+  const ChatPressGroupEvent({required this.userModel, required this.context, required this.chat});
 
   @override
-  List<Object?> get props => [userModel, context];
+  List<Object?> get props => [userModel, context, chat];
 }
 
 class ChatPushInfoEvent extends ChatEvent {

@@ -17,6 +17,7 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   List<Map<String, dynamic>> values = List.filled(5, {});
   final ProfileBloc profileBloc;
   bool initial = true;
+  bool bmiUpdating = false;
 
   ScrollController controller = ScrollController();
   final keyCheckBox = GlobalKey(debugLabel: 'showCheckBox');
@@ -112,9 +113,12 @@ class ProfileDetailBloc extends Bloc<ProfileDetailEvent, ProfileDetailState> {
   }
 
   void updateDetail(UpdateDetailPageEvent event, Emitter<ProfileDetailState> emit) {
-    if (profileBloc.mainBloc.sound) player.play(AssetSource('sounds/sound_button.wav'));
-    values = List.from(values);
-    values[profileBloc.currentTab] = {...values[profileBloc.currentTab], event.id: event.value};
-    emitDetail(emit);
+    if (event.bmiSliderStart != null) bmiUpdating = event.bmiSliderStart!;
+    if (values[profileBloc.currentTab][event.id] != event.value && (bmiUpdating == event.bmiSliding)) {
+      if (profileBloc.mainBloc.sound) player.play(AssetSource('sounds/sound_button.wav'));
+      values = List.from(values);
+      values[profileBloc.currentTab] = {...values[profileBloc.currentTab], event.id: event.value};
+      emitDetail(emit);
+    }
   }
 }

@@ -12,6 +12,7 @@ import 'package:test_app/Configuration/app_text_styles.dart';
 import 'package:test_app/Data/Models/user_model.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
+import 'package:test_app/Data/Services/util_service.dart';
 
 class ProfileDetailPage extends StatelessWidget {
   static const id = '/profile_detail_page';
@@ -24,113 +25,128 @@ class ProfileDetailPage extends StatelessWidget {
     final mainBloc = locator<MainBloc>();
     final double width = MediaQuery.of(context).size.width;
     ProfileDetailBloc bloc = ProfileDetailBloc(profileBloc: locator<ProfileBloc>())..add(const InitialDataEvent());
-    return BlocBuilder<ProfileBloc, ProfileState>(
-        bloc: profileBloc,
-        builder: (context, state) {
-          return BlocProvider(
-            create: (context) => bloc,
-            child: BlocBuilder<ProfileDetailBloc, ProfileDetailState>(
-              bloc: bloc,
-              builder: (context, state) {
-                return PopScope(
-                  canPop: state is! ProfileDetailLoadingState,
-                  onPopInvokedWithResult: (v, d) => bloc.add(DetailPopEvent()),
-                  child: Stack(
-                    children: [
-                      if (state is ProfileDetailInitialState)
+    return BlocListener<ProfileBloc, ProfileState>(
+      bloc: profileBloc,
+      listener: (context, state) {
+        if (state is ProfileDetailPopState) {
+          Navigator.pop(context);
+          Utils.mySnackBar(txt: 'update_profile_success'.tr(), context: context, bottom: false);
+        }
+      },
+      child: BlocBuilder<ProfileBloc, ProfileState>(
+          bloc: profileBloc,
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => bloc,
+              child: BlocBuilder<ProfileDetailBloc, ProfileDetailState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  return PopScope(
+                    canPop: state is! ProfileDetailLoadingState,
+                    onPopInvokedWithResult: (v, d) => bloc.add(DetailPopEvent()),
+                    child: Stack(
+                      children: [
                         Scaffold(
                           backgroundColor: AppColors.black,
-                          appBar: MyAppBar(titleText: profileBloc.fullName, purpleBackground: true),
-                          body: DefaultTabController(
-                            length: 5,
-                            initialIndex: profileBloc.currentTab,
-                            child: Builder(
-                              builder: (context) {
-                                profileBloc.add(ListenScrollEvent(context: context));
-                                return Column(
-                                  children: [
-                                    Container(
-                                      color: AppColors.purpleAccent,
-                                      child: TabBar(
-                                          controller: DefaultTabController.of(context),
-                                          tabAlignment: TabAlignment.start,
-                                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                                          isScrollable: true,
-                                          dividerColor: AppColors.transparent,
-                                          indicatorColor: AppColors.whiteConst,
-                                          labelPadding: const EdgeInsets.symmetric(horizontal: 6),
-                                          tabs: profileBloc.userDetailList
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                                (entry) => Tab(
-                                                  height: width * .09,
-                                                  child: myTab(
-                                                      title: bloc.profileBloc.userDetailList[entry.key].title!['ru'],
-                                                      index: entry.key,
-                                                      currentIndex: profileBloc.currentTab),
-                                                ),
-                                              )
-                                              .toList()),
-                                    ),
-                                    Expanded(
-                                      child: TabBarView(
-                                        controller: DefaultTabController.of(context),
+                          appBar: MyAppBar(
+                            titleText: profileBloc.fullName,
+                          ),
+                          body: profileBloc.userDetailList.isNotEmpty
+                              ? DefaultTabController(
+                                  length: 5,
+                                  initialIndex: profileBloc.currentTab,
+                                  child: Builder(
+                                    builder: (context) {
+                                      profileBloc.add(ListenScrollEvent(context: context));
+                                      return Column(
                                         children: [
-                                          for (int i = 0; i <= 4; i++)
-                                            Builder(
-                                              builder: (context) => SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    ProfileDetailTabScreen(
-                                                        userDetailModel: profileBloc.userDetailList[i], tabIndex: i, bloc: bloc),
-                                                    Padding(
-                                                      padding: const EdgeInsets.all(15.0),
-                                                      child: ShowCaseWidget(
-                                                        builder: (contextShowCase) {
-                                                          if (bloc.firstNextButton) {
-                                                            bloc.add(ShowCaseEvent(context: contextShowCase));
-                                                          }
-                                                          if (mainBloc.showCaseModel.profileDetail) {
-                                                            return MyButton(
-                                                              enable: true,
-                                                              function: () => profileBloc.add(NextEvent(index: i + 1, context: context)),
-                                                              text: i < 4 ? 'next'.tr() : 'save'.tr(),
-                                                            );
-                                                          }
-                                                          return MyButton(
-                                                            enable: true,
-                                                            function: () => profileBloc.add(NextEvent(index: i + 1, context: context, values: bloc.values)),
-                                                            text: i < 4 ? 'next'.tr() : 'save'.tr(),
-                                                          );
-                                                        },
+                                          Container(
+                                            color: AppColors.pink,
+                                            child: TabBar(
+                                                controller: DefaultTabController.of(context),
+                                                tabAlignment: TabAlignment.start,
+                                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                                isScrollable: true,
+                                                dividerColor: AppColors.transparent,
+                                                indicatorColor: AppColors.whiteConst,
+                                                labelPadding: const EdgeInsets.symmetric(horizontal: 6),
+                                                tabs: profileBloc.userDetailList
+                                                    .asMap()
+                                                    .entries
+                                                    .map(
+                                                      (entry) => Tab(
+                                                        height: width * .09,
+                                                        child: myTab(
+                                                            title: bloc
+                                                                .profileBloc.userDetailList[entry.key].title![LangService.getLanguage.name],
+                                                            index: entry.key,
+                                                            currentIndex: profileBloc.currentTab),
+                                                      ),
+                                                    )
+                                                    .toList()),
+                                          ),
+                                          Expanded(
+                                            child: TabBarView(
+                                              controller: DefaultTabController.of(context),
+                                              children: [
+                                                for (int i = 0; i <= 4; i++)
+                                                  Builder(
+                                                    builder: (context) => SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          ProfileDetailTabScreen(
+                                                              userDetailModel: profileBloc.userDetailList[i], tabIndex: i, bloc: bloc),
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(15.0),
+                                                            child: ShowCaseWidget(
+                                                              builder: (contextShowCase) {
+                                                                if (bloc.firstNextButton) {
+                                                                  bloc.add(ShowCaseEvent(context: contextShowCase));
+                                                                }
+                                                                if (mainBloc.showCaseModel.profileDetail) {
+                                                                  return MyButton(
+                                                                    enable: true,
+                                                                    function: () =>
+                                                                        profileBloc.add(NextEvent(index: i + 1, context: context)),
+                                                                    text: i < 4 ? 'next'.tr() : 'save'.tr(),
+                                                                  );
+                                                                }
+                                                                return MyButton(
+                                                                  enable: true,
+                                                                  function: () => profileBloc
+                                                                      .add(NextEvent(index: i + 1, context: context, values: bloc.values)),
+                                                                  text: i < 4 ? 'next'.tr() : 'save'.tr(),
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
+                                                  ),
+                                              ],
                                             ),
+                                          ),
                                         ],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                                      );
+                                    },
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        if (state is ProfileDetailLoadingState)
+                          Scaffold(
+                            backgroundColor: AppColors.transparent,
+                            body: myIsLoading(context),
                           ),
-                        ),
-                      if (state is ProfileDetailLoadingState)
-                        Scaffold(
-                          backgroundColor: AppColors.black,
-                          body: myIsLoading(context),
-                        ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        });
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          }),
+    );
   }
 
   Builder myTab({required title, required index, required currentIndex}) {
@@ -141,7 +157,9 @@ class ProfileDetailPage extends StatelessWidget {
           border: Border.all(color: currentIndex == index ? AppColors.whiteConst : AppColors.purple),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Text(title, style: currentIndex == index ? AppTextStyles.style19(context) : AppTextStyles.style23_0(context)),
+        child: Text(title,
+            style:
+                currentIndex == index ? AppTextStyles.style19(context) : AppTextStyles.style23_0(context).copyWith(color: AppColors.black)),
       );
     });
   }
@@ -239,12 +257,13 @@ class ProfileDetailTabScreen extends StatelessWidget {
                               ExpansionPanel(
                                 headerBuilder: (BuildContext context, bool isExpanded) {
                                   return ListTile(
-                                    title: Text(entry.title != null ? entry.title!['ru']! : 'null', style: AppTextStyles.style4(context)),
+                                    title: Text(entry.title != null ? entry.title![LangService.getLanguage.name]! : 'null',
+                                        style: AppTextStyles.style4(context)),
                                   );
                                 },
                                 isExpanded: bloc.currentIndexes[tabIndex] == entry.index,
                                 canTapOnHeader: true,
-                                backgroundColor: AppColors.purpleAccent,
+                                backgroundColor: AppColors.pink.withOpacity(.9),
                                 body: Column(
                                   children: entry.entries!
                                       .map(
@@ -327,7 +346,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
       child: hereditaryFactors
           ? Row(
               children: [
-                Text(entry.title?['ru'] ?? 'null', style: AppTextStyles.style19(context)),
+                Text(entry.title?[LangService.getLanguage.name] ?? 'null', style: AppTextStyles.style19(context)),
                 const SizedBox(width: 5),
                 anthropometryChildren(),
               ],
@@ -336,7 +355,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 bloodPressureIndex != 2
-                    ? Text(entry.title?['ru'] ?? 'null', style: AppTextStyles.style18_0(context))
+                    ? Text(entry.title?[LangService.getLanguage.name] ?? 'null', style: AppTextStyles.style18_0(context))
                     : const SizedBox.shrink(),
                 anthropometryChildren(),
               ],
@@ -361,15 +380,57 @@ class ProfileDetailTabScreen extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              width: width * .3,
-              child: Text(
-                '${profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].title?['ru']}: ${(bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ?? 177) ~/ 1} '
-                '${profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[1].title?['ru']}: ${(bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ?? 77) ~/ 1}',
-                style: AppTextStyles.style18_0(context),
+              width: width * .2,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(height: width * .04),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.purpleAccent.withOpacity(.2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: NumberPicker(
+                      minValue: 120,
+                      maxValue: 200,
+                      onChanged: (value) => value > 120
+                          ? bloc.add(UpdateDetailPageEvent(
+                              id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![0].id,
+                              value: value,
+                            ))
+                          : (),
+                      value: (bloc.values[profileBloc.currentTab]
+                                  [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ??
+                              177) ~/
+                          1,
+                      itemWidth: width * .15,
+                      itemHeight: width * .15,
+                      textStyle: AppTextStyles.style7(context),
+                      selectedTextStyle: AppTextStyles.style10(context),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.purple, width: 1.5),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].title?[LangService.getLanguage.name]}',
+                    style: AppTextStyles.style18_0(context),
+                  ),
+                  SizedBox(height: width * .135),
+                  Text(
+                    '${profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[1].title?[LangService.getLanguage.name]}',
+                    style: AppTextStyles.style18_0(context),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
+            SizedBox(width: width * .02),
             ShowCaseWidget(builder: (context) {
               if (bloc.showBMI) {
                 bloc.add(ShowCaseEvent(context: context));
@@ -397,15 +458,31 @@ class ProfileDetailTabScreen extends StatelessWidget {
                               RotatedBox(
                                 quarterTurns: -1,
                                 child: Slider(
-                                  value: (bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ??
+                                  value: (bloc.values[profileBloc.currentTab]
+                                              [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ??
                                           177)
                                       .toDouble(),
                                   min: 0,
                                   max: 200,
+                                  onChangeStart: (value) => value > 120
+                                      ? bloc.add(UpdateDetailPageEvent(
+                                          id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![0].id,
+                                          value: value.truncate(),
+                                          bmiSliderStart: true,
+                                        ))
+                                      : (),
+                                  onChangeEnd: (value) => value > 120
+                                      ? bloc.add(UpdateDetailPageEvent(
+                                          id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![0].id,
+                                          value: value.truncate(),
+                                          bmiSliderStart: false,
+                                        ))
+                                      : (),
                                   onChanged: (value) => value > 120
                                       ? bloc.add(UpdateDetailPageEvent(
                                           id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![0].id,
-                                          value: value,
+                                          value: value.truncate(),
+                                          bmiSliding: true,
                                         ))
                                       : (),
                                 ),
@@ -423,7 +500,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
                                   scaleText(context, '100', true),
                                   SizedBox(height: width * .075),
                                   scaleText(context, '50', true),
-                                  SizedBox(height: width * .07),
+                                  SizedBox(height: width * .065),
                                   scaleText(context, '0', true),
                                 ],
                               ),
@@ -433,14 +510,18 @@ class ProfileDetailTabScreen extends StatelessWidget {
                         const SizedBox(width: 5),
                         Image.asset(
                           'assets/images/img_bmi.png',
-                          height: (bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ?? 177) /
+                          height: (bloc.values[profileBloc.currentTab]
+                                      [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries?[0].id] ??
+                                  177) /
                               200 *
                               width *
                               .5,
-                          width: (bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ?? 77) /
-                              100 *
+                          width: (bloc.values[profileBloc.currentTab]
+                                      [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ??
+                                  77) /
+                              120 *
                               width *
-                              .35,
+                              .4,
                           fit: BoxFit.fill,
                           color: AppColors.purple,
                         ),
@@ -452,42 +533,89 @@ class ProfileDetailTabScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           SizedBox(
-                            width: width * .4,
+                            width: width * .45,
                             child: RotatedBox(
                               quarterTurns: 1,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   SizedBox(height: width * .025),
+                                  scaleText(context, '120', false),
+                                  SizedBox(height: width * .025),
                                   scaleText(context, '100', false),
-                                  SizedBox(height: width * .025),
+                                  SizedBox(height: width * .023),
                                   scaleText(context, '80', false),
-                                  SizedBox(height: width * .025),
+                                  SizedBox(height: width * .022),
                                   scaleText(context, '60', false),
-                                  SizedBox(height: width * .024),
+                                  SizedBox(height: width * .021),
                                   scaleText(context, '40', false),
-                                  SizedBox(height: width * .08),
+                                  SizedBox(height: width * .07),
                                   scaleText(context, '0', false),
                                 ],
                               ),
                             ),
                           ),
                           SizedBox(
-                            width: width * .35,
+                            width: width * .4,
                             child: Slider(
-                              value: (bloc.values[profileBloc.currentTab][profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ?? 77)
+                              value: (bloc.values[profileBloc.currentTab]
+                                          [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ??
+                                      77)
                                   .toDouble(),
                               min: 0,
-                              max: 100,
+                              max: 120,
+                              onChangeStart: (value) => value > 40
+                                  ? bloc.add(UpdateDetailPageEvent(
+                                      id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id,
+                                      value: value,
+                                      bmiSliderStart: true,
+                                    ))
+                                  : (),
+                              onChangeEnd: (value) => value > 40
+                                  ? bloc.add(UpdateDetailPageEvent(
+                                      id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id,
+                                      value: value,
+                                      bmiSliderStart: false,
+                                    ))
+                                  : (),
                               onChanged: (value) => value > 40
                                   ? bloc.add(UpdateDetailPageEvent(
                                       id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id,
                                       value: value,
+                                      bmiSliding: true,
                                     ))
                                   : (),
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    SizedBox(height: width * .02),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.purpleAccent.withOpacity(.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: NumberPicker(
+                        minValue: 40,
+                        maxValue: 120,
+                        onChanged: (v) => bloc.add(UpdateDetailPageEvent(
+                          id: profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id,
+                          value: v,
+                        )),
+                        value: (bloc.values[profileBloc.currentTab]
+                                    [profileBloc.userDetailList[tabIndex].entries[userDetailModelIndex].entries![1].id] ??
+                                77) ~/
+                            1,
+                        axis: Axis.horizontal,
+                        itemWidth: width * .175,
+                        itemHeight: width * .12,
+                        textStyle: AppTextStyles.style7(context),
+                        selectedTextStyle: AppTextStyles.style10(context),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.purple, width: 1.5),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ],
@@ -530,7 +658,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
       Container(
         margin: EdgeInsets.symmetric(horizontal: expansionPanel ? 4 : 8, vertical: 4),
         decoration: BoxDecoration(
-            color: expansionPanel ? Colors.black.withOpacity(.1) : AppColors.purpleAccent,
+            color: AppColors.pink.withOpacity(.9),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: AppColors.whiteConst, width: .7)),
         child: Theme(
@@ -550,7 +678,7 @@ class ProfileDetailTabScreen extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: entryKg == null
-                  ? Text(entry.title!['ru']!, style: AppTextStyles.style19(context))
+                  ? Text(entry.title![LangService.getLanguage.name] ?? 'null', style: AppTextStyles.style19(context))
                   : Row(
                       children: [
                         Text(entry.title.toString(), style: AppTextStyles.style19(context)),

@@ -32,8 +32,8 @@ class RTDBService {
     return users;
   }
 
-  static Future<List<ArticleModel>> loadArticles() async {
-    Query query = database.child('articles/ru');
+  static Future<List<ArticleModel>> loadArticles(String lang) async {
+    Query query = database.child('articles/$lang');
     DatabaseEvent event = await query.once();
     List<ArticleModel> articles = [];
     if (event.snapshot.value != null && event.snapshot.value is Map) {

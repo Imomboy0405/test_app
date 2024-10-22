@@ -5,6 +5,7 @@ import 'package:test_app/Application/Menus/Chat/Bloc/chat_bloc.dart';
 import 'package:test_app/Application/Menus/View/menus_widgets.dart';
 import 'package:test_app/Configuration/app_colors.dart';
 import 'package:test_app/Configuration/app_text_styles.dart';
+import 'package:test_app/Data/Models/message_model.dart';
 import 'package:test_app/Data/Services/lang_service.dart';
 import 'package:test_app/Data/Services/locator_service.dart';
 
@@ -19,73 +20,19 @@ class ChatDetailPage extends StatelessWidget {
     return BlocBuilder<ChatBloc, ChatState>(
       bloc: bloc,
       builder: (context, state) {
-        if (bloc.initial) {
-          bloc.add(ChatInitialEvent());
-        }
         return Scaffold(
-          backgroundColor: bloc.mainBloc.userModel!.uid == 'DBXkfBuedvagFrLIY1BgrNioH3u2' ? AppColors.black : AppColors.transparent,
+          backgroundColor: bloc.mainBloc.userModel!.role == 'doctor' ? AppColors.black : AppColors.transparent,
           resizeToAvoidBottomInset: true,
           appBar: bloc.newUsers.isEmpty
               ? null
               : MyAppBar(
-                  titleText: bloc.user!.displayName!,
+                  titleText: bloc.user?.displayName! ?? '',
                   titleTap: () => bloc.add(ChatPushInfoEvent(userModel: bloc.user!, context: context)),
                 ),
           body: Column(
             children: [
-              bloc.messages != null
+              bloc.mainBloc.userModel!.role == 'patient' && bloc.mainBloc.userModel!.groups.isEmpty
                   ? Expanded(
-                      child: ListView.builder(
-                        controller: bloc.scrollController,
-                        reverse: true,
-                        shrinkWrap: true,
-                        itemCount: bloc.messages!.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            mainAxisAlignment: bloc.messages![bloc.messages!.length - index - 1].sentBy == bloc.mainBloc.userModel?.uid
-                                ? bloc.user != null
-                                    ? MainAxisAlignment.end
-                                    : MainAxisAlignment.start
-                                : bloc.user != null
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.end,
-                            children: [
-                              Container(
-                                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 100),
-                                padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-                                margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                                decoration: BoxDecoration(
-                                  color: bloc.messages![bloc.messages!.length - index - 1].sentBy == bloc.mainBloc.userModel?.uid
-                                      ? bloc.user != null
-                                          ? AppColors.purple
-                                          : AppColors.darkPink
-                                      : bloc.user != null
-                                          ? AppColors.darkPink
-                                          : AppColors.purple,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    // #massage_text
-                                    Text(
-                                      bloc.messages![bloc.messages!.length - index - 1].message ?? '',
-                                      style: AppTextStyles.style8(context),
-                                    ),
-                                    // #date_time
-                                    Text(
-                                      bloc.messages![bloc.messages!.length - index - 1].sentAt.toString(),
-                                      style: AppTextStyles.style8(context),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    )
-                  : Expanded(
                       child: ListView(
                         reverse: true,
                         children: [
@@ -97,6 +44,80 @@ class ChatDetailPage extends StatelessWidget {
                           buildShimmer(false),
                           buildShimmer(true),
                         ],
+                      ),
+                    )
+                  : Expanded(
+                      child: StreamBuilder<List<MessageModel>>(
+                        stream: bloc.listenNewMsg(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final messages = snapshot.data!.reversed.toList();
+                            if (messages.isNotEmpty) {
+                              return ListView.builder(
+                                controller: bloc.scrollController,
+                                reverse: true,
+                                shrinkWrap: true,
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) {
+                                  final message = messages[index];
+                                  return Row(
+                                    mainAxisAlignment:
+                                        message.sentBy == bloc.mainBloc.userModel?.uid ? MainAxisAlignment.end : MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width - 100),
+                                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                                        margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                        decoration: BoxDecoration(
+                                          color: message.sentBy == bloc.mainBloc.userModel?.uid
+                                              ? bloc.user != null
+                                                  ? AppColors.purple
+                                                  : AppColors.darkPink
+                                              : bloc.user != null
+                                                  ? AppColors.darkPink
+                                                  : AppColors.purple,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            // #massage_text
+                                            Text(
+                                              message.message ?? 'Error null',
+                                              style: AppTextStyles.style8(context),
+                                            ),
+                                            // #date_time
+                                            Text(
+                                              message.sentAt!.toDate().toString().substring(0, 16),
+                                              style: AppTextStyles.style8(context),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(child: Text('msg_not_found'.tr(), style: AppTextStyles.style9(context)));
+                            }
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return ListView(
+                              reverse: true,
+                              children: [
+                                buildShimmer(false),
+                                buildShimmer(true),
+                                buildShimmer(false),
+                                buildShimmer(true),
+                                buildShimmer(true),
+                                buildShimmer(false),
+                                buildShimmer(true),
+                              ],
+                            );
+                          }
+                        },
                       ),
                     ),
 
@@ -187,10 +208,7 @@ class ChatTextField extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 5),
-          decoration: BoxDecoration(
-            border: Border.all(width: 1, color: AppColors.purple),
-            color: AppColors.black
-          ),
+          decoration: BoxDecoration(border: Border.all(width: 1, color: AppColors.purple), color: AppColors.black),
           child: Row(
             children: [
               IconButton(
